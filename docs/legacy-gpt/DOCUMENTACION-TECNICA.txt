@@ -1,0 +1,654 @@
+============================================================
+    DOCUMENTACIÓN TÉCNICA — ENTRENADOR VIRTUAL IA
+    Sistema Completo: Arquitectura, Funcionamiento y Uso
+============================================================
+
+Versión: 1.0
+Fecha: Junio 2026
+Propósito: Documentar el funcionamiento interno del GPT
+           "Entrenador Virtual IA" para fines de comprensión,
+           mantenimiento y escalabilidad.
+
+============================================================
+ÍNDICE
+============================================================
+
+1. DESCRIPCIÓN GENERAL DEL SISTEMA
+2. ARQUITECTURA DE ARCHIVOS
+3. EL SYSTEM PROMPT (INSTRUCCIONES-GPT.md)
+4. LOS ARCHIVOS DE CONOCIMIENTO (base-de-conocimiento/)
+5. FLUJO DE FUNCIONAMIENTO DEL GPT
+6. DIAGRAMA DE FLUJO DEL USUARIO
+7. REGLAS DE NEGOCIO IMPLEMENTADAS
+8. ESCALABILIDAD Y PERSONALIZACIÓN
+9. PREGUNTAS FRECUENTES TÉCNICAS
+10. GLOSARIO DE TÉRMINOS
+
+============================================================
+1. DESCRIPCIÓN GENERAL DEL SISTEMA
+============================================================
+
+El "Entrenador Virtual IA" es un Custom GPT (GPT personalizado)
+que funciona dentro de la plataforma ChatGPT (chatgpt.com).
+NO es una aplicación independiente, NO requiere servidores,
+NO requiere base de datos, NO requiere código.
+
+El GPT actúa como un entrenador personal virtual que:
+
+- Recolecta datos del usuario (perfil + entrenamientos)
+- Almacena el historial en la memoria de la conversación
+- Analiza progresión de cargas por ejercicio
+- Detecta estancamientos (3+ sesiones sin progreso)
+- Recomienda incrementos de peso específicos
+- Sugiere ejercicios alternativos basados en tablas
+- Calcula 1RM estimado con fórmula de Epley
+- Evalúa volumen semanal por grupo muscular
+- Genera rutinas personalizadas
+
+Todo esto funciona únicamente con:
+- Un system prompt bien escrito
+- Archivos CSV subidos como conocimiento
+- La capacidad de Web Browsing de ChatGPT
+
+============================================================
+2. ARQUITECTURA DE ARCHIVOS
+============================================================
+
+El sistema completo consta de 7 archivos organizados así:
+
+┌─────────────────────────────────────────────────────────┐
+│  entrenador-virtual-ia/                                  │
+│                                                          │
+│  ├── INSTRUCCIONES-GPT.md        (System prompt)          │
+│  ├── conversation-starters.txt   (Script de apoyo)        │
+│  ├── SIMULACION-GPT.md           (Demo para el cliente)   │
+│  ├── GUIA-PERSONALIZACION.md     (Guía de setup)          │
+│  ├── DOCUMENTACION-TECNICA.md    ← ESTE ARCHIVO           │
+│  │                                                         │
+│  └── base-de-conocimiento/                   (Archivos de conocimiento)│
+│      ├── 01-alternativas-de-ejercicios.csv                    │
+│      ├── 02-rangos-de-reps-por-objetivo.csv                        │
+│      ├── 03-volumen-semanal-recomendado.csv                            │
+│      └── 04-escala-de-esfuerzo-percibido.csv                                │
+└─────────────────────────────────────────────────────────┘
+
+2.1 DEPENDENCIAS ENTRE ARCHIVOS
+
+INSTRUCCIONES-GPT.md
+  └── Hace referencia a los 4 archivos CSV de base-de-conocimiento/
+  └── Contiene placeholders [CORCHETES] para personalizar
+
+base-de-conocimiento/01-alternativas-de-ejercicios.csv
+  └── El GPT lo consulta cuando el usuario pide alternativas
+  └── Cada fila = un ejercicio original + 3 alternativas + grupo muscular
+
+base-de-conocimiento/02-rangos-de-reps-por-objetivo.csv
+  └── El GPT lo consulta para recomendar reps según objetivo
+  └── Cada fila = objetivo + rango de reps + descanso
+
+base-de-conocimiento/03-volumen-semanal-recomendado.csv
+  └── El GPT lo consulta para evaluar volumen por grupo muscular
+  └── Cada fila = nivel + series min/max + frecuencia
+
+base-de-conocimiento/04-escala-de-esfuerzo-percibido.csv
+  └── El GPT lo consulta para interpretar el RPE del usuario
+  └── Cada fila = rango RPE + descripción + acción recomendada
+
+2.2 FLUJO DE DATOS
+
+    Usuario escribe mensaje
+            │
+            ▼
+    ChatGPT recibe el mensaje
+            │
+            ▼
+    Lee INSTRUCCIONES-GPT.md  →  Sabe cómo comportarse
+            │
+            ▼
+    Consulta archivos CSV   →  Obtiene datos estructurados
+            │
+            ▼
+    Procesa con su LLM      →  Aplica reglas de negocio
+            │
+            ▼
+    Genera respuesta        →  La envía al usuario
+            │
+            ▼
+    Memoria de conversación →  Almacena todo automáticamente
+
+============================================================
+3. EL SYSTEM PROMPT (INSTRUCCIONES-GPT.md)
+============================================================
+
+3.1 ¿QUÉ ES?
+
+El archivo INSTRUCCIONES-GPT.md contiene el "system prompt"
+del GPT. Es un documento de texto que se pega en el campo
+"Instructions" dentro de la configuración de ChatGPT.
+
+3.2 ¿QUÉ CONTIENE?
+
+El documento está dividido en 12 secciones:
+
+┌──────┬──────────────────────────────────────┬──────────────────────────┐
+│ Sec  │ Título                              │ ¿Qué define?              │
+├──────┼──────────────────────────────────────┼──────────────────────────┤
+│ 1    │ Identidad y Rol                     │ Personalidad y tono       │
+│ 2    │ Flujo de Inicio de Conversación     │ Cómo recolectar datos     │
+│ 3    │ Formato Interno de Almacenamiento   │ JSON para memoria         │
+│ 4    │ Análisis y Recomendaciones          │ Reglas de progresión      │
+│ 5    │ Manejo de Ejercicios Alternativos   │ Cómo usar el CSV #1       │
+│ 6    │ Asistente Conversacional            │ FAQ y respuestas          │
+│ 7    │ Estructura de Respuesta             │ Formato de salida         │
+│ 8    │ Reglas de Seguridad                 │ Límites y precauciones    │
+│ 9    │ Escala RPE                          │ Cómo interpretar RPE      │
+│ 10   │ Personalización por Gimnasio        │ Placeholders [CORCHETES]  │
+│ 11   │ Comportamiento Adicional            │ Edge cases                │
+│ 12   │ Conversation Starters               │ Los 4 starters            │
+└──────┴──────────────────────────────────────┴──────────────────────────┘
+
+3.3 ¿CÓMO FUNCIONA INTERNAMENTE?
+
+Cuando el usuario escribe un mensaje, ChatGPT:
+
+1. Lee las INSTRUCCIONES como contexto principal
+2. Determina qué sección aplicar según el mensaje del usuario
+   - "Hola, quiero empezar" → Sección 2 (Flujo de inicio)
+   - "¿Debo aumentar peso?" → Sección 4.2 (Detección de estancamiento)
+   - "[X] está ocupado" → Sección 5 (Ejercicios alternativos)
+   - "Analiza mi progreso" → Sección 6 (FAQ)
+3. Busca en los archivos CSV si necesita datos estructurados
+4. Aplica las reglas matemáticas:
+   - 1RM = peso * (1 + reps / 30)
+   - Si 3 sesiones consecutivas sin cambio → estancamiento
+   - Si RPE ≤ 6 por 3 sesiones → subir peso
+   - Upper body: +2.5kg, Lower body: +5kg
+5. Construye la respuesta siguiendo la estructura de la Sección 7
+6. Envía la respuesta
+
+3.4 PLACEHOLDERS [CORCHETES]
+
+El system prompt contiene marcadores que el cliente debe
+reemplazar:
+
+┌──────────────────────┬──────────────────────────────────┐
+│ Placeholder          │ Debe reemplazarse con              │
+├──────────────────────┼──────────────────────────────────┤
+│ [NOMBRE_GIMNASIO]    │ Nombre real del gimnasio          │
+│ [LISTA_EQUIPOS]      │ Máquinas y equipos disponibles     │
+│ [HORARIOS]           │ Horarios de atención              │
+│ [CONTACTO]           │ Teléfono, email, redes            │
+└──────────────────────┴──────────────────────────────────┘
+
+Si no se reemplazan, el GPT responde con un mensaje genérico:
+"Esa información aún no está configurada."
+
+============================================================
+4. LOS ARCHIVOS DE CONOCIMIENTO (base-de-conocimiento/)
+============================================================
+
+4.1 ¿CÓMO LOS USA CHATGPT?
+
+Los archivos CSV subidos en "Knowledge" son procesados por
+ChatGPT y almacenados en su contexto. El GPT puede:
+
+- Hacer búsquedas exactas por nombre de ejercicio
+- Encontrar alternativas por grupo muscular
+- Consultar rangos según el objetivo del usuario
+- Determinar acciones según el RPE reportado
+
+4.2 01-alternativas-de-ejercicios.csv
+
+┌──────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+│ Original     │ Alternativa1 │ Alternativa2 │ Alternativa3 │ Grupo        │
+├──────────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+│ Press banca │ Press banca  │ Press incl.  │ Fondos       │ Pecho        │
+│ con barra    │ con mancu.   │ con barra    │ en paralelas │              │
+│ ...          │ ...          │ ...          │ ...          │ ...          │
+└──────────────┴──────────────┴──────────────┴──────────────┴──────────────┘
+
+Columnas:
+- Ejercicio Original: nombre exacto que espera el GPT
+- Alternativa 1-3: opciones equivalentes
+- Grupo Muscular: clasificación para búsquedas alternativas
+
+Reglas de negocio asociadas:
+- Si el usuario pide alternativa de un ejercicio que está
+  en el CSV → devolver las 3 alternativas
+- Si el usuario pregunta por un ejercicio NO listado →
+  buscar por Grupo Muscular y sugerir ejercicios del mismo grupo
+- Si no hay coincidencias → responder con alternativas genéricas
+  del mismo patrón de movimiento (empuje, tirón, etc.)
+
+4.3 02-rangos-de-reps-por-objetivo.csv
+
+┌─────────────────────┬──────────────────┬──────────────────┐
+│ Objetivo            │ Rango Reps       │ Descanso         │
+├─────────────────────┼──────────────────┼──────────────────┤
+│ Fuerza máxima       │ 1-5 reps         │ 3-5 min          │
+│ Hipertrofia         │ 6-12 reps        │ 60-90 seg        │
+│ Resistencia         │ 15+ reps         │ 30-60 seg        │
+│ Potencia            │ 1-5 explosivas   │ 3-5 min          │
+│ Acondicionamiento   │ 8-15 reps        │ 45-90 seg        │
+└─────────────────────┴──────────────────┴──────────────────┘
+
+Reglas de negocio:
+- Cuando el GPT sugiere un nuevo ejercicio, consulta este
+  archivo para determinar el rango de reps según el objetivo
+- Cuando recomienda descanso entre series, lo obtiene de aquí
+- Si el usuario no tiene objetivo definido, usa "Acondicionamiento"
+  como default
+
+4.4 03-volumen-semanal-recomendado.csv
+
+┌──────────────┬──────────┬──────────┬──────────────────┐
+│ Nivel        │ Series   │ Series   │ Frecuencia       │
+│              │ min      │ max      │ Semanal          │
+├──────────────┼──────────┼──────────┼──────────────────┤
+│ Principiante │ 10       │ 12       │ 2x por semana    │
+│ Intermedio   │ 14       │ 18       │ 2x por semana    │
+│ Avanzado     │ 18       │ 22       │ 2-3x por semana  │
+└──────────────┴──────────┴──────────┴──────────────────┘
+
+Reglas de negocio:
+- El GPT suma las series de cada grupo muscular del usuario
+- Compara con el rango según su nivel
+- Si está por debajo del mínimo: 🔴 Muy bajo (recomienda agregar)
+- Si está en el rango: 🟢 Adecuado
+- Si está por encima del máximo: 🟡 Reducir (riesgo de sobreentrenamiento)
+- Si no hay datos suficientes: ⚪ Sin datos
+
+Nunca se recomienda superar 25 series por grupo muscular
+(regla de seguridad hardcodeada en las instrucciones).
+
+4.5 04-escala-de-esfuerzo-percibido.csv
+
+┌─────────┬──────────────────────────┬────────────────────────────┐
+│ RPE     │ Descripción              │ Acción Recomendada         │
+├─────────┼──────────────────────────┼────────────────────────────┤
+│ 1-2     │ Muy fácil, calentamiento │ Subir peso significativamente│
+│ 3-4     │ Fácil, poco esfuerzo     │ Subir peso                  │
+│ 5-6     │ Moderado, controlado     │ Subir si 3 sesiones consec. │
+│ 7-8     │ Difícil, concentración   │ Mantener, progresar en reps │
+│ 9       │ Extremadamente difícil   │ No subir, revisar recuperac.│
+│ 10      │ Máximo esfuerzo (fallo)  │ No subir, bajar o descansar │
+└─────────┴──────────────────────────┴────────────────────────────┘
+
+Reglas de negocio:
+- El RPE es OPCIONAL. Si el usuario no lo provee, se usan
+  las reglas generales (3 sesiones consecutivas = subir)
+- RPE tiene PRIORIDAD sobre la regla de 3 sesiones:
+  Si RPE ≥ 9 → NO subir aunque sean 3+ sesiones
+  Si RPE ≤ 6 y 3 sesiones → SUBIR aunque el usuario no pida
+- El RPE se promedia entre series del mismo ejercicio
+  (si el usuario dice "RPE 6-7", usar 6.5 → redondear a 6)
+
+============================================================
+5. FLUJO DE FUNCIONAMIENTO DEL GPT
+============================================================
+
+5.1 DIAGRAMA DE ESTADOS
+
+    ┌──────────────┐
+    │  INICIO      │
+    │  (saludo)    │
+    └──────┬───────┘
+           │
+           ▼
+    ┌──────────────┐      NO      ┌──────────────────┐
+    │  ¿Tiene      │─────────────►│  Solicitar datos  │
+    │  perfil?     │              │  (nombre, edad,   │
+    └──────┬───────┘              │   peso, nivel,    │
+           │ SÍ                   │   objetivo)       │
+           ▼                      └────────┬─────────┘
+    ┌──────────────┐                       │
+    │  ¿Tiene      │                       │
+    │  historial?  │                       │
+    └──────┬───────┘                       │
+           │                               │
+      ┌────┴────┐                          │
+      │         │                          │
+      ▼         ▼                          │
+   ┌────────┐ ┌────────┐                   │
+   │ Subir  │ │ Manual │                   │
+   │ CSV    │ │ paso a │                   │
+   │        │ │ paso   │                   │
+   └───┬────┘ └───┬────┘                   │
+       │         │                        │
+       └────┬────┘                        │
+            │                              │
+            ▼                              │
+    ┌────────────────┐                     │
+    │  DATOS         │                     │
+    │  ALMACENADOS   │◄────────────────────┘
+    │  (en memoria)  │
+    └───────┬────────┘
+            │
+            ▼
+    ┌─────────────────────────────────────┐
+    │  Con el usuario puede:              │
+    │  - Preguntar por aumento de peso    │
+    │  - Pedir análisis de progreso       │
+    │  - Preguntar por alternativas       │
+    │  - Pedir rutina                     │
+    │  - Registrar más sesiones           │
+    │  - Preguntar por falta de progreso  │
+    └─────────────────────────────────────┘
+
+5.2 MATRIZ DE DECISIONES DEL GPT
+
+| Entrada del usuario                | Sección aplicada              | Archivos consultados     | Salida                              |
+|------------------------------------|-------------------------------|--------------------------|-------------------------------------|
+| "Hola, quiero empezar"             | Sección 2: Flujo de inicio    | Ninguno                  | Solicitud de datos del perfil       |
+| "Press banca 30kg 4x10"           | Sección 2.4: Registro manual | Ninguno                  | Confirmación de registro            |
+| "¿Debo aumentar peso?"             | Sección 4.2: Estancamiento   | Historial de conversación| Recomendación con peso exacto       |
+| "[X] está ocupado"                 | Sección 5: Alternativas       | 01-ejercicios-equival.   | 3 alternativas específicas          |
+| "Analiza mi progreso"              | Sección 6: FAQ análisis      | Historial + 02, 03, 04  | Reporte completo                    |
+| "¿Por qué no progreso?"            | Sección 6: FAQ progreso      | Historial + 03          | Diagnóstico con causas              |
+| "Dame una rutina"                  | Sección 6: FAQ rutina        | Historial + 02, 03      | Rutina personalizada                |
+| "¿Qué peso uso?"                   | Sección 4.3: Incremento      | Historial + 02          | Peso y reps recomendados            |
+| "Me duele [parte]"                 | Sección 8: Seguridad         | Ninguno                  | Derivación a profesional de salud   |
+
+5.3 REGLAS MATEMÁTICAS IMPLEMENTADAS
+
+Fórmula de Epley (1RM estimado):
+    1RM = peso × (1 + repeticiones / 30)
+    Ejemplo: 60 kg × (1 + 10/30) = 60 × 1.333 = 80 kg
+
+Incrementos de carga:
+    Upper body → +2.5 kg
+    Lower body → +5.0 kg
+    Si no hay discos de 1.25 kg → subir peso y bajar reps
+
+Detección de estancamiento:
+    IF mismo ejercicio AND mismo peso AND mismas reps (±2)
+    AND 3 sesiones consecutivas → ESTANCADO
+
+Volumen semanal:
+    Series totales del grupo muscular en la semana
+    Comparar con tabla según nivel del usuario
+
+RPE y decisión de subir:
+    IF RPE ≤ 6 AND 3 sesiones consecutivas → SUBIR
+    IF RPE = 7-8 → MANTENER, buscar reps
+    IF RPE ≥ 9 → NO SUBIR
+
+============================================================
+6. DIAGRAMA DE FLUJO DEL USUARIO
+============================================================
+
+(Visto desde la perspectiva del socio del gimnasio)
+
+┌─────────────────────────────────────────────────────────────────────┐
+│             EXPERIENCIA DEL USUARIO (SOCIO)                         │
+│                                                                     │
+│  1. EL USUARIO ABRE EL ENLACE DEL GPT                              │
+│     - Toca el link que el gimnasio compartió                       │
+│     - Se abre ChatGPT con el GPT cargado                           │
+│                                                                     │
+│  2. VE 4 BOTONES DE INICIO RÁPIDO                                  │
+│     ● "Quiero empezar, ¿qué datos necesitas de mí?"                │
+│     ● "Analiza mi progreso de las últimas 4 semanas"                │
+│     ● "¿Debo aumentar el peso en [ejercicio]?"                     │
+│     ● "[Máquina/ejercicio] está ocupado, ¿qué hago?"               │
+│                                                                     │
+│  3. TOCA "QUIERO EMPEZAR"                                          │
+│     - El GPT pregunta dato por dato: nombre, edad, peso, etc.       │
+│                                                                     │
+│  4. REGISTRA SU PRIMER ENTRENAMIENTO                               │
+│     - Opción A: Sube archivo CSV                                    │
+│     - Opción B: Escribe ejercicio por ejercicio                     │
+│     - El GPT confirma cada registro                                │
+│                                                                     │
+│  5. EN SESIONES POSTERIORES...                                     │
+│     - Abre la MISMA conversación (ChatGPT recuerda todo)           │
+│     - Escribe "nueva sesión" y registra                            │
+│     - O escribe "ayer hice: Press banca 35kg 4x10, ..."            │
+│                                                                     │
+│  6. CONSULTA AL GPT                                                │
+│     - "¿Debo aumentar peso?" → recibe recomendación con peso exacto │
+│     - "Analiza mi progreso" → recibe reporte completo              │
+│     - "Prensa ocupada, ¿qué hago?" → recibe 3 alternativas         │
+│     - "Dame rutina" → recibe rutina personalizada                  │
+│                                                                     │
+│  7. CADA VEZ QUE ABRE LA CONVERSACIÓN                               │
+│     - El GPT recuerda quién es, sus datos, su historial             │
+│     - Puede continuar exactamente donde lo dejó                    │
+│                                                                     │
+│  IMPORTANTE:                                                        │
+│  - Cuando el usuario INICIA UNA NUEVA conversación, el GPT         │
+│    NO recuerda nada (es una limitación de ChatGPT)                 │
+│  - El usuario NO debe crear nueva conversación                     │
+│  - Solo debe continuar la misma conversación siempre               │
+└─────────────────────────────────────────────────────────────────────┘
+
+============================================================
+7. REGLAS DE NEGOCIO IMPLEMENTADAS
+============================================================
+
+7.1 REGLAS DURAS (no configurables, están en el system prompt)
+
+| # | Regla | Excepción |
+|---|-------|-----------|
+| 1 | No recomendar más de 25 series/grupo/semana | Ninguna |
+| 2 | No entrenar mismo grupo muscular días consecutivos | Si el usuario insiste, advertir |
+| 3 | Principiante: priorizar técnica sobre peso | Ninguna |
+| 4 | Si hay dolor (no fatiga): derivar a médico | Ninguna |
+| 5 | No dar consejos médicos, nutrición o suplementos | Ninguna |
+| 6 | Usuario < 18 años: ajustes conservadores | Ninguna |
+| 7 | Usuario 50+: priorizar movilidad, evitar cargas máximas | Ninguna |
+| 8 | 5+ sesiones seguidas sin descanso: recomendar descanso activo | Ninguna |
+| 9 | Enfermedad: recomendar descanso + médico | Ninguna |
+| 10 | RPE no obligatorio: si no se da, usar regla de 3 sesiones | Ninguna |
+
+7.2 REGLAS BLANDAS (configurables en los CSV)
+
+| # | Regla | Dónde se configura |
+|---|-------|--------------------|
+| 1 | Ejercicio A → Alternativas B, C, D | 01-alternativas-de-ejercicios.csv |
+| 2 | Reps según objetivo | 02-rangos-de-reps-por-objetivo.csv |
+| 3 | Volumen según nivel | 03-volumen-semanal-recomendado.csv |
+| 4 | Acción según RPE | 04-escala-de-esfuerzo-percibido.csv |
+| 5 | Nombre del gimnasio | INSTRUCCIONES-GPT.md (placeholder) |
+| 6 | Incrementos de peso | INSTRUCCIONES-GPT.md (hardcodeado) |
+
+7.3 REGLAS DERIVADAS (el GPT las infiere combinando reglas)
+
+- Si el usuario NO subió archivo CSV Y no registró manualmente →
+  el GPT asume que es un usuario nuevo y guía el registro
+- Si el usuario es principiante Y objetivo es ganancia muscular →
+  6-12 reps, 10-12 series/grupo, 2x semana
+- Si el usuario es avanzado Y fuerza máxima →
+  1-5 reps, 18-22 series/grupo, 3x semana
+
+============================================================
+8. ESCALABILIDAD Y PERSONALIZACIÓN
+============================================================
+
+8.1 ¿CÓMO SE ESCALA?
+
+El GPT escala horizontalmente por diseño:
+
+- No hay límite de usuarios (cada conversación es independiente)
+- Cada socio tiene su propia conversación con ChatGPT
+- No hay servidores que mantener
+- No hay base de datos que administrar
+- No hay código que desplegar
+
+8.2 ¿CÓMO SE PERSONALIZA POR GIMNASIO?
+
+Ver archivo GUIA-PERSONALIZACION.md para instrucciones detalladas.
+
+Resumen:
+- Cambiar [NOMBRE_GIMNASIO] en las instrucciones
+- Editar 01-alternativas-de-ejercicios.csv con ejercicios reales
+- Opcional: ajustar rangos de reps y volumen en CSV #2 y #3
+
+8.3 ¿CÓMO SE PERSONALIZA POR TIPO DE SOCIO?
+
+Se pueden crear MÚLTIPLES GPTs especializados:
+
+Ejemplo:
+┌──────────────────────────────────────────────────────────────────┐
+│ GPT 1: "Entrenador Principiantes"                                │
+│   - Instrucciones: priorizar técnica, rangos conservadores       │
+│   - base-de-conocimiento/02: solo principiantes                             │
+│                                                                  │
+│ GPT 2: "Entrenador Avanzado"                                     │
+│   - Instrucciones: cargas altas, periodización                  │
+│   - base-de-conocimiento/02: todos los rangos                               │
+│                                                                  │
+│ GPT 3: "Entrenador Mujeres Embarazadas"                          │
+│   - Instrucciones: ejercicios seguros, contraindicaciones       │
+│   - Con supervisión médica obligatoria                           │
+│                                                                  │
+│ GPT 4: "Entrenador Pesas Libres" (solo crossfit/funcional)      │
+│   - base-de-conocimiento/01: solo ejercicios con peso libre                 │
+│   - Excluye máquinas                                             │
+└──────────────────────────────────────────────────────────────────┘
+
+8.4 ¿CÓMO SE ACTUALIZA?
+
+Cuando el gimnasio agrega/quita máquinas:
+1. Editar 01-alternativas-de-ejercicios.csv
+2. Ir a chatgpt.com → Explore GPTs → Edit
+3. En Knowledge: quitar archivo viejo, subir nuevo
+4. Save
+
+Cuando cambian las filosofías de entrenamiento:
+1. Editar 03-volumen-semanal-recomendado.csv (números)
+2. O editar INSTRUCCIONES-GPT.md (texto)
+3. Reemplazar en campo Instructions
+4. Save
+
+============================================================
+9. PREGUNTAS FRECUENTES TÉCNICAS
+============================================================
+
+9.1 ¿El GPT necesita conexión a internet?
+
+- Web Browsing es OPCIONAL. Sirve para que el GPT pueda
+  buscar información actualizada si el usuario pregunta
+  (ej: "¿cuál es el récord mundial de press banca?")
+- Las funciones principales (recomendaciones, análisis)
+  funcionan SIN internet, solo con los archivos subidos
+
+9.2 ¿Cuántos datos puede recordar el GPT?
+
+- ChatGPT tiene un límite de contexto (~128k tokens en GPT-4)
+- Esto equivale aproximadamente a:
+  - 300-500 ejercicios registrados (dependiendo de la longitud)
+  - 6-12 meses de entrenamiento (1-2 sesiones por semana)
+- Cuando la conversación se acerca al límite, el GPT puede
+  volverse menos preciso. En ese caso el socio debe:
+  a) Iniciar una NUEVA conversación
+  b) Dar su nombre y objetivo
+  c) El GPT preguntará "¿quieres continuar tu historial?"
+
+9.3 ¿Los socios necesitan ChatGPT Plus?
+
+NO. Pueden usar ChatGPT gratis (GPT-3.5 o GPT-4o mini).
+Pero la calidad de las respuestas es MEJOR con GPT-4
+(ChatGPT Plus, $20/mes).
+
+9.4 ¿El GPT puede generar imágenes?
+
+NO. DALL-E está desactivado intencionalmente.
+
+9.5 ¿El GPT puede procesar archivos que no sean CSV?
+
+NO. El GPT solo acepta el formato CSV especificado.
+Si el usuario sube otro formato, el GPT debe indicar
+el formato esperado y pedir que lo corrija.
+
+9.6 ¿Qué pasa si dos socios usan el mismo enlace?
+
+Cada socio abre su PROPIA conversación. ChatGPT crea una
+conversación independiente por cada persona que toca el enlace.
+No hay riesgo de que los datos se mezclen.
+
+9.7 ¿El GPT puede integrarse con apps como Google Sheets?
+
+NO directamente. Pero el socio puede:
+1. Descargar su historial de Google Sheets como CSV
+2. Subir el CSV al GPT
+3. El GPT lo procesa
+
+9.8 ¿Cómo se manejan los datos sensibles?
+
+- El GPT usa la misma seguridad que ChatGPT (encriptación en
+  tránsito y en reposo)
+- Los datos NO se comparten entre conversaciones
+- Cada conversación es aislada
+- Recomendación: no pedir datos médicos sensibles
+- El system prompt explícitamente prohíbe dar consejos médicos
+
+============================================================
+10. GLOSARIO DE TÉRMINOS
+============================================================
+
+┌───────────────────────┬──────────────────────────────────────────────┐
+│ Término               │ Definición                                   │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ GPT                   │ Generative Pre-trained Transformer           │
+│                       │ Modelo de lenguaje de OpenAI                 │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Custom GPT            │ GPT personalizado con instrucciones y        │
+│                       │ conocimientos específicos                    │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ System Prompt         │ Instrucciones iniciales que definen el       │
+│                       │ comportamiento del GPT                      │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Knowledge             │ Archivos que el GPT puede consultar          │
+│                       │ para obtener información estructurada        │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ PWA                   │ Progressive Web App — app que funciona       │
+│                       │ desde el navegador (NO APLICA AQUÍ)         │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ RPE                   │ Rate of Perceived Exertion — Escala de       │
+│                       │ 1 a 10 que mide qué tan difícil sintió      │
+│                       │ el usuario un ejercicio                     │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ 1RM                   │ One Repetition Maximum — peso máximo que    │
+│                       │ puedes levantar en UNA repetición           │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Fórmula de Epley      │ 1RM = peso × (1 + reps/30)                  │
+│                       │ Estima el 1RM basado en un peso y reps      │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Estancamiento         │ Período donde el usuario no progresa        │
+│                       │ (3+ sesiones mismo peso y reps)            │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Volumen Semanal       │ Cantidad total de series realizadas         │
+│                       │ por grupo muscular en una semana            │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Series                │ Conjunto de repeticiones consecutivas       │
+│                       │ (ej: 3 series de 10 reps)                  │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Repeticiones (reps)   │ Cada vez que realizas el movimiento         │
+│                       │ completo del ejercicio                      │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Grupo Muscular        │ Conjunto de músculos que trabajan juntos    │
+│                       │ (ej: pecho, espalda, hombro, pierna)        │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Hipertrofia           │ Aumento del tamaño del músculo              │
+│                       │ (crecimiento muscular)                     │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Periodización         │ Planificación del entrenamiento en ciclos   │
+│                       │ para evitar estancamiento y evitar lesiones │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ CSV                   │ Comma Separated Values — formato de archivo │
+│                       │ donde los datos se separan con comas        │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Placeholder           │ Marcador temporal [COMO_ESTO] que debe ser  │
+│                       │ reemplazado por un valor real               │
+├───────────────────────┼──────────────────────────────────────────────┤
+│ Token                 │ Unidad de texto que procesa ChatGPT         │
+│                       │ (~0.75 palabras en español)                 │
+└───────────────────────┴──────────────────────────────────────────────┘
+
+============================================================
+FIN DE LA DOCUMENTACIÓN TÉCNICA
+============================================================
+
+Para cualquier duda técnica sobre el funcionamiento interno
+del GPT, consultar este documento o contactar al desarrollador.

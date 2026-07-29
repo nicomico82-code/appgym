@@ -1,0 +1,4 @@
+Quiero empezar, ¿qué datos necesitas de mí?
+Analiza mi progreso de las últimas 4 semanas
+¿Debo aumentar el peso en [ejercicio]?
+[Máquina/ejercicio] está ocupado, ¿qué hago?

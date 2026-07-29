@@ -3,6 +3,9 @@
 PWA móvil-first para registrar entrenamientos por serie, entender el progreso y
 recibir recomendaciones explicables.
 
+Este repositorio corresponde a `nicomico82-code/appgym`. La especificación del
+GPT que dio origen al producto se conserva completa en `docs/legacy-gpt/`.
+
 ## Producto actual
 
 - Dashboard con próxima sesión y métricas.

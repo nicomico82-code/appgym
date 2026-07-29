@@ -1,0 +1,608 @@
+============================================================
+    SIMULACIÓN — 4 FORMAS DE INICIAR CONVERSACIÓN
+    "Entrenador Virtual IA"
+============================================================
+
+Cada sección simula el inicio de una conversación usando
+uno de los 4 conversation starters.
+
+Personaje usado en todas: Pedro (25, 72kg, principiante,
+objetivo: ganancia muscular) — mismo perfil para que se
+vea cómo responde el GPT según el starter.
+
+============================================================
+  STARTER #1
+  "Quiero empezar, ¿qué datos necesitas de mí?"
+============================================================
+
+Este es el flujo COMPLETO de registro inicial. El GPT
+asume que el usuario es nuevo y guía paso a paso.
+
+---
+
+**Usuario:** Quiero empezar, ¿qué datos necesitas de mí?
+
+**GPT:** ¡Hola! Me alegra que quieras comenzar. 🏋️
+
+Soy tu Entrenador Virtual IA de **[NOMBRE_GIMNASIO]**.
+Voy a ayudarte a mejorar tu rendimiento con recomendaciones
+personalizadas.
+
+Para empezar, necesito conocerte. ¿Cuál es tu nombre?
+
+---
+
+**Usuario:** Pedro
+
+**GPT:** ¡Bienvenido Pedro! ¿Cuántos años tienes?
+
+---
+
+**Usuario:** 25
+
+**GPT:** Perfecto. ¿Cuál es tu sexo?
+
+---
+
+**Usuario:** Masculino
+
+**GPT:** Gracias. ¿Cuál es tu peso corporal actual en kg?
+
+---
+
+**Usuario:** 72
+
+**GPT:** ¿Y tu estatura en cm?
+
+---
+
+**Usuario:** 175
+
+**GPT:** ¿Cuál es tu nivel de experiencia?
+
+    a) Principiante — menos de 6 meses entrenando
+    b) Intermedio — entre 6 meses y 2 años
+    c) Avanzado — más de 2 años
+
+---
+
+**Usuario:** Principiante
+
+**GPT:** ¿Cuál es tu objetivo principal?
+
+    a) Ganancia muscular (hipertrofia)
+    b) Aumento de fuerza máxima
+    c) Pérdida de grasa
+    d) Acondicionamiento físico general
+
+---
+
+**Usuario:** Ganancia muscular
+
+**GPT:** Aquí tienes tu resumen:
+
+┌─────────────────────┬──────────────────────┐
+│ Dato                │ Valor                │
+├─────────────────────┼──────────────────────┤
+│ Nombre              │ Pedro                │
+│ Edad                │ 25 años              │
+│ Sexo                │ Masculino            │
+│ Peso                │ 72 kg                │
+│ Estatura            │ 175 cm               │
+│ IMC                 │ 23.5 (Normal)        │
+│ Nivel               │ Principiante         │
+│ Objetivo            │ Ganancia muscular    │
+└─────────────────────┴──────────────────────┘
+
+¿Todo está correcto? (Sí / No)
+
+---
+
+**Usuario:** Sí
+
+**GPT:** ¡Perfecto! Datos registrados.
+
+Ahora necesito tu historial de entrenamiento. ¿Cómo
+prefieres ingresarlo?
+
+    a) Subir un archivo CSV
+    b) Ingresar manualmente sesión por sesión
+    c) Empezar desde cero (hoy es tu primer registro)
+
+---
+
+**Usuario:** b
+
+[El flujo continúa con el registro manual de ejercicios]
+
+**GPT:** Vamos a registrar tu primera sesión. ¿Qué fecha
+fue? (o escribe "hoy")
+
+---
+
+**Usuario:** Hoy
+
+**GPT:** Fecha: 05/06/2026.
+
+¿Qué ejercicio hiciste?
+
+---
+
+**Usuario:** Press banca
+
+**GPT:** ¿Peso en kg?
+
+---
+
+**Usuario:** 30
+
+**GPT:** ¿Series?
+
+---
+
+**Usuario:** 3
+
+**GPT:** ¿Repeticiones?
+
+---
+
+**Usuario:** 10
+
+**GPT:** ¿RPE del 1 al 10? (opcional — si no sabes, escribe
+"no")
+
+---
+
+**Usuario:** 6
+
+**GPT:** ✅ REGISTRADO: Press banca — 30 kg × 3×10 (RPE 6)
+
+¿Otro ejercicio? (Sí / No)
+
+---
+
+**Usuario:** Sí, Remo con barra 25 kg 3×10 RPE 5
+
+**GPT:** ✅ REGISTRADO: Remo con barra — 25 kg × 3×10 (RPE 5)
+
+¿Otro?
+
+---
+
+**Usuario:** No
+
+**GPT:** 📋 SESIÓN COMPLETA — 05/06/2026
+
+┌─────────────────┬───────┬────────┬──────┬─────┐
+│ Ejercicio       │ Peso  │ Series │ Reps │ RPE │
+├─────────────────┼───────┼────────┼──────┼─────┤
+│ Press banca     │ 30 kg │ 3      │ 10   │ 6   │
+│ Remo con barra  │ 25 kg │ 3      │ 10   │ 5   │
+└─────────────────┴───────┴────────┴──────┴─────┘
+
+2 ejercicios registrados. ¡Buen comienzo! 💪
+
+¿Quieres agregar otra sesión? (Sí / No)
+
+---
+
+**Usuario:** No
+
+**GPT:** Tus datos están guardados en esta conversación.
+Cuando quieras, puedes:
+
+- Registrar otra sesión: "nueva sesión"
+- Preguntar: "¿Debo aumentar el peso en press banca?"
+- Pedir análisis: "Analiza mi progreso"
+- Preguntar por alternativas: "Press banca está ocupado,
+  ¿qué hago?"
+
+¡Nos vemos pronto, Pedro!
+
+============================================================
+  STARTER #2
+  "Analiza mi progreso de las últimas 4 semanas"
+============================================================
+
+NOTA: Este starter SOLO funciona si el usuario YA tiene
+datos registrados en la conversación. Si no tiene datos,
+el GPT responde pidiendo que registre primero.
+
+A continuación se muestran AMBOS casos.
+
+---
+
+CASO A: EL USUARIO NO TIENE DATOS
+───────────────────────────────────
+
+**Usuario:** Analiza mi progreso de las últimas 4 semanas
+
+**GPT:** Para poder analizar tu progreso, necesito tener
+datos de tus entrenamientos primero.
+
+Actualmente no tengo ningún registro tuyo.
+
+¿Te gustaría que empecemos?
+
+    a) Registrar tu perfil y primera sesión ahora
+    b) Subir un archivo CSV con tu historial
+
+¿Qué prefieres?
+
+---
+
+**Usuario:** a
+
+**GPT:** ¡Perfecto! Empecemos. ¿Cuál es tu nombre?
+
+[El flujo continúa igual que el Starter #1]
+
+---
+
+CASO B: EL USUARIO SÍ TIENE DATOS (4 SEMANAS)
+───────────────────────────────────────────────
+
+(Asumiendo que Pedro ya registró 4 semanas de datos)
+
+**Usuario:** Analiza mi progreso de las últimas 4 semanas
+
+**GPT:** Aquí tienes tu REPORTE COMPLETO, Pedro 🔥
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    📊 REPORTE DE PROGRESO — PEDRO
+    Período: 05/06/2026 - 26/06/2026 (5 sesiones)
+    Nivel: Principiante | Objetivo: Ganancia muscular
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+─── 📈 EVOLUCIÓN POR EJERCICIO ───
+
+PRESS BANCA:
+  05/06 — 30 kg × 3×10 (RPE 6)
+  12/06 — 30 kg × 3×10 (RPE 5)
+  19/06 — 30 kg × 3×10 (RPE 5)
+  26/06 — 32.5 kg × 3×8 (RPE 7)
+  🟢 Progreso: Subiste de 30 a 32.5 kg (+2.5 kg)
+  ✅ Buen trabajo rompiendo el estancamiento
+
+REMO CON BARRA:
+  05/06 — 25 kg × 3×10 (RPE 5)
+  12/06 — 27.5 kg × 3×10 (RPE 6)
+  19/06 — 27.5 kg × 3×10 (RPE 6)
+  26/06 — 30 kg × 3×8 (RPE 7)
+  🟢 Progreso: Subiste de 25 a 30 kg (+5 kg en 4 semanas)
+
+─── 📊 VOLUMEN SEMANAL ───
+
+┌─────────────────┬──────────┬──────────────┐
+│ Grupo Muscular  │ Series/s │ Recomendado  │
+├─────────────────┼──────────┼──────────────┤
+│ Pecho           │ 6        │ 10-12        │ 🔴 Bajo
+│ Espalda         │ 6        │ 10-12        │ 🔴 Bajo
+└─────────────────┴──────────┴──────────────┘
+
+⚠️ Entrenas 1 vez por semana. Para principiante con
+objetivo de ganancia muscular, recomiendo mínimo 2 veces
+por semana.
+
+─── 🏆 LOGROS DESTACADOS ───
+✅ Press banca: subiste 2.5 kg
+✅ Remo con barra: subiste 5 kg
+✅ Consistencia: 5 sesiones en 4 semanas
+
+─── 🔄 RECOMENDACIONES ───
+1. Aumenta frecuencia a 2 días por semana
+2. Agrega 1-2 ejercicios más por sesión
+3. Press militar: aún no lo has registrado, ¿lo haces?
+
+─── 💬 SIGUIENTE PASO ───
+¿Quieres que te ayude a armar una rutina de 2 días?
+
+---
+
+CASO C: EL USUARIO TIENE POCOS DATOS (menos de 4 semanas)
+──────────────────────────────────────────────────────────
+
+(Asumiendo que Pedro solo registró 1 semana)
+
+**Usuario:** Analiza mi progreso de las últimas 4 semanas
+
+**GPT:** Actualmente solo tienes registrada 1 semana de
+entrenamiento (1 sesión). Para un análisis significativo
+recomiendo tener al menos 3-4 sesiones del mismo ejercicio.
+
+Con los datos que tengo:
+
+📋 SESIONES REGISTRADAS: 1
+📅 Período: 05/06/2026
+
+🔍 Lo que puedo decirte hasta ahora:
+- Press banca: 30 kg × 3×10 — punto de partida
+- Remo con barra: 25 kg × 3×10 — punto de partida
+
+💡 ¿Por qué no seguimos registrando? Puedes decirme:
+- "Nueva sesión" para agregar otro día
+- Ya sabes cuándo entrenas, dime los ejercicios
+
+Entre más datos tengamos, mejores serán mis análisis. 💪
+
+============================================================
+  STARTER #3
+  "¿Debo aumentar el peso en [ejercicio]?"
+============================================================
+
+CASO A: EL USUARIO NO TIENE DATOS DEL EJERCICIO
+─────────────────────────────────────────────────
+
+**Usuario:** ¿Debo aumentar el peso en press banca?
+
+**GPT:** Para poder decirte si debes aumentar el peso en
+press banca, necesito tener al menos 2-3 registros de ese
+ejercicio.
+
+Actualmente no tengo ningún registro de press banca tuyo.
+
+Opciones:
+    a) Registrar tu perfil y empezar desde cero
+    b) Si ya tienes datos, puedes escribirme tu historial
+      de press banca ahora mismo
+
+¿Qué prefieres?
+
+---
+
+CASO B: EL USUARIO SÍ TIENE DATOS — RECOMENDACIÓN SUBIR
+─────────────────────────────────────────────────────────
+
+(Pedro tiene 3 sesiones de press banca con 30 kg)
+
+**Usuario:** ¿Debo aumentar el peso en press banca?
+
+**GPT:** Vamos a revisar tu historial de Press banca:
+
+┌──────────┬────────┬────────┬──────┬─────┐
+│ Fecha    │ Peso   │ Series │ Reps │ RPE │
+├──────────┼────────┼────────┼──────┼─────┤
+│ 05/06    │ 30 kg  │ 3      │ 10   │ 6   │
+│ 12/06    │ 30 kg  │ 3      │ 10   │ 5   │
+│ 19/06    │ 30 kg  │ 3      │ 10   │ 5   │
+└──────────┴────────┴────────┴──────┴─────┘
+
+🔍 ANÁLISIS:
+- 3 sesiones consecutivas con MISMO peso y reps
+- RPE ha BAJADO de 6 a 5 (cada vez más fácil)
+
+📊 RESULTADO:
+✅ ¡SÍ! Es momento de subir a **32.5 kg**.
+
+Recomendación:
+- 32.5 kg × 3 series × 8-10 repeticiones
+- RPE objetivo: 7-8
+- Si no tienes discos de 1.25 kg, prueba con 35 kg × 3×8
+
+¿Te parece bien? ¿Quieres que revise también tus otros
+ejercicios?
+
+---
+
+CASO C: EL USUARIO SÍ TIENE DATOS — RECOMENDACIÓN NO SUBIR
+────────────────────────────────────────────────────────────
+
+(Pedro subió a 32.5 kg la semana pasada y solo tiene 1 sesión)
+
+**Usuario:** ¿Debo aumentar el peso en press banca?
+
+**GPT:** Revisando tu historial de Press banca:
+
+┌──────────┬────────┬────────┬──────┬─────┐
+│ Fecha    │ Peso   │ Series │ Reps │ RPE │
+├──────────┼────────┼────────┼──────┼─────┤
+│ 19/06    │ 30 kg  │ 3      │ 10   │ 5   │
+│ 26/06    │ 32.5 kg│ 3      │ 8    │ 7   │
+└──────────┴────────┴────────┴──────┴─────┘
+
+🔍 ANÁLISIS:
+- Subiste de 30 a 32.5 kg la semana pasada ✅
+- Solo tienes 1 sesión con el nuevo peso
+- RPE 7 = esfuerzo adecuado (ni fácil, ni al fallo)
+
+📊 RESULTADO:
+❌ No todavía. Mantén **32.5 kg** por 1-2 sesiones más.
+
+Objetivos:
+1. Primero: llegar a 3×10 reps con 32.5 kg
+2. Cuando RPE baje a 5-6: ahí subimos a 35 kg
+
+💡 ¿Quieres que te recomiende cómo distribuir las reps
+para llegar a 3×10?
+
+---
+
+CASO D: EL USUARIO PREGUNTA POR UN EJERCICIO QUE NO EXISTE
+─────────────────────────────────────────────────────────────
+
+**Usuario:** ¿Debo aumentar el peso en elevación de gemelo
+en máquina?
+
+**GPT:** No tengo registros de "elevación de gemelo en
+máquina" en tu historial.
+
+¿Quizás lo tienes registrado con otro nombre? Por ejemplo:
+- Elevación de talones (gemelos)
+- Gemelos en prensa
+- Gemelos de pie
+
+¿Cuál de estos es? O dime exactamente cómo lo registraste
+y lo busco.
+
+============================================================
+  STARTER #4
+  "[Máquina/ejercicio] está ocupado, ¿qué hago?"
+============================================================
+
+CASO A: EL EJERCICIO ESTÁ EN LA TABLA DE ALTERNATIVAS
+───────────────────────────────────────────────────────
+
+**Usuario:** Press banca está ocupado, ¿qué hago?
+
+**GPT:** Sin problema. Aquí tienes 3 alternativas para
+trabajar el mismo grupo muscular (Pecho) mientras se
+libera el banco:
+
+1️⃣ Press banca con mancuernas
+   - Peso sugerido para ti: 12-14 kg cada mancuerna
+     (equivalente a ~30 kg en barra)
+   - 3 series de 10 repeticiones
+   - RPE objetivo: 6-7
+
+2️⃣ Press inclinado con barra
+   - Banco inclinado a 30-45°
+   - Peso sugerido: 25 kg × 3×10
+   - Trabaja más la parte superior del pecho
+
+3️⃣ Fondos en paralelas
+   - Con tu peso corporal (con ayuda de banda elástica
+     si es necesario)
+   - 3 series al fallo o 8-12 reps controladas
+
+💡 ¿Cuál te llama más la atención? O dime cuánto tiempo
+crees que tardará el banco y te sugiero un orden.
+
+---
+
+CASO B: EL USUARIO DA SU NIVEL Y EL GPT AJUSTA
+────────────────────────────────────────────────
+
+**Usuario:** Remo con barra ocupado. Soy principiante,
+¿qué hago?
+
+**GPT:** Como eres principiante, te recomiendo alternativas
+que no requieran mucha técnica compleja:
+
+1️⃣ Remo en máquina (asistido)
+   - Peso sugerido: 20-25 kg
+   - 3 series de 10-12 repeticiones
+   - La máquina guía el movimiento, ideal para aprender
+
+2️⃣ Jalón al pecho en polea
+   - Peso sugerido: 20-25 kg
+   - 3 series de 10-12 repeticiones
+   - Mismo patrón de tirón vertical
+
+3️⃣ Remo con mancuerna (apoyado en banco)
+   - Mancuerna de 10-12 kg
+   - 3 series de 10 reps por brazo
+   - Apoya rodilla y mano en banco para estabilidad
+
+💡 Para principiante, recomiendo la opción 1 (máquina).
+¿Qué prefieres?
+
+---
+
+CASO C: EL EJERCICIO NO ESTÁ EN LA TABLA
+──────────────────────────────────────────
+
+**Usuario:** La máquina de curl femoral está ocupada,
+¿qué hago?
+
+**GPT:** Buscando en mi base de datos... Curl femoral
+pertenece al grupo muscular **Pierna (isquiotibiales)**.
+
+Como no tengo esa máquina específica en mi tabla, aquí
+tienes alternativas para isquiotibiales:
+
+1️⃣ Peso muerto rumano
+   - Barra o mancuernas
+   - Peso sugerido: 20-30 kg para empezar
+   - 3 series de 10-12 reps
+
+2️⃣ Curl femoral con mancuerna (entre pies)
+   - Acostado boca abajo en banco
+   - Mancuerna de 5-10 kg entre los pies
+   - 3 series de 12-15 reps
+
+3️⃣ Hiperextensiones (banco de lumbares)
+   - Con tu peso corporal o disco de 5-10 kg
+   - 3 series de 12-15 reps
+
+💡 Todas trabajan la parte posterior del muslo.
+¿Cuál te queda más cerca?
+
+---
+
+CASO D: MÚLTIPLES MÁQUINAS OCUPADAS (SITUACIÓN REAL)
+──────────────────────────────────────────────────────
+
+**Usuario:** Llegué y todo está lleno. Solo tengo libre
+la polea y mancuernas hasta 20 kg. ¿Qué rutina me armas?
+
+**GPT:** ¡Sin problema! Con polea y mancuerdas hasta 20 kg
+podemos armarte una rutina completa. Aquí va:
+
+─── RUTINA DE EMERGENCIA — Polea + Mancuerdas ───
+
+1️⃣ Press banca con mancuernas
+   💪 Pecho
+   Mancuernas de 14-16 kg · 3×10
+
+2️⃣ Remo en polea baja
+   🔙 Espalda
+   20-25 kg en polea · 3×10
+
+3️⃣ Press militar con mancuernas
+   🏋️ Hombro
+   Mancuernas de 12-14 kg · 3×10
+
+4️⃣ Curl en polea (bíceps)
+   💪 Brazo
+   10-15 kg · 3×12
+
+5️⃣ Extensiones en polea (tríceps)
+   💪 Brazo
+   10-15 kg · 3×12
+
+6️⃣ Sentadilla goblet con mancuerna
+   🦵 Pierna
+   Mancuerna de 20 kg · 3×10
+
+Tiempo estimado: 40-50 minutos
+
+💡 ¿Te sirve esta rutina? ¿Quieres cambiar algún ejercicio?
+
+============================================================
+  BONUS — COMBINACIONES AVANZADAS
+============================================================
+
+Los starters también se pueden combinar en un mismo mensaje:
+
+**Usuario:** Hola, ¿debo aumentar peso en press banca?
+Y también la máquina de remo estaba ocupada ayer.
+
+**GPT:** Voy a responder por partes:
+
+── PARTE 1: PRESS BANCA ──
+No tienes datos previos de press banca registrados.
+¿Quieres que empecemos a registrar?
+
+── PARTE 2: REMO OCUPADO AYER ──
+Para la próxima vez que el remo con barra esté ocupado,
+tienes estas alternativas:
+
+1. Remo en máquina — 3×10
+2. Remo con mancuerna — 3×10 por brazo
+3. Jalón al pecho — 3×10
+
+¿Quieres registrar también la sesión de ayer con la
+alternativa que usaste?
+
+============================================================
+FIN DE LA SIMULACIÓN
+============================================================
+
+Esta simulación cubre:
+
+Starter #1 → Flujo completo de registro (perfil + 1ra sesión)
+Starter #2 → 3 casos: sin datos, con 4 semanas, con pocos datos
+Starter #3 → 4 casos: sin datos, subir, no subir, ej no existe
+Starter #4 → 4 casos: en tabla, con nivel, no en tabla, multi ocupado
+
+Bonus → Combinación de starters en un solo mensaje

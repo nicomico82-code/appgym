@@ -1,0 +1,696 @@
+============================================================
+              GUÍA DE PERSONALIZACIÓN DEL GPT
+              PARA DUEÑOS DE GIMNASIO
+           "DE LO GENÉRICO A TU GIMNASIO REAL"
+============================================================
+
+Versión: 1.0
+Tiempo estimado: 30-45 minutos
+Dificultad: Muy fácil (solo saber copiar/pegar y editar texto)
+
+------------------------------------------------------------
+¿PARA QUIÉN ES ESTA GUÍA?
+------------------------------------------------------------
+
+Para el dueño, gerente o encargado del gimnasio que NO sabe
+de programación.
+
+Solo necesitas:
+- Saber usar ChatGPT (entrar, escribir, hacer clic)
+- Saber editar un archivo de texto (como Bloc de Notas o Excel)
+- Tener los datos de tu gimnasio a mano (nombre, ejercicios,
+  máquinas que tienes)
+
+------------------------------------------------------------
+¿QUÉ VAS A LOGRAR?
+------------------------------------------------------------
+
+Al final de esta guía tendrás un GPT funcionando en ChatGPT
+que:
+- Recomienda cargas a tus socios
+- Detecta estancamientos
+- Sugiere ejercicios alternativos (SOLO los que SÍ tienes
+  en tu gimnasio)
+- Habla como si fuera un entrenador de TU gimnasio
+
+------------------------------------------------------------
+ESTRUCTURA DE LOS ARCHIVOS
+------------------------------------------------------------
+
+Todos los archivos están en la carpeta:
+
+  entrenador-virtual-ia/
+
+│── INSTRUCCIONES-GPT.md              ← (NO tocar a menos que
+│                                         sepas lo que haces)
+│── conversation-starters.txt         ← (script de apoyo)
+│── base-de-conocimiento/                        ← (carpeta con archivos
+│   │                                    para subir al GPT)
+│   ├── 01-alternativas-de-ejercicios.csv
+│   ├── 02-rangos-de-reps-por-objetivo.csv
+│   ├── 03-volumen-semanal-recomendado.csv
+│   └── 04-escala-de-esfuerzo-percibido.csv
+│── GUIA-PERSONALIZACION.md           ← (este archivo)
+
+============================================================
+PASO 1: CREAR EL GPT EN CHATGPT
+============================================================
+
+1. Abre tu navegador (Chrome, Edge, Firefox, el que uses)
+2. Ve a: https://chatgpt.com
+3. Inicia sesión con tu cuenta de OpenAI
+   - Si NO tienes cuenta: ve a https://openai.com y crea una
+     (es gratis, solo pide email y contraseña)
+4. Una vez dentro, haz clic en tu nombre o foto de perfil
+   (está en la esquina superior derecha)
+5. En el menú que se abre, selecciona "Explore GPTs"
+   (también puede decir "Mis GPTs" o "Ver GPTs")
+6. Verás un botón verde/azul que dice:
+   "Create a GPT" o "Crear un GPT"
+   → HAZ CLIC AHÍ
+
+7. Se abrirá el "GPT Builder". Te aparecerá una pantalla
+   dividida en dos partes:
+   - Izquierda: un chat donde puedes describir tu GPT
+   - Derecha: una vista previa de cómo se ve
+
+   --- IMPORTANTE ---
+   IGNORA el chat de la izquierda. NO escribas nada ahí.
+
+8. Arriba del chat hay dos pestañas:
+   - "Create" (Crear) ← por defecto
+   - "Configure" (Configurar)
+   → HAZ CLIC EN "Configure"
+
+Ahora estás en la pantalla de configuración manual.
+
+============================================================
+PASO 2: CONFIGURACIÓN BÁSICA
+============================================================
+
+En la pestaña "Configure" verás varios campos. Complétalos
+así:
+
+---
+
+CAMPO: "Name" (Nombre)
+──────────────────────
+Escribe:  Entrenador Virtual [NOMBRE DE TU GIMNASIO]
+
+Ejemplos:
+  ✅ Entrenador Virtual FitPower Gym
+  ✅ Entrenador Virtual Iron House
+  ✅ Entrenador Virtual Sports World
+
+---
+
+CAMPO: "Description" (Descripción)
+──────────────────────────────────
+Copia y pega EXACTAMENTE esto (solo cambia el nombre):
+
+"Asistente inteligente que analiza tu historial de
+entrenamiento, recomienda cargas, detecta estancamientos
+y sugiere ejercicios alternativos disponibles en
+[NOMBRE DEL GIMNASIO]."
+
+Pero cambia [NOMBRE DEL GIMNASIO] por el nombre real.
+
+Ejemplo final:
+"Asistente inteligente que analiza tu historial de
+entrenamiento, recomienda cargas, detecta estancamientos
+y sugiere ejercicios alternativos disponibles en
+FitPower Gym."
+
+---
+
+CAMPO: "Instructions" (Instrucciones)
+──────────────────────────────────────
+Este es el campo más importante. Aquí va TODO el
+comportamiento del GPT.
+
+1. Abre el archivo llamado:  INSTRUCCIONES-GPT.md
+   (está en la carpeta entrenador-virtual-ia/)
+
+2. Selecciona TODO el contenido:
+   - Windows: Ctrl+E (seleccionar todo)
+   - Mac: Cmd+A
+   - O con el mouse: haz clic al inicio, arrastra hasta
+     el final
+
+3. Cópialo:
+   - Ctrl+C (Windows) o Cmd+C (Mac)
+
+4. Pega en el campo "Instructions" de ChatGPT:
+   - Ctrl+V (Windows) o Cmd+V (Mac)
+
+5. AHORA: busca en el texto pegado todas las palabras
+   que tengan [CORCHETES] y reemplázalas:
+
+   Busca:  [NOMBRE_GIMNASIO]
+   Reemplaza con: el nombre real de tu gimnasio
+   Ejemplo: FitPower Gym
+
+   Busca:  [LISTA_EQUIPOS]
+   Reemplaza con: lista de máquinas que tienes
+   Ejemplo: "Mancuernas hasta 50kg, barras olímpicas,
+   máquina Smith, poleas, banco plano, banco inclinado,
+   jaula de sentadillas, prensa de piernas"
+
+   Busca:  [HORARIOS]
+   Reemplaza con: horario de tu gimnasio
+   Ejemplo: "Lunes a viernes 6am - 10pm,
+   Sábados 8am - 6pm, Domingos 9am - 2pm"
+   *Si no quieres poner horarios, borra el texto [HORARIOS]
+   y escribe: "Consulta en recepción"
+
+   Busca:  [CONTACTO]
+   Reemplaza con: teléfono, email, Instagram, etc.
+   *Si no quieres poner contacto, borra y escribe:
+   "Consulta en recepción"
+
+   --- TIPS ---
+   - En Windows: presiona Ctrl+B para abrir "Buscar"
+   - En Mac: Cmd+F
+   - Escribe [ y te mostrará todas las ocurrencias
+   - Ve una por una y reemplázalas
+
+============================================================
+PASO 3: CONFIGURAR CAPABILITIES
+============================================================
+
+Busca la sección "Capabilities" (Capacidades).
+
+Debe quedar así:
+
+   ✅ Web Browsing (NAVEGACIÓN WEB)
+      → ACTIVADO (el interruptor debe verse AZUL/VERDE)
+
+   ❌ DALL-E Image Generation
+      → DESACTIVADO (gris)
+
+   ❌ Code Interpreter
+      → DESACTIVADO (gris)
+
+Si alguno no está como debe:
+- Haz clic en el interruptor para cambiarlo
+- Web Browsing debe estar el ÚNICO activado
+
+============================================================
+PASO 4: SUBIR LOS ARCHIVOS DE CONOCIMIENTO
+============================================================
+
+Busca la sección "Knowledge" (Conocimiento).
+
+Verás un área que dice "Upload files" (Subir archivos)
+o un botón con ícono de "+" o "Upload".
+
+HAZ ESTO:
+
+1. Abre la carpeta "base-de-conocimiento" (está dentro de
+   entrenador-virtual-ia/)
+
+2. Vas a subir estos 4 archivos:
+
+   ┌──────────────────────────────────────────┐
+   │  01-alternativas-de-ejercicios.csv          │
+   │  02-rangos-de-reps-por-objetivo.csv              │
+   │  03-volumen-semanal-recomendado.csv                  │
+   │  04-escala-de-esfuerzo-percibido.csv                      │
+   └──────────────────────────────────────────┘
+
+3. Para subir CADA archivo:
+   a. Haz clic en "Upload files" o en el ícono "+"
+   b. Se abrirá el explorador de archivos de tu computadora
+   c. Navega hasta la carpeta "base-de-conocimiento"
+   d. Selecciona el archivo (haz clic en él)
+   e. Haz clic en "Abrir" o "Seleccionar"
+   f. Espera a que aparezca en la lista
+
+4. Repite para los 4 archivos. Al final deberías ver:
+
+   ✅ 01-alternativas-de-ejercicios.csv
+   ✅ 02-rangos-de-reps-por-objetivo.csv
+   ✅ 03-volumen-semanal-recomendado.csv
+   ✅ 04-escala-de-esfuerzo-percibido.csv
+
+   (Los archivos aparecen uno debajo del otro en la lista)
+
+--- IMPORTANTE ---
+Estos archivos son GENÉRICOS. Si en el PASO 6 los
+personalizaste, sube los archivos MODIFICADOS, no los
+originales.
+
+============================================================
+PASO 5: CONFIGURAR CONVERSATION STARTERS
+============================================================
+
+Busca la sección "Conversation starters"
+(Iniciadores de conversación).
+
+Verás 4 campos en blanco. Copia y pega UN texto en cada
+campo (exactamente como está aquí):
+
+─────────────────────────────────────────
+Campo 1:
+Quiero empezar, ¿qué datos necesitas de mí?
+─────────────────────────────────────────
+Campo 2:
+Analiza mi progreso de las últimas 4 semanas
+─────────────────────────────────────────
+Campo 3:
+¿Debo aumentar el peso en [ejercicio]?
+─────────────────────────────────────────
+Campo 4:
+[Máquina/ejercicio] está ocupado, ¿qué hago?
+─────────────────────────────────────────
+
+NOTA: Los textos con [corchetes] se reemplazan solos
+cuando el socio los usa. El GPT entiende que el usuario
+pondrá un ejercicio/máquina ahí.
+
+============================================================
+PASO 6: PERSONALIZAR LOS ARCHIVOS (OPCIONAL PERO RECOMENDADO)
+============================================================
+
+Este paso es para que el GPT solo recomiende ejercicios
+que SÍ existen en tu gimnasio.
+
+--------------------------------------------------------
+6.1 ABRIR EL ARCHIVO 01-alternativas-de-ejercicios.csv
+--------------------------------------------------------
+
+Este archivo tiene una lista de ejercicios y alternativas.
+Si el GPT recomienda un ejercicio que NO tienes en tu
+gimnasio, los socios se van a confundir.
+
+CÓMO EDITARLO:
+
+OPCIÓN A: Con Excel (recomendado)
+1. Abre Excel
+2. Archivo → Abrir → Busca 01-alternativas-de-ejercicios.csv
+   (Si no ves el archivo: cambia "Todos los archivos" en
+   la ventana de abrir)
+3. Se verá así:
+
+   | Ejercicio Original | Alternativa 1 | Alternativa 2 | Alternativa 3 | Grupo Muscular |
+   |---|---|---|---|---|
+   | Press banca con barra | Press banca con mancuernas | Press inclinado... | Fondos... | Pecho |
+   | ...  | ...  | ...  | ...  | ...  |
+
+4. Cada fila es un ejercicio. Cada columna es una alternativa.
+
+   LO QUE TIENES QUE HACER:
+   - Si un ejercicio NO existe en tu gimnasio → CAMBIA el
+     nombre por uno que SÍ tengas
+   - Si un ejercicio SÍ existe → DÉJALO igual
+   - Si quieres AGREGAR un ejercicio que tienes y no está
+     en la lista → agrega una nueva fila al final
+
+   EJEMPLO DE CAMBIO:
+   Tu gimnasio NO tiene "Fondos en paralelas":
+   → Cambia "Fondos en paralelas" por "Press banca en máquina"
+     (si tienes máquina de press banca)
+
+   EJEMPLO DE AGREGAR:
+   Tu gimnasio tiene una "Máquina de remo Hammer" que no
+   está en la lista:
+   → Agrega al final del archivo:
+   Remo Hammer,Remo con barra,Remo con mancuerna,Jalón al pecho,Espalda
+
+5. Guarda el archivo:
+   - Excel: Archivo → Guardar como → CSV (delimitado por comas)
+   - IMPORTANTE: NO lo guardes como .xlsx, debe ser .csv
+
+OPCIÓN B: Con Bloc de Notas
+1. Abre Bloc de Notas
+2. Archivo → Abrir → Busca 01-alternativas-de-ejercicios.csv
+3. Verás algo como:
+
+   Ejercicio Original,Alternativa 1,Alternativa 2,Alternativa 3,Grupo Muscular
+   Press banca con barra,Press banca con mancuernas,Press inclinado con barra,Fondos en paralelas,Pecho
+   ...
+
+4. Cada línea es un ejercicio. Cada coma separa las columnas.
+   - Para CAMBIAR: borra el texto entre comas y escribe el nuevo
+   - Para AGREGAR: ve al final del archivo y escribe una nueva
+     línea con el mismo formato:
+     nombre,alternativa1,alternativa2,alternativa3,grupo
+
+5. Guarda: Archivo → Guardar (Ctrl+G)
+
+--------------------------------------------------------
+6.2 EDITAR LOS OTROS ARCHIVOS (SOLO SI ES NECESARIO)
+--------------------------------------------------------
+
+02-rangos-de-reps-por-objetivo.csv:
+  Esto define las repeticiones recomendadas según el
+  objetivo. Generalmente NO necesitas cambiarlo porque
+  son estándares universales.
+
+03-volumen-semanal-recomendado.csv:
+  Define cuántas series por grupo muscular recomendar
+  según el nivel. Si tu gimnasio tiene su propia
+  filosofía (ej: "nosotros recomendamos más volumen"),
+  puedes ajustar los números.
+
+04-escala-de-esfuerzo-percibido.csv:
+  Define la escala de esfuerzo. Esto NO se cambia.
+  Es estándar en todo el mundo del fitness.
+
+--------------------------------------------------------
+6.3 EJEMPLO PRÁCTICO DE PERSONALIZACIÓN
+--------------------------------------------------------
+
+Digamos que tu gimnasio se llama "HIERRO GYM"
+y tienes estas máquinas:
+- 2 jaulas de sentadillas
+- 1 máquina Smith
+- Mancuernas hasta 40kg
+- 2 bancos planos
+- 1 banco inclinado
+- Polea alta y baja
+- Prensa de piernas 45°
+- Máquina de curl femoral
+- Máquina de extensiones de pierna
+- 2 cintas de correr
+- 1 bicicleta estática
+
+NO tienes:
+- Fondos en paralelas
+- Hack squat
+- Barras de dominadas
+
+PASO A PASO:
+
+1. Abre 01-alternativas-de-ejercicios.csv en Excel
+
+2. Busca "Fondos en paralelas" → cámbialo por
+   "Press banca con mancuernas" (que sí tienes)
+
+3. Busca "Hack squat" → cámbialo por "Sentadilla en Smith"
+   (usas la máquina Smith en su lugar)
+
+4. Busca "Dominadas" → cámbialo por "Remo en polea baja"
+   (no tienes barra de dominadas pero sí polea)
+
+5. Busca "Dominadas asistidas" → cámbialo por "Jalón en polea alta"
+
+6. Agrega al final:
+   Curl femoral en máquina,Curl femoral acostado,Peso muerto rumano,Buenos días,Pierna (isquiotibiales)
+
+7. Guarda el archivo como CSV
+
+8. Cuando subas los archivos al GPT (Paso 4), sube esta
+   versión modificada, NO la original.
+
+RESULTADO: El GPT solo recomendará ejercicios que SÍ
+existen en tu gimnasio. Los socios nunca recibirán una
+recomendación de un ejercicio que no pueden hacer.
+
+============================================================
+PASO 7: PREVISUALIZAR Y PROBAR EL GPT
+============================================================
+
+En la pantalla de configuración, del lado derecho hay un
+panel que dice "Preview" (Vista previa). Es un chat donde
+puedes probar el GPT ANTES de guardarlo.
+
+HAZ ESTAS PRUEBAS MÍNIMAS:
+
+PRUEBA 1: INICIO
+─────────────────
+Escribe en el Preview: "Hola, quiero empezar"
+
+Espera que responda. Debería pedirte:
+✔ Tu nombre
+✔ Edad
+✔ Peso
+✔ Estatura
+✔ Nivel de experiencia
+✔ Objetivo
+
+Si responde cualquier otra cosa → ALGO ESTÁ MAL.
+Revisa que hayas pegado bien las Instructions.
+
+PRUEBA 2: REGISTRO DE DATOS
+───────────────────────────
+Responde con datos falsos. Por ejemplo:
+"Me llamo Juan, 25 años, 70kg, 1.75m, intermedio,
+ganar músculo"
+
+Luego cuando pregunte cómo ingresar entrenamientos,
+elige "Manual" y escribe:
+"Press banca, 50kg, 4 series, 10 reps"
+
+Verifica que:
+✔ Confirme el registro
+✔ Pregunte por el siguiente ejercicio
+✔ Permita terminar la sesión
+
+PRUEBA 3: ANÁLISIS
+───────────────────
+Registra 3 sesiones con el mismo peso y mismas reps.
+Luego pregunta: "¿Debo aumentar el peso?"
+
+Verifica que:
+✔ Detecte que son 3 sesiones iguales
+✔ Recomiende aumentar peso
+✔ Sugiera un incremento específico (+2.5kg)
+
+PRUEBA 4: ALTERNATIVAS
+──────────────────────
+Pregunta: "Press banca está ocupado, ¿qué hago?"
+
+Verifica que:
+✔ Sugiera 2-3 alternativas
+✔ Las alternativas sean las que están en tu archivo CSV
+✔ Dé recomendaciones de peso/reps
+
+PRUEBA 5: ANÁLISIS GENERAL
+──────────────────────────
+Después de registrar varias sesiones, pregunta:
+"Analiza mi progreso general"
+
+Verifica que:
+✔ Muestre un resumen con tabla
+✔ Destaque estancamientos en ROJO
+✔ Destaque progresos en VERDE
+✔ Dé recomendaciones priorizadas
+✔ Termine con una pregunta de seguimiento
+
+SI ALGO FALLA:
+1. Vuelve a "Configure"
+2. Revisa que las Instructions estén completas
+3. Revisa que los archivos de conocimiento se hayan subido
+4. Corrige y vuelve a probar en Preview
+
+============================================================
+PASO 8: GUARDAR EL GPT
+============================================================
+
+Cuando todo funcione bien en Preview:
+
+1. Haz clic en el botón "Save" (Guardar)
+   - Está en la esquina superior derecha
+   - Es de color verde/azul
+
+2. Aparecerá una ventana con opciones de visibilidad:
+
+   ┌─────────────────────────────────────────────┐
+   │  ¿Quién puede ver tu GPT?                   │
+   │                                             │
+   │  ○ Only me (Solo yo)                        │
+   │    → Solo tú puedes usarlo                  │
+   │                                             │
+   │  ○ Anyone with the link (Cualquiera con     │
+   │    el enlace)                               │
+   │    → Cualquiera que tenga el link puede      │
+   │      usarlo (RECOMENDADO)                   │
+   │                                             │
+   │  ○ Public (Público)                         │
+   │    → Aparece en la tienda de GPTs           │
+   └─────────────────────────────────────────────┘
+
+3. RECOMENDACIÓN:
+   a. PRIMERO: selecciona "Only me"
+   b. Haz clic en "Save"
+   c. Úsalo unos días para asegurarte de que funciona
+   d. Después: ve a "Explore GPTs", busca tu GPT,
+      haz clic en "Edit", cambia a "Anyone with the link"
+   e. Guarda de nuevo
+
+4. Después de guardar, ChatGPT te dará un ENLACE.
+   Ejemplo:
+   https://chatgpt.com/g/g-abc123-entrenador-virtual-fitpower
+
+5. COPIA ESE ENLACE. Es la dirección de tu GPT.
+
+============================================================
+PASO 9: COMPARTIR CON TUS SOCIOS
+============================================================
+
+El enlace que copiaste en el paso anterior es todo lo
+que necesitas.
+
+FORMA 1: WHATSAPP / TELEGRAM (RECOMENDADA)
+──────────────────────────────────────────
+1. Abre el grupo de WhatsApp de tu gimnasio
+2. Escribe un mensaje como este:
+
+   "¡Hola a todos! 🏋️
+
+   Ya tenemos nuestro Entrenador Virtual con IA.
+   Escanea este link y empieza a registrar tus
+   entrenamientos. El sistema te recomendará cargas,
+   detectará si estás estancado y te sugerirá
+   ejercicios alternativos.
+
+   Solo necesitas una cuenta de ChatGPT (gratis).
+
+   👉 [PEGA EL ENLACE AQUÍ]
+
+   ¡A darle!"
+
+3. Envía
+
+FORMA 2: CÓDIGO QR EN RECEPCIÓN
+─────────────────────────────────
+1. Ve a cualquier generador de QR online (ej: qr-code-generator.com)
+2. Pega el enlace de tu GPT
+3. Genera el QR
+4. Descarga la imagen
+5. Imprímela y ponla en:
+   - La recepción
+   - Carteles en los vestidores
+   - En las máquinas
+
+FORMA 3: REDES SOCIALES
+─────────────────────────
+Publica el enlace en Instagram, Facebook, etc. de tu
+gimnasio.
+
+INSTRUCCIONES PARA LOS SOCIOS (diles esto):
+1. Necesitan una cuenta de ChatGPT (gratis en chatgpt.com)
+2. Abren el enlace que les compartiste
+3. Hacen clic en "Start Chat" o "Empezar"
+4. El GPT los guía paso a paso
+
+============================================================
+PASO 10: MANTENIMIENTO
+============================================================
+
+CADA VEZ QUE:
+- Agregues una máquina nueva al gimnasio
+- Cambies la distribución de equipos
+- Quites algún ejercicio
+
+DEBES:
+1. Editar el archivo 01-alternativas-de-ejercicios.csv
+   (agregar o quitar filas)
+2. Ir a Explore GPTs → seleccionar tu GPT → Edit
+3. En Knowledge: quitar el archivo viejo y subir el nuevo
+4. Save
+
+CADA MES:
+- Revisa los archivos de conocimiento
+- Pregunta a socios si las recomendaciones son útiles
+- Ajusta si es necesario
+
+============================================================
+SOLUCIÓN DE PROBLEMAS
+============================================================
+
+PROBLEMA 1: El GPT no reconoce los ejercicios
+──────────────────────────────────────────────
+CAUSA: El nombre del ejercicio que escribe el socio NO
+coincide exactamente con el nombre en el CSV.
+
+SOLUCIÓN:
+- Simplifica los nombres en el CSV
+- Pon los nombres MÁS COMUNES
+- Ejemplo: en vez de "Press banca con barra", pon solo
+  "Press banca"
+- Si un socio escribe "Press de banca" y tú tienes
+  "Press banca", no va a coincidir. Usa el nombre más
+  corto y común.
+
+PROBLEMA 2: El GPT recomienda ejercicios que no tengo
+───────────────────────────────────────────────────────
+CAUSA: No personalizaste el archivo 01-alternativas-de-ejercicios.csv
+
+SOLUCIÓN:
+- Ve al PASO 6 de esta guía
+- Abre el CSV y cámbialo
+- Vuelve a subir el archivo modificado al GPT
+
+PROBLEMA 3: El GPT no detecta estancamiento
+────────────────────────────────────────────
+CAUSA: No has registrado suficientes datos (mínimo 3
+sesiones del mismo ejercicio).
+
+SOLUCIÓN:
+- Registra al menos 3 sesiones con los mismos datos
+- Vuelve a preguntar
+
+PROBLEMA 4: Los socios se quejan de que pide muchos datos
+───────────────────────────────────────────────────────────
+SOLUCIÓN:
+- Diles que la PRIMERA VEZ es la única vez que dan todos
+  los datos
+- Después de eso, ChatGPT recuerda la conversación
+- Si inician una NUEVA conversación, el GPT no recordará
+  nada (es así funciona ChatGPT)
+
+PROBLEMA 5: El GPT se vuelve lento o da respuestas
+genéricas
+────────────────────────────────────────────────────
+CAUSA: Conversación demasiado larga (ChatGPT tiene límite
+de memoria).
+
+SOLUCIÓN:
+- Después de varios meses de uso continuo, el socio puede
+  iniciar una NUEVA conversación
+- En la nueva conversación, el GPT pedirá nombre y objetivo
+  pero el socio puede escribir "Continúa mi historial" y
+  el GPT usará los datos que recuerde si los vuelve a dar
+
+PROBLEMA 6: Se me olvidó cómo editar el GPT
+─────────────────────────────────────────────
+SOLUCIÓN:
+1. Ve a chatgpt.com
+2. Click en tu foto → "Explore GPTs"
+3. Busca tu GPT en la lista
+4. Click en el ícono de lápiz (Editar)
+5. Haz cambios
+6. Save
+
+============================================================
+RESUMEN RÁPIDO (para la próxima vez)
+============================================================
+
+1. chatgpt.com → foto → Explore GPTs → Create
+2. Pestaña "Configure"
+3. Name: Entrenador Virtual [Gimnasio]
+4. Instructions: copiar INSTRUCCIONES-GPT.md
+5. Cambiar [NOMBRE_GIMNASIO] y los otros [CORCHETES]
+6. Capabilities: solo Web Browsing
+7. Knowledge: subir los 4 archivos CSV
+8. Conversation starters: pegar los 4 textos
+9. Probar en Preview
+10. Save → Anyone with the link
+11. Compartir enlace con socios
+
+¡LISTO! 🏋️
+
+============================================================
+CONTACTO DE SOPORTE (si aplica)
+============================================================
+
+Si contrataste a alguien para desarrollar esto, pon aquí
+su contacto:
+
+Nombre: ___________________________
+Teléfono: _________________________
+Email: ____________________________
+
+============================================================

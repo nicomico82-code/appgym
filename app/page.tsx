@@ -206,10 +206,6 @@ export default async function Home() {
 
       {sessionIds.size === 0 ? (
         <section className="home-empty surface-card">
-          <span className="status-pill">
-            <i />
-            SIN DATOS INVENTADOS
-          </span>
           <h2>Tu progreso comienza con el primer entrenamiento.</h2>
           <p>
             Todavía no tienes sesiones guardadas. Cuando completes una, aquí

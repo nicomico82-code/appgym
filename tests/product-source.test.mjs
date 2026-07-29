@@ -38,10 +38,19 @@ test("defines the main MVP product routes", async () => {
   assert.match(workoutBuilder, /exerciseAlternativesFor/);
   assert.match(workoutBuilder, /exerciseInstructionUrl/);
   assert.match(workoutBuilder, /maxLength=\{500\}/);
+  assert.match(workoutBuilder, /removeExercise/);
+  assert.match(workoutBuilder, /Eliminar ejercicio/);
   assert.match(progress, /Tu progreso, con evidencia\./);
   assert.match(progress, /julianday\(ws\.performed_on\)/);
   assert.match(progress, /Series completadas por ejercicio/);
   assert.doesNotMatch(progress, /const performances = \[\s*\{/);
+  assert.match(
+    await readFile(
+      new URL("app/progreso/ExerciseProgressSelector.tsx", root),
+      "utf8",
+    ),
+    /window\.location\.assign/,
+  );
   assert.match(exercises, /Encuentra tu siguiente movimiento\./);
   assert.match(profile, /Un perfil que entrena contigo\./);
   assert.match(profileForm, /Guardar cambios/);

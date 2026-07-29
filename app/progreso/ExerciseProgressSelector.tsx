@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export function ExerciseProgressSelector({
   exercises,
@@ -11,25 +11,34 @@ export function ExerciseProgressSelector({
   selected: string;
   weeks: number;
 }) {
-  const router = useRouter();
+  const [value, setValue] = useState(selected);
+  const [changing, setChanging] = useState(false);
 
   return (
-    <select
-      aria-label="Seleccionar ejercicio"
-      value={selected}
-      onChange={(event) => {
-        const params = new URLSearchParams({
-          weeks: String(weeks),
-          exercise: event.target.value,
-        });
-        router.push(`/progreso?${params.toString()}`);
-      }}
-    >
-      {exercises.map((exercise) => (
-        <option value={exercise} key={exercise}>
-          {exercise}
-        </option>
-      ))}
-    </select>
+    <div className="progress-exercise-picker" aria-live="polite">
+      <select
+        aria-label="Seleccionar ejercicio"
+        aria-busy={changing}
+        disabled={changing}
+        value={value}
+        onChange={(event) => {
+          const exercise = event.target.value;
+          const params = new URLSearchParams({
+            weeks: String(weeks),
+            exercise,
+          });
+          setValue(exercise);
+          setChanging(true);
+          window.location.assign(`/progreso?${params.toString()}`);
+        }}
+      >
+        {exercises.map((exercise) => (
+          <option value={exercise} key={exercise}>
+            {exercise}
+          </option>
+        ))}
+      </select>
+      {changing && <small>Actualizando…</small>}
+    </div>
   );
 }

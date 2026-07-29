@@ -154,6 +154,22 @@ export function WorkoutSessionBuilder() {
     setSaveState("idle");
   }
 
+  function removeExercise(exerciseId: string, exerciseName: string) {
+    if (exercises.length === 1) return;
+    if (
+      !window.confirm(
+        `¿Eliminar "${exerciseName}" de esta sesión? Las series y notas de este ejercicio se perderán.`,
+      )
+    ) {
+      return;
+    }
+
+    setExercises((current) =>
+      current.filter((exercise) => exercise.id !== exerciseId),
+    );
+    setSaveState("idle");
+  }
+
   function addExercise() {
     const name = newExerciseName.trim();
     if (name.length < 2 || name.length > 80) return;
@@ -347,6 +363,19 @@ export function WorkoutSessionBuilder() {
               >
                 Ver instrucciones ↗
               </a>
+              <button
+                className="inline-action danger"
+                disabled={exercises.length === 1}
+                title={
+                  exercises.length === 1
+                    ? "La sesión debe conservar al menos un ejercicio"
+                    : `Eliminar ${exercise.name}`
+                }
+                type="button"
+                onClick={() => removeExercise(exercise.id, exercise.name)}
+              >
+                Eliminar ejercicio
+              </button>
             </footer>
             {exercise.showAlternatives && (
               <div className="exercise-inline-panel">

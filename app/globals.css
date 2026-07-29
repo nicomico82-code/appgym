@@ -1619,6 +1619,15 @@ a {
   color: var(--ink);
 }
 
+.inline-action.danger {
+  color: #a3342c;
+}
+
+.inline-action:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
 .exercise-inline-panel {
   display: grid;
   gap: 10px;
@@ -1928,6 +1937,17 @@ a {
   color: var(--ink);
   font-size: 9px;
   font-weight: 700;
+}
+
+.progress-exercise-picker {
+  display: grid;
+  justify-items: end;
+  gap: 5px;
+}
+
+.progress-exercise-picker small {
+  color: var(--ink-soft);
+  font-size: 9px;
 }
 
 .load-chart {

@@ -1,7 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { exerciseOptions } from "../data/exercises";
+import {
+  exerciseAlternativesFor,
+  exerciseInstructionUrl,
+  exerciseOptions,
+} from "../data/exercises";
 
 type WorkoutSet = {
   id: string;
@@ -17,6 +21,9 @@ type ExerciseDraft = {
   lastPerformance: string;
   target: string;
   sets: WorkoutSet[];
+  notes: string;
+  showAlternatives: boolean;
+  showNotes: boolean;
 };
 
 const initialExercises: ExerciseDraft[] = [
@@ -25,6 +32,9 @@ const initialExercises: ExerciseDraft[] = [
     name: "Press banca con barra",
     lastPerformance: "Última vez: 30 kg × 10 · RPE 5",
     target: "Objetivo: 32,5 kg × 8–10",
+    notes: "",
+    showAlternatives: false,
+    showNotes: false,
     sets: [1, 2, 3].map((index) => ({
       id: `press-${index}`,
       weightKg: "32.5",
@@ -38,6 +48,9 @@ const initialExercises: ExerciseDraft[] = [
     name: "Press militar con barra",
     lastPerformance: "Última vez: 15 kg × 10 · RPE 4",
     target: "Objetivo: 17,5 kg × 8–10",
+    notes: "",
+    showAlternatives: false,
+    showNotes: false,
     sets: [1, 2, 3].map((index) => ({
       id: `militar-${index}`,
       weightKg: "17.5",
@@ -119,6 +132,28 @@ export function WorkoutSessionBuilder() {
     );
   }
 
+  function replaceExercise(exerciseId: string, replacementName: string) {
+    if (!exerciseOptions.includes(replacementName)) return;
+
+    setExercises((current) =>
+      current.map((exercise) =>
+        exercise.id !== exerciseId
+          ? exercise
+          : {
+              ...exercise,
+              name: replacementName,
+              lastPerformance: "Sin registros previos",
+              target: "Define una carga conservadora",
+              sets: exercise.sets.map((_, index) =>
+                newSet(exercise.id, index + 1),
+              ),
+              showAlternatives: false,
+            },
+      ),
+    );
+    setSaveState("idle");
+  }
+
   function addExercise() {
     const name = newExerciseName.trim();
     if (name.length < 2 || name.length > 80) return;
@@ -133,6 +168,9 @@ export function WorkoutSessionBuilder() {
         name,
         lastPerformance: "Sin registros previos",
         target: "Define una carga conservadora",
+        notes: "",
+        showAlternatives: false,
+        showNotes: false,
         sets: [1, 2, 3].map((position) => newSet(id, position)),
       },
     ]);
@@ -153,6 +191,7 @@ export function WorkoutSessionBuilder() {
           exercises: exercises.map((exercise, exerciseIndex) => ({
             name: exercise.name,
             position: exerciseIndex + 1,
+            notes: exercise.notes,
             sets: exercise.sets.map((set, setIndex) => ({
               setNumber: setIndex + 1,
               weightKg: Number(set.weightKg),
@@ -265,13 +304,101 @@ export function WorkoutSessionBuilder() {
               >
                 + Agregar serie
               </button>
-              <button className="inline-action" type="button">
-                Equipo ocupado
+              <button
+                className="inline-action"
+                type="button"
+                aria-expanded={exercise.showAlternatives}
+                onClick={() =>
+                  setExercises((current) =>
+                    current.map((item) =>
+                      item.id === exercise.id
+                        ? {
+                            ...item,
+                            showAlternatives: !item.showAlternatives,
+                          }
+                        : item,
+                    ),
+                  )
+                }
+              >
+                {exercise.showAlternatives ? "Cerrar alternativas" : "Equipo ocupado"}
               </button>
-              <button className="inline-action" type="button">
-                Agregar nota
+              <button
+                className="inline-action"
+                type="button"
+                aria-expanded={exercise.showNotes}
+                onClick={() =>
+                  setExercises((current) =>
+                    current.map((item) =>
+                      item.id === exercise.id
+                        ? { ...item, showNotes: !item.showNotes }
+                        : item,
+                    ),
+                  )
+                }
+              >
+                {exercise.showNotes ? "Cerrar nota" : "Agregar nota"}
               </button>
+              <a
+                className="inline-action"
+                href={exerciseInstructionUrl(exercise.name)}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Ver instrucciones ↗
+              </a>
             </footer>
+            {exercise.showAlternatives && (
+              <div className="exercise-inline-panel">
+                <label className="field">
+                  <span>Alternativa disponible</span>
+                  <select
+                    defaultValue=""
+                    onChange={(event) =>
+                      replaceExercise(exercise.id, event.target.value)
+                    }
+                  >
+                    <option value="">Selecciona un reemplazo</option>
+                    {exerciseAlternativesFor(exercise.name)
+                      .filter(
+                        (name) =>
+                          !exercises.some((item) => item.name === name),
+                      )
+                      .map((name) => (
+                        <option value={name} key={name}>
+                          {name}
+                        </option>
+                      ))}
+                  </select>
+                </label>
+                <small>
+                  Al cambiarlo, las cargas y repeticiones se reinician por
+                  seguridad.
+                </small>
+              </div>
+            )}
+            {exercise.showNotes && (
+              <div className="exercise-inline-panel">
+                <label className="field">
+                  <span>Nota del ejercicio</span>
+                  <textarea
+                    maxLength={500}
+                    placeholder="Ej.: molestia leve, ajustar banco o usar agarre neutro"
+                    value={exercise.notes}
+                    onChange={(event) => {
+                      const notes = event.target.value;
+                      setExercises((current) =>
+                        current.map((item) =>
+                          item.id === exercise.id ? { ...item, notes } : item,
+                        ),
+                      );
+                      setSaveState("idle");
+                    }}
+                  />
+                </label>
+                <small>{exercise.notes.length}/500 caracteres</small>
+              </div>
+            )}
           </section>
         ))}
 

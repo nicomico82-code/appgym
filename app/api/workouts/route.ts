@@ -13,6 +13,7 @@ type IncomingSet = {
 type IncomingExercise = {
   name?: string;
   position?: number;
+  notes?: string;
   sets?: IncomingSet[];
 };
 
@@ -35,6 +36,9 @@ function validate(payload: IncomingWorkout) {
     if (!exercise.name?.trim()) return "Cada ejercicio necesita un nombre.";
     if (!exerciseOptions.includes(exercise.name.trim())) {
       return "Selecciona únicamente ejercicios disponibles en el catálogo.";
+    }
+    if ((exercise.notes?.length ?? 0) > 500) {
+      return "La nota del ejercicio no puede superar 500 caracteres.";
     }
     if (!exercise.sets?.length || exercise.sets.length > 30) {
       return "Cada ejercicio debe contener entre 1 y 30 series.";
@@ -166,9 +170,9 @@ export async function POST(request: Request) {
       statements.push(
         db
           .prepare(
-            `INSERT INTO session_exercises
-             (id, session_id, exercise_name_snapshot, order_index, data_granularity)
-             VALUES (?, ?, ?, ?, ?)`,
+          `INSERT INTO session_exercises
+             (id, session_id, exercise_name_snapshot, order_index, data_granularity, notes)
+             VALUES (?, ?, ?, ?, ?, ?)`,
           )
           .bind(
             sessionExerciseId,
@@ -176,6 +180,7 @@ export async function POST(request: Request) {
             exercise.name!.trim(),
             exercise.position ?? exerciseIndex + 1,
             "per_set",
+            exercise.notes?.trim() ?? "",
           ),
       );
 

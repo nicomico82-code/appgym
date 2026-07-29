@@ -1611,8 +1611,45 @@ a {
   font-weight: 700;
 }
 
+.exercise-editor-footer a.inline-action {
+  text-decoration: none;
+}
+
 .inline-action:first-child {
   color: var(--ink);
+}
+
+.exercise-inline-panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #f1efe8;
+}
+
+.exercise-inline-panel textarea {
+  min-height: 88px;
+  padding: 12px 13px;
+  resize: vertical;
+  border: 1px solid #d5d2c8;
+  border-radius: 11px;
+  outline: 0;
+  background: #faf9f5;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.5;
+}
+
+.exercise-inline-panel textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 104, 70, 0.12);
+}
+
+.exercise-inline-panel small {
+  color: var(--ink-soft);
+  font-size: 9px;
+  line-height: 1.5;
 }
 
 .add-exercise-card {

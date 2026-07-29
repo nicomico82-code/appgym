@@ -107,3 +107,27 @@ export const exerciseOptions = Array.from(
     ]),
   ),
 ).sort((left, right) => left.localeCompare(right, "es"));
+
+export function exerciseAlternativesFor(name: string) {
+  const family = exercises.find(
+    (exercise) =>
+      exercise.name === name || exercise.alternatives.includes(name),
+  );
+  if (!family) return [];
+
+  return [family.name, ...family.alternatives].filter(
+    (candidate) => candidate !== name,
+  );
+}
+
+const curatedInstructionUrls: Record<string, string> = {};
+
+export function exerciseInstructionUrl(name: string) {
+  const curated = curatedInstructionUrls[name];
+  if (curated) return curated;
+
+  const query = encodeURIComponent(
+    `${name} técnica correcta cómo realizar ejercicio`,
+  );
+  return `https://www.youtube.com/results?search_query=${query}`;
+}

@@ -35,6 +35,9 @@ test("defines the main MVP product routes", async () => {
   assert.match(workoutBuilder, /crypto\.randomUUID/);
   assert.match(workoutBuilder, /exerciseOptions/);
   assert.match(workoutBuilder, /<select/);
+  assert.match(workoutBuilder, /exerciseAlternativesFor/);
+  assert.match(workoutBuilder, /exerciseInstructionUrl/);
+  assert.match(workoutBuilder, /maxLength=\{500\}/);
   assert.match(progress, /Tu progreso, con evidencia\./);
   assert.match(progress, /julianday\(ws\.performed_on\)/);
   assert.match(progress, /Series completadas por ejercicio/);
@@ -78,6 +81,7 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
   assert.match(api, /Math\.round\(set\.weightKg! \* 1000\)/);
   assert.match(api, /accessIdentityFromRequest/);
   assert.match(api, /exerciseOptions\.includes/);
+  assert.match(api, /exercise\.notes\?\.trim/);
   assert.match(profileApi, /export async function PUT/);
   assert.match(accessSession, /SHA-256/);
   assert.match(accessSession, /HttpOnly/);

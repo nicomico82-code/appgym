@@ -14,6 +14,8 @@ test("defines the finished product dashboard without starter artifacts", async (
   assert.match(page, /Buen día, \{firstName\}/);
   assert.match(page, /Iniciar entrenamiento/);
   assert.match(page, /Cargas sugeridas/);
+  assert.match(page, /Volumen acumulado · 4 semanas/);
+  assert.match(page, /kg·rep/);
   assert.match(layout, /Max Level — alcanza tu máximo nivel/);
   assert.doesNotMatch(page, /SkeletonPreview|codex-preview|Building your site/i);
   assert.doesNotMatch(packageJson, /react-loading-skeleton/);
@@ -89,6 +91,7 @@ test("defines the main MVP product routes", async () => {
   assert.match(profileForm, /Guardar cambios/);
   assert.match(history, /Tu historial de entrenamiento/);
   assert.match(history, /DeleteSessionButton/);
+  assert.match(history, /timeZone:\s*"America\/Santiago"/);
   assert.match(manual, /Manual de usuario/);
   assert.match(manual, /Cómo se calculan las recomendaciones/);
   assert.match(shell, /MODO PRUEBA/);

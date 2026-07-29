@@ -38,6 +38,8 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat("es-CL", {
     dateStyle: "medium",
     timeStyle: "short",
+    timeZone: "America/Santiago",
+    hour12: false,
   }).format(new Date(value));
 }
 

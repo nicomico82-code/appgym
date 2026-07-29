@@ -94,6 +94,12 @@ export default function ManualPage() {
               <div><dt>Ejercicios</dt><dd>Catálogo, búsqueda y alternativas.</dd></div>
               <div><dt>Perfil</dt><dd>Nombre, experiencia, objetivo y medidas.</dd></div>
             </dl>
+            <p>
+              En Inicio, el <strong>volumen acumulado</strong> no es el peso
+              levantado de una sola vez. Se calcula sumando
+              <strong> peso × repeticiones</strong> de cada serie finalizada y
+              se expresa como kg·rep.
+            </p>
           </article>
 
           <article className="manual-section surface-card" id="perfil-manual">

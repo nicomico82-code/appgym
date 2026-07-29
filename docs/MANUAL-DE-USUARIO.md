@@ -101,6 +101,10 @@ Cuando exista historial podrá mostrar:
 
 No se muestran cifras de demostración como si fueran resultados personales.
 
+El **volumen acumulado** suma `peso × repeticiones` de cada serie finalizada.
+No representa una carga levantada de una sola vez. Por ejemplo, 12,5 kg durante
+8 repeticiones aportan 100 kg·rep al volumen.
+
 ---
 
 ## 5. Registrar una sesión

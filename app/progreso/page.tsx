@@ -42,6 +42,7 @@ function formatDate(value: string) {
   return new Intl.DateTimeFormat("es-CL", {
     day: "2-digit",
     month: "short",
+    timeZone: "America/Santiago",
   })
     .format(new Date(value))
     .replace(".", "");

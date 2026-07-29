@@ -270,12 +270,12 @@ export default async function Home() {
 
           <section className="metrics-grid" aria-label="Métricas de progreso">
             <MetricCard
-              label="Volumen · 4 semanas"
-              value={`${formatKg(currentVolume)} kg`}
+              label="Volumen acumulado · 4 semanas"
+              value={`${formatKg(currentVolume)} kg·rep`}
               detail={
                 volumeTrend === null
-                  ? "Primer período registrado"
-                  : `${volumeTrend >= 0 ? "+" : ""}${volumeTrend}% vs. período anterior`
+                  ? "Suma de peso × repeticiones"
+                  : `Peso × reps · ${volumeTrend >= 0 ? "+" : ""}${volumeTrend}% vs. período anterior`
               }
               tone={volumeTrend !== null && volumeTrend > 0 ? "positive" : undefined}
             />
@@ -377,10 +377,10 @@ export default async function Home() {
                 ))}
               </div>
               <div className="trend-footer">
-                <span>Volumen · 7 semanas</span>
+                <span>Volumen acumulado · peso × repeticiones</span>
                 <strong>
                   {formatKg(weeklyVolumes.reduce((sum, value) => sum + value, 0))}{" "}
-                  kg
+                  kg·rep
                 </strong>
               </div>
             </section>

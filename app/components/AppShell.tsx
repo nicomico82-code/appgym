@@ -5,6 +5,7 @@ import {
   getCurrentProfile,
   profileInitials,
 } from "../lib/current-profile";
+import { MaxLevelAssistant } from "./MaxLevelAssistant";
 
 type NavKey =
   | "inicio"
@@ -93,6 +94,7 @@ export async function AppShell({
         </div>
       </aside>
       <main className="app-main">{children}</main>
+      <MaxLevelAssistant />
       <Navigation current={current} mobile />
     </div>
   );

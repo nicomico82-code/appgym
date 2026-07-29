@@ -187,6 +187,22 @@ El selector muestra únicamente movimientos existentes en el catálogo. Esto
 evita nombres inventados o duplicados. El ejercicio nuevo comienza con tres
 series.
 
+### Asistente Max Level
+
+El botón **¿Necesitas ayuda?** abre un chat para consultar:
+
+- horarios de clases y tipos de bloque;
+- reservas mediante BoxMagic Members;
+- ubicación y WhatsApp;
+- reglas de convivencia;
+- ejercicios, equipamiento y alternativas del catálogo;
+- conceptos como series, repeticiones, descanso y RPE.
+
+Las respuestas pueden incluir accesos directos a BoxMagic Members, Google Maps,
+videos de instrucciones y WhatsApp. Si una información no está confirmada, el
+asistente deriva la consulta al gimnasio. La conversación no se guarda en esta
+primera versión.
+
 ---
 
 ## 7. Guardar y corregir

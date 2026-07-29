@@ -158,6 +158,14 @@ export default function ManualPage() {
               <li><strong>Eliminar ejercicio:</strong> lo quita después de una advertencia. La sesión debe conservar al menos uno.</li>
               <li><strong>Agregar ejercicio:</strong> permite elegir únicamente movimientos existentes en el catálogo.</li>
             </ul>
+            <h3>Asistente Max Level</h3>
+            <p>
+              El botón <strong>¿Necesitas ayuda?</strong> abre un chat para
+              consultar horarios, reservas, ubicación, reglas, ejercicios,
+              alternativas, series y RPE. Incluye accesos directos a BoxMagic
+              Members, Google Maps y WhatsApp. Si la respuesta no está
+              confirmada, te deriva al gimnasio.
+            </p>
           </article>
 
           <article className="manual-section surface-card" id="guardado-manual">

@@ -1,4 +1,7 @@
-import { chatGPTUserFromHeaders } from "../../chatgpt-auth";
+import {
+  accessIdentityFromRequest,
+  type AccessIdentity,
+} from "../../access-session";
 import { getD1 } from "../../../db";
 
 type ProfilePayload = {
@@ -20,17 +23,6 @@ const allowedGoals = new Set([
   "conditioning",
   "other",
 ]);
-
-function identityFrom(request: Request) {
-  const authenticated = chatGPTUserFromHeaders(request.headers);
-  return {
-    ownerKey:
-      authenticated?.email.trim().toLowerCase() ??
-      "pilot-user@entrena.local",
-    email: authenticated?.email ?? "pilot-user@entrena.local",
-    displayName: authenticated?.fullName ?? "Pedro R.",
-  };
-}
 
 function validate(payload: ProfilePayload) {
   const displayName = payload.displayName?.trim() ?? "";
@@ -86,9 +78,8 @@ function validate(payload: ProfilePayload) {
   }
 }
 
-async function ensureProfile(request: Request) {
+async function ensureProfile(identity: AccessIdentity) {
   const db = getD1();
-  const identity = identityFrom(request);
   const provisionalUserId = crypto.randomUUID();
 
   await db
@@ -100,8 +91,8 @@ async function ensureProfile(request: Request) {
     .bind(
       provisionalUserId,
       identity.ownerKey,
-      identity.email,
-      identity.displayName,
+      null,
+      identity.label,
     )
     .run();
 
@@ -133,12 +124,15 @@ async function ensureProfile(request: Request) {
 
 export async function GET(request: Request) {
   try {
-    const { db, identity, userId } = await ensureProfile(request);
+    const identity = await accessIdentityFromRequest(request);
+    if (!identity) {
+      return Response.json({ error: "Acceso requerido." }, { status: 401 });
+    }
+    const { db, userId } = await ensureProfile(identity);
     const row = await db
       .prepare(
         `SELECT
            u.display_name AS displayName,
-           COALESCE(u.email, ?) AS email,
            COALESCE(ap.birth_date, '') AS birthDate,
            ap.sex,
            ap.height_mm AS heightMm,
@@ -157,10 +151,9 @@ export async function GET(request: Request) {
          WHERE u.id = ?
          LIMIT 1`,
       )
-      .bind(identity.email, userId)
+      .bind(userId)
       .first<{
         displayName: string;
-        email: string;
         birthDate: string;
         sex: string;
         heightMm: number | null;
@@ -174,7 +167,7 @@ export async function GET(request: Request) {
       profile: row
         ? {
             displayName: row.displayName,
-            email: row.email,
+            accessLabel: identity.label,
             birthDate: row.birthDate,
             sex: row.sex,
             heightCm: row.heightMm === null ? null : row.heightMm / 10,
@@ -203,13 +196,17 @@ export async function GET(request: Request) {
 
 export async function PUT(request: Request) {
   try {
+    const identity = await accessIdentityFromRequest(request);
+    if (!identity) {
+      return Response.json({ error: "Acceso requerido." }, { status: 401 });
+    }
     const payload = (await request.json()) as ProfilePayload;
     const validationError = validate(payload);
     if (validationError) {
       return Response.json({ error: validationError }, { status: 400 });
     }
 
-    const { db, userId, profileId } = await ensureProfile(request);
+    const { db, userId, profileId } = await ensureProfile(identity);
     const displayName = payload.displayName!.trim();
     const heightMm =
       payload.heightCm === null || payload.heightCm === undefined
@@ -279,6 +276,7 @@ export async function PUT(request: Request) {
     return Response.json({
       profile: {
         displayName,
+        accessLabel: identity.label,
         birthDate: payload.birthDate ?? "",
         sex: payload.sex,
         heightCm: payload.heightCm ?? null,

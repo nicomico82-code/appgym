@@ -119,7 +119,7 @@ export function ProfileForm({
       <aside className="profile-summary surface-card">
         <div className="profile-avatar-large">{initials}</div>
         <h2>{profile.displayName || "Tu nombre"}</h2>
-        <p>{profile.email}</p>
+        <p>{profile.accessLabel}</p>
         <div className="profile-completion">
           <div>
             <span>Perfil completado</span>
@@ -159,15 +159,15 @@ export function ProfileForm({
               />
             </label>
             <label className="field field-wide">
-              <span>Cuenta de acceso</span>
+              <span>Acceso personal</span>
               <input
                 className="read-only"
                 readOnly
-                value={profile.email}
+                value={profile.accessLabel}
                 aria-describedby="account-help"
               />
               <small id="account-help">
-                Proviene de tu inicio de sesión y no se cambia aquí.
+                Identifica este enlace privado y no se cambia aquí.
               </small>
             </label>
             <label className="field">

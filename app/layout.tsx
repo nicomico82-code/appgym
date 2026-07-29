@@ -24,36 +24,36 @@ export async function generateMetadata(): Promise<Metadata> {
     (host.startsWith("localhost") ? "http" : "https");
   const metadataBase = new URL(`${protocol}://${host}`);
   const description =
-    "Registra tus entrenamientos, entiende tu progreso y recibe recomendaciones explicables.";
+    "Max Level te ayuda a registrar entrenamientos, entender tu progreso y alcanzar tu máximo nivel.";
 
   return {
     metadataBase,
     title: {
-      default: "Entrena — progreso con criterio",
-      template: "%s · Entrena",
+      default: "Max Level — alcanza tu máximo nivel",
+      template: "%s · Max Level",
     },
     description,
-    applicationName: "Entrena",
+    applicationName: "Max Level",
     openGraph: {
       type: "website",
       locale: "es_CL",
-      siteName: "Entrena",
-      title: "Entrena — progreso con criterio",
+      siteName: "Max Level Fitness",
+      title: "Max Level — alcanza tu máximo nivel",
       description,
       images: [
         {
-          url: new URL("/og.png", metadataBase).toString(),
-          width: 1659,
-          height: 948,
-          alt: "Entrena — Progreso con criterio",
+          url: new URL("/max-level-logo.png", metadataBase).toString(),
+          width: 791,
+          height: 759,
+          alt: "Max Level Fitness",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title: "Entrena — progreso con criterio",
+      title: "Max Level — alcanza tu máximo nivel",
       description,
-      images: [new URL("/og.png", metadataBase).toString()],
+      images: [new URL("/max-level-logo.png", metadataBase).toString()],
     },
   };
 }

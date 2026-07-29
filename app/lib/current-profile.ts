@@ -1,10 +1,10 @@
 import { cache } from "react";
-import { getChatGPTUser } from "../chatgpt-auth";
+import { requireAccess } from "../access-session";
 import { getD1 } from "../../db";
 
 export type CurrentProfile = {
   displayName: string;
-  email: string;
+  accessLabel: string;
   birthDate: string;
   sex: "not_specified" | "female" | "male" | "other";
   heightCm: number | null;
@@ -20,11 +20,9 @@ export type CurrentProfile = {
 };
 
 export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
-  const authenticatedUser = await getChatGPTUser();
-  const ownerKey =
-    authenticatedUser?.email.trim().toLowerCase() ??
-    "pilot-user@entrena.local";
-  const fallbackName = authenticatedUser?.fullName ?? "Pedro R.";
+  const identity = await requireAccess();
+  const ownerKey = identity.ownerKey;
+  const fallbackName = identity.label;
 
   try {
     const db = getD1();
@@ -32,7 +30,6 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
       .prepare(
         `SELECT
            u.display_name AS displayName,
-           COALESCE(u.email, ?) AS email,
            COALESCE(ap.birth_date, '') AS birthDate,
            COALESCE(ap.sex, 'not_specified') AS sex,
            ap.height_mm AS heightMm,
@@ -51,10 +48,9 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
          WHERE u.owner_key = ?
          LIMIT 1`,
       )
-      .bind(authenticatedUser?.email ?? ownerKey, ownerKey)
+      .bind(ownerKey)
       .first<{
         displayName: string;
-        email: string;
         birthDate: string;
         sex: CurrentProfile["sex"];
         heightMm: number | null;
@@ -67,7 +63,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
     if (row) {
       return {
         displayName: row.displayName,
-        email: row.email,
+        accessLabel: identity.label,
         birthDate: row.birthDate,
         sex: row.sex,
         heightCm: row.heightMm === null ? null : row.heightMm / 10,
@@ -84,7 +80,7 @@ export const getCurrentProfile = cache(async (): Promise<CurrentProfile> => {
 
   return {
     displayName: fallbackName,
-    email: authenticatedUser?.email ?? "pilot-user@entrena.local",
+    accessLabel: identity.label,
     birthDate: "",
     sex: "not_specified",
     heightCm: null,

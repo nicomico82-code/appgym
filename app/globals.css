@@ -79,22 +79,19 @@ a {
   padding: 0 10px 30px;
 }
 
-.brand-mark {
-  display: grid;
-  width: 38px;
-  height: 38px;
-  place-items: center;
-  border-radius: 12px 4px 12px 4px;
-  background: var(--lime);
-  color: var(--ink);
-  font-size: 19px;
-  font-weight: 900;
-  transform: rotate(-3deg);
+.brand-logo {
+  background: #000;
+  border: 1px solid #353a38;
+  border-radius: 12px;
+  height: 54px;
+  object-fit: contain;
+  padding: 3px;
+  width: 56px;
 }
 
 .brand strong {
   display: block;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: -0.03em;
 }
 
@@ -102,7 +99,7 @@ a {
   display: block;
   margin-top: 2px;
   color: #9ca5a2;
-  font-size: 10px;
+  font-size: 7px;
   font-weight: 700;
   letter-spacing: 0.14em;
 }
@@ -165,6 +162,139 @@ a {
   border: 1px solid #343c39;
   border-radius: 15px;
   background: #202624;
+}
+
+.sign-out-link {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 700;
+  padding: 0 12px;
+  text-align: center;
+  text-decoration: none;
+}
+
+.sign-out-link:hover {
+  color: var(--ink);
+}
+
+.access-page {
+  align-items: center;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(207, 255, 92, 0.2), transparent 28rem),
+    var(--canvas);
+  display: flex;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.access-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 28px;
+  box-shadow: 0 24px 80px rgba(25, 28, 20, 0.1);
+  margin: auto;
+  max-width: 520px;
+  padding: clamp(28px, 6vw, 56px);
+  text-align: center;
+  width: 100%;
+}
+
+.access-logo {
+  background: #000;
+  border-radius: 22px;
+  height: auto;
+  margin-bottom: 28px;
+  max-width: 240px;
+  padding: 8px;
+  width: 62%;
+}
+
+.access-tagline {
+  color: var(--ink);
+  font-size: 0.9rem;
+  font-weight: 750;
+  margin: -4px 0 12px;
+}
+
+.brand-promise {
+  color: #677044;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.13em;
+  margin: 0 0 8px;
+}
+
+.access-card h1 {
+  font-size: clamp(2rem, 7vw, 3.5rem);
+  letter-spacing: -0.06em;
+  line-height: 0.96;
+  margin: 12px 0 18px;
+}
+
+.access-message {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 auto 24px;
+}
+
+.access-message.checking::after {
+  animation: access-pulse 1.2s infinite;
+  content: "";
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.access-message.error {
+  color: #9e352b;
+}
+
+.access-help {
+  background: var(--canvas);
+  border-radius: 18px;
+  margin: 24px 0;
+  padding: 18px;
+  text-align: left;
+}
+
+.access-help p {
+  color: var(--muted);
+  line-height: 1.5;
+  margin: 8px 0 0;
+}
+
+.access-card > small {
+  color: var(--muted);
+  display: block;
+  line-height: 1.5;
+}
+
+.add-exercise-form {
+  display: grid;
+  gap: 20px;
+  padding: clamp(22px, 4vw, 32px);
+}
+
+.add-exercise-form h2 {
+  margin: 4px 0 0;
+}
+
+.add-exercise-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+@keyframes access-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--accent);
+    opacity: 0.4;
+  }
+  50% {
+    box-shadow: 0 0 0 5px transparent;
+    opacity: 1;
+  }
 }
 
 .sidebar-profile strong,
@@ -1661,7 +1791,11 @@ a {
   background: var(--surface);
 }
 
-.period-switch button {
+.period-switch button,
+.period-switch a {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
   min-height: 34px;
   padding: 0 12px;
   border: 0;
@@ -1671,11 +1805,44 @@ a {
   cursor: pointer;
   font-size: 9px;
   font-weight: 750;
+  text-decoration: none;
 }
 
-.period-switch button.active {
+.period-switch button.active,
+.period-switch a.active {
   background: var(--ink);
   color: white;
+}
+
+.progress-empty {
+  margin: 40px auto 0;
+  max-width: 720px;
+  padding: clamp(28px, 6vw, 56px);
+  text-align: center;
+}
+
+.progress-empty > span {
+  align-items: center;
+  background: var(--lime);
+  border-radius: 50%;
+  display: inline-flex;
+  font-family: var(--font-geist-mono), monospace;
+  height: 52px;
+  justify-content: center;
+  width: 52px;
+}
+
+.progress-empty h2 {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  letter-spacing: -0.05em;
+  margin: 22px 0 12px;
+}
+
+.progress-empty p {
+  color: var(--muted);
+  line-height: 1.6;
+  margin: 0 auto 24px;
+  max-width: 560px;
 }
 
 .progress-hero {
@@ -1911,6 +2078,9 @@ a {
 
 .volume-row strong {
   font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .volume-row b {

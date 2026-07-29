@@ -7,6 +7,23 @@ import {
   uniqueIndex,
 } from "drizzle-orm/sqlite-core";
 
+export const accessLinks = sqliteTable(
+  "access_links",
+  {
+    id: text("id").primaryKey(),
+    tokenHash: text("token_hash").notNull(),
+    ownerKey: text("owner_key").notNull(),
+    label: text("label").notNull(),
+    active: integer("active", { mode: "boolean" }).notNull().default(true),
+    lastUsedAt: text("last_used_at"),
+    createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  },
+  (table) => [
+    uniqueIndex("access_links_token_hash_uq").on(table.tokenHash),
+    uniqueIndex("access_links_owner_key_uq").on(table.ownerKey),
+  ],
+);
+
 export const users = sqliteTable(
   "users",
   {

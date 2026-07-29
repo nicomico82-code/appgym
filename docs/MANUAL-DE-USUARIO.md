@@ -1,9 +1,9 @@
-# Manual de usuario de Entrena
+# Manual de usuario de Max Level
 
 ## La guía sencilla para comenzar, registrar tus entrenamientos y entender tu progreso
 
-**Aplicación:** Entrena — progreso con criterio  
-**Dirección:** <https://entrena-piloto.nicomico12983.chatgpt.site>  
+**Aplicación:** Max Level — para alcanzar tu máximo nivel
+**Dirección:** cada participante recibe un enlace personal
 **Estado actual:** piloto privado
 
 ---
@@ -17,7 +17,7 @@ qué tan difícil se sintió cada serie.
 No necesitas saber de informática para usarla. Solo necesitas:
 
 1. un teléfono, tablet o computador con acceso a Internet;
-2. una cuenta de ChatGPT autorizada para entrar;
+2. el enlace personal que te entregó el administrador;
 3. conocer el peso y las repeticiones de los ejercicios que realizas.
 
 La aplicación tiene cinco secciones:
@@ -40,14 +40,12 @@ La aplicación tiene cinco secciones:
 
 ### ¿Quién puede entrar?
 
-Esta versión es privada. Aunque otra persona tenga el enlace, solo podrá entrar
-si su correo fue autorizado por el administrador.
+Esta versión utiliza un enlace diferente para cada participante. No necesitas
+crear una cuenta, escribir un correo ni recordar una contraseña.
 
-La cuenta autorizada actualmente es:
-
-**nicomico82@gmail.com**
-
-Debes iniciar sesión en ChatGPT usando exactamente esa cuenta.
+Tu enlace es una llave privada: quien lo tenga puede abrir tu perfil. No lo
+publiques ni lo reenvíes. Si lo compartiste accidentalmente, pide al
+administrador que lo desactive y genere uno nuevo.
 
 ### Palabras básicas que verás
 
@@ -63,24 +61,22 @@ Debes iniciar sesión en ChatGPT usando exactamente esa cuenta.
 
 ---
 
-## 3. Cómo abrir la aplicación e iniciar sesión
+## 3. Cómo abrir la aplicación
 
 1. Abre Chrome, Safari, Edge u otro navegador.
-2. Escribe o pulsa esta dirección:
-   <https://entrena-piloto.nicomico12983.chatgpt.site>
-3. Aparecerá una pantalla que indica que el sitio usa ChatGPT para iniciar
-   sesión de forma segura.
-4. Pulsa **Continue with ChatGPT**.
-5. Inicia sesión con **nicomico82@gmail.com**.
-6. Cuando termine el acceso, verás la pantalla **Inicio** de Entrena.
+2. Busca el enlace personal que te envió el administrador.
+3. Pulsa el enlace completo.
+4. La primera vez verás brevemente **Preparando tu espacio**.
+5. Después aparecerá la pantalla **Inicio** de Entrena.
 
 ### Si la aplicación indica que no tienes permiso
 
-Comprueba primero el correo con el que entraste. Tener el enlace no da acceso
-automáticamente. Si usaste otra cuenta, cierra esa sesión e inicia nuevamente
-con el correo autorizado.
+Comprueba que abriste el enlace completo y no una copia cortada. Solicita un
+enlace nuevo si el administrador desactivó el anterior.
 
-Nunca compartas tu contraseña ni un código de verificación con otra persona.
+Después del primer acceso, el navegador recuerda el perfil durante 90 días.
+Puedes volver a utilizar el mismo enlace si cambias de teléfono o limpias los
+datos del navegador.
 
 ---
 
@@ -120,8 +116,8 @@ Conviene completar el perfil antes de guardar el primer entrenamiento.
 
 - **Nombre para mostrar:** el nombre que deseas ver dentro de la aplicación.
   Es obligatorio y admite hasta 60 caracteres.
-- **Cuenta de acceso:** muestra el correo de ChatGPT con el que entraste. No se
-  puede cambiar desde Entrena.
+- **Acceso personal:** muestra el número de participante asociado al enlace. No
+  se puede cambiar desde Entrena.
 - **Fecha de nacimiento:** selecciona día, mes y año.
 - **Sexo:** es opcional. Puedes elegir **Prefiero no indicar**.
 
@@ -234,7 +230,16 @@ Si la marcaste por error, púlsala nuevamente para dejarla pendiente.
 
 Pulsa **+ Agregar serie** debajo del ejercicio. Aparecerá una fila nueva y vacía.
 
-### Paso 7: guardar la sesión
+### Paso 7: agregar otro ejercicio
+
+1. Pulsa **Agregar ejercicio**.
+2. Escribe el nombre del movimiento.
+3. Pulsa **Agregar a la sesión**.
+4. Aparecerá con tres series vacías que puedes completar normalmente.
+
+El ejercicio se guarda dentro de esa sesión.
+
+### Paso 8: guardar la sesión
 
 1. Comprueba pesos, repeticiones y RPE.
 2. Marca las series que realmente completaste.
@@ -252,8 +257,7 @@ En el piloto actual, los siguientes controles se muestran como parte del diseño
 pero todavía no realizan una acción completa:
 
 - **Equipo ocupado**;
-- **Agregar nota**;
-- **Agregar ejercicio**.
+- **Agregar nota**.
 
 No necesitas utilizarlos para guardar las series existentes.
 
@@ -286,10 +290,10 @@ significa:
 
 La sección **Por qué** explica los datos usados para sugerir el ajuste.
 
-> **Estado del piloto:** actualmente esta pantalla utiliza un conjunto de datos
-> demostrativo para explicar cómo funcionará el análisis. Los botones de 4, 8 y
-> 12 semanas y el selector de ejercicios todavía no recalculan todo el informe
-> con el historial real.
+La pantalla se calcula con las series completadas y guardadas de tu perfil.
+Puedes cambiar entre 4, 8 y 12 semanas, y seleccionar cualquiera de los
+ejercicios registrados durante ese período. Si todavía no hay sesiones, verás
+una invitación para registrar el primer entrenamiento.
 
 ### Sobre el 1RM estimado
 
@@ -367,10 +371,9 @@ consulta a un profesional sanitario antes de seguir una recomendación.
 
 ## 12. Privacidad y datos
 
-- El sitio es privado y exige iniciar sesión con ChatGPT.
-- El correo identifica a quién pertenece el perfil y sus entrenamientos.
-- El perfil y las sesiones se guardan en una base D1 administrada dentro de la
-  infraestructura de OpenAI Sites/Cloudflare.
+- Cada participante se identifica mediante un enlace personal y secreto.
+- La aplicación guarda una cookie privada en el dispositivo durante 90 días.
+- El perfil y las sesiones se guardan en una base Cloudflare D1.
 - El código fuente se conserva en GitHub, pero tus registros no se guardan en el
   repositorio público.
 - Cerrar la página o publicar una versión nueva de la aplicación no borra la
@@ -386,10 +389,10 @@ otros datos sensibles en campos de la aplicación.
 ### “No puedo entrar”
 
 1. Confirma que tienes conexión a Internet.
-2. Comprueba que usaste `nicomico82@gmail.com`.
+2. Comprueba que abriste tu enlace completo.
 3. Recarga una sola vez la página.
-4. Si continúa, cierra la sesión de ChatGPT e inicia de nuevo con la cuenta
-   correcta.
+4. Si continúa, solicita al administrador que confirme que el enlace sigue
+   activo.
 
 ### “Guardé el perfil, pero no veo el nombre nuevo”
 
@@ -420,11 +423,14 @@ error continúa.
 Consulta las notas de **Estado del piloto** de este manual. Algunas funciones
 visuales todavía están en desarrollo.
 
-### “Las gráficas no coinciden con mis sesiones”
+### “Un entrenamiento no aparece en Progreso”
 
-En esta versión inicial, varias métricas del Inicio y Progreso son demostrativas.
-El registro de sesiones ya se almacena, pero aún falta conectar todo el
-historial con esas gráficas.
+Comprueba que guardaste la sesión y que las series estaban marcadas como
+completadas. También revisa si seleccionaste un período de 4, 8 o 12 semanas que
+incluya la fecha de la sesión.
+
+Las métricas resumidas de **Inicio** todavía son demostrativas; la pantalla
+**Progreso** sí utiliza el historial real del perfil.
 
 ---
 
@@ -471,4 +477,3 @@ Antes de salir de Entrena, confirma:
 
 **Entra, registra cada serie tal como ocurrió, marca lo completado y guarda antes
 de cerrar.**
-

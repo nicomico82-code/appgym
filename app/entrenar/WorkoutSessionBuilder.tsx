@@ -59,6 +59,8 @@ function newSet(exerciseId: string, position: number): WorkoutSet {
 
 export function WorkoutSessionBuilder() {
   const [exercises, setExercises] = useState(initialExercises);
+  const [showAddExercise, setShowAddExercise] = useState(false);
+  const [newExerciseName, setNewExerciseName] = useState("");
   const [saveState, setSaveState] = useState<
     "idle" | "saving" | "saved" | "error"
   >("idle");
@@ -106,6 +108,26 @@ export function WorkoutSessionBuilder() {
             },
       ),
     );
+  }
+
+  function addExercise() {
+    const name = newExerciseName.trim();
+    if (name.length < 2 || name.length > 80) return;
+
+    const id = `custom-${crypto.randomUUID()}`;
+    setExercises((current) => [
+      ...current,
+      {
+        id,
+        name,
+        lastPerformance: "Sin registros previos",
+        target: "Define una carga conservadora",
+        sets: [1, 2, 3].map((position) => newSet(id, position)),
+      },
+    ]);
+    setNewExerciseName("");
+    setShowAddExercise(false);
+    setSaveState("idle");
   }
 
   async function saveWorkout() {
@@ -242,10 +264,63 @@ export function WorkoutSessionBuilder() {
           </section>
         ))}
 
-        <button className="add-exercise-card" type="button">
-          <span>+</span>
-          Agregar ejercicio
-        </button>
+        {showAddExercise ? (
+          <section className="add-exercise-form surface-card">
+            <div>
+              <p className="eyebrow">NUEVO EJERCICIO</p>
+              <h2>¿Qué movimiento vas a realizar?</h2>
+            </div>
+            <label className="field">
+              <span>Nombre del ejercicio</span>
+              <input
+                autoFocus
+                maxLength={80}
+                placeholder="Ej.: sentadilla goblet"
+                value={newExerciseName}
+                onChange={(event) => setNewExerciseName(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    event.preventDefault();
+                    addExercise();
+                  }
+                  if (event.key === "Escape") {
+                    setShowAddExercise(false);
+                    setNewExerciseName("");
+                  }
+                }}
+              />
+            </label>
+            <div className="add-exercise-actions">
+              <button
+                className="button button-quiet"
+                type="button"
+                onClick={() => {
+                  setShowAddExercise(false);
+                  setNewExerciseName("");
+                }}
+              >
+                Cancelar
+              </button>
+              <button
+                className="button button-primary"
+                disabled={newExerciseName.trim().length < 2}
+                type="button"
+                onClick={addExercise}
+              >
+                Agregar a la sesión
+              </button>
+            </div>
+          </section>
+        ) : (
+          <button
+            className="add-exercise-card"
+            type="button"
+            onClick={() => setShowAddExercise(true)}
+          >
+            <span>+</span>
+            Agregar ejercicio
+          </button>
+        )}
       </div>
 
       <aside className="session-summary surface-card">

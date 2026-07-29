@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   experienceLabel,
   getCurrentProfile,
@@ -53,10 +54,17 @@ export async function AppShell({
     <div className="app-shell">
       <aside className="sidebar">
         <Link className="brand" href="/">
-          <span className="brand-mark">E</span>
+          <Image
+            alt="Max Level Fitness"
+            className="brand-logo"
+            height={64}
+            src="/max-level-logo.png"
+            unoptimized
+            width={67}
+          />
           <span>
-            <strong>Entrena</strong>
-            <small>PROGRESO CON CRITERIO</small>
+            <strong>Max Level</strong>
+            <small>ALCANZA TU MÁXIMO NIVEL</small>
           </span>
         </Link>
         <Navigation current={current} />
@@ -68,6 +76,9 @@ export async function AppShell({
           </span>
           <b aria-hidden="true">›</b>
         </Link>
+        <a className="sign-out-link" href="/api/access/logout">
+          Salir de este perfil
+        </a>
         <div className="sidebar-card">
           <span>MODO PILOTO</span>
           <p>

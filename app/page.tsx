@@ -53,6 +53,7 @@ export default async function Home() {
     <AppShell current="inicio">
       <div className="page-heading">
         <div>
+          <p className="brand-promise">MAX LEVEL · PARA ALCANZAR TU MÁXIMO NIVEL</p>
           <p className="eyebrow">{currentDate}</p>
           <h1>Buen día, {firstName}.</h1>
           <p className="page-subtitle">

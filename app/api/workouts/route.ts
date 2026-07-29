@@ -1,5 +1,5 @@
 import { getD1 } from "../../../db";
-import { chatGPTUserFromHeaders } from "../../chatgpt-auth";
+import { accessIdentityFromRequest } from "../../access-session";
 
 type IncomingSet = {
   setNumber?: number;
@@ -20,17 +20,6 @@ type IncomingWorkout = {
   sessionDate?: string;
   exercises?: IncomingExercise[];
 };
-
-function ownerFrom(request: Request) {
-  const authenticated = chatGPTUserFromHeaders(request.headers);
-  return {
-    key:
-      authenticated?.email.trim().toLowerCase() ??
-      "pilot-user@entrena.local",
-    email: authenticated?.email ?? "pilot-user@entrena.local",
-    displayName: authenticated?.fullName ?? "Pedro R.",
-  };
-}
 
 function validate(payload: IncomingWorkout) {
   if (!payload.name?.trim()) return "Falta el nombre de la sesión.";
@@ -76,8 +65,12 @@ function validate(payload: IncomingWorkout) {
 
 export async function GET(request: Request) {
   try {
+    const identity = await accessIdentityFromRequest(request);
+    if (!identity) {
+      return Response.json({ error: "Acceso requerido." }, { status: 401 });
+    }
     const db = getD1();
-    const ownerKey = ownerFrom(request).key;
+    const ownerKey = identity.ownerKey;
     const rows = await db
       .prepare(
         `SELECT ws.id, ws.name, ws.performed_on AS performedOn, ws.status,
@@ -111,6 +104,10 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   try {
+    const identity = await accessIdentityFromRequest(request);
+    if (!identity) {
+      return Response.json({ error: "Acceso requerido." }, { status: 401 });
+    }
     const payload = (await request.json()) as IncomingWorkout;
     const validationError = validate(payload);
     if (validationError) {
@@ -118,8 +115,7 @@ export async function POST(request: Request) {
     }
 
     const db = getD1();
-    const owner = ownerFrom(request);
-    const ownerKey = owner.key;
+    const ownerKey = identity.ownerKey;
     const provisionalUserId = crypto.randomUUID();
     await db
       .prepare(
@@ -127,7 +123,7 @@ export async function POST(request: Request) {
          (id, owner_key, email, display_name)
          VALUES (?, ?, ?, ?)`,
       )
-      .bind(provisionalUserId, ownerKey, owner.email, owner.displayName)
+      .bind(provisionalUserId, ownerKey, null, identity.label)
       .run();
 
     const user = await db

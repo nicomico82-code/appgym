@@ -1,7 +1,7 @@
-# Entrena
+# Max Level
 
-PWA móvil-first para registrar entrenamientos por serie, entender el progreso y
-recibir recomendaciones explicables.
+PWA móvil-first de Max Level Fitness para registrar entrenamientos por serie,
+entender el progreso y alcanzar el máximo nivel.
 
 Este repositorio corresponde a `nicomico82-code/appgym`. La especificación del
 GPT que dio origen al producto se conserva completa en `docs/legacy-gpt/`.
@@ -9,23 +9,25 @@ GPT que dio origen al producto se conserva completa en `docs/legacy-gpt/`.
 ## Manual de usuario
 
 La guía completa para comenzar desde cero está en
-[docs/MANUAL-DE-USUARIO.md](docs/MANUAL-DE-USUARIO.md). Incluye inicio de
-sesión, navegación, configuración del perfil, registro de series, escala RPE,
+[docs/MANUAL-DE-USUARIO.md](docs/MANUAL-DE-USUARIO.md). Incluye acceso mediante
+enlace personal, navegación, configuración del perfil, registro de series, escala RPE,
 lectura del progreso, privacidad y solución de problemas.
 
 ## Producto actual
 
 - Dashboard con próxima sesión y métricas.
 - Registro de peso, repeticiones y RPE por serie.
-- Historial visual de carga y volumen.
+- Progreso real por períodos de 4, 8 y 12 semanas.
+- Historial visual de carga, RPE y series por ejercicio.
 - Catálogo con sinónimos y alternativas.
-- Perfil editable asociado a la cuenta autenticada.
+- Perfil editable y aislado mediante enlace personal.
+- Creación de ejercicios adicionales dentro de una sesión.
 - Motor determinista inicial de progresión.
 - Persistencia relacional con D1 y migraciones Drizzle.
 - Recomendaciones preparadas para conservar evidencia y versión de reglas.
 
-Parte de las métricas del dashboard y Progreso todavía utiliza datos
-demostrativos. Esta primera versión se publica como piloto privado.
+Parte de las métricas del dashboard inicial todavía utiliza datos demostrativos.
+La pantalla Progreso se calcula desde las sesiones reales de cada enlace.
 
 ## Desarrollo
 
@@ -57,5 +59,5 @@ determinista y la versión del conjunto de reglas.
 
 ## Siguiente etapa
 
-El siguiente corte debe conectar todas las métricas al historial real, completar
-las acciones del catálogo y permitir editar sesiones guardadas.
+El siguiente corte debe conectar las métricas restantes del Inicio al historial,
+completar las acciones del catálogo y permitir editar sesiones guardadas.

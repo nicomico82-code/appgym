@@ -94,6 +94,42 @@ function templateExercises(templateId: SessionTemplateId): ExerciseDraft[] {
   });
 }
 
+function addCatalogExercise(
+  current: ExerciseDraft[],
+  requestedExercise?: string | null,
+) {
+  if (!requestedExercise) {
+    return { exercises: current, notice: "", added: false };
+  }
+
+  if (current.some((exercise) => exercise.name === requestedExercise)) {
+    return {
+      exercises: current,
+      notice: `${requestedExercise} ya está disponible en esta sesión.`,
+      added: false,
+    };
+  }
+
+  const id = `catalog-${crypto.randomUUID()}`;
+  return {
+    exercises: [
+      ...current,
+      {
+        id,
+        name: requestedExercise,
+        lastPerformance: "Agregado desde el catálogo",
+        target: "Define una carga conservadora",
+        notes: "",
+        showAlternatives: false,
+        showNotes: false,
+        sets: [1, 2, 3].map((position) => newSet(id, position)),
+      },
+    ],
+    notice: `${requestedExercise} fue agregado a esta sesión con tres series.`,
+    added: true,
+  };
+}
+
 function formatElapsed(totalSeconds: number) {
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -103,7 +139,11 @@ function formatElapsed(totalSeconds: number) {
     .join(":");
 }
 
-export function WorkoutSessionBuilder() {
+export function WorkoutSessionBuilder({
+  requestedExercise,
+}: {
+  requestedExercise?: string | null;
+}) {
   const [templateId, setTemplateId] = useState<SessionTemplateId>("A");
   const [exercises, setExercises] = useState(() => templateExercises("A"));
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -117,6 +157,7 @@ export function WorkoutSessionBuilder() {
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerElapsedSeconds, setTimerElapsedSeconds] = useState(0);
   const [timerBusy, setTimerBusy] = useState(false);
+  const [catalogNotice, setCatalogNotice] = useState("");
   const currentTemplate =
     sessionTemplates.find((template) => template.id === templateId) ??
     sessionTemplates[0];
@@ -170,7 +211,16 @@ export function WorkoutSessionBuilder() {
         };
       })
       .then((body) => {
-        if (!body?.workout) return;
+        if (!body?.workout) {
+          const prepared = addCatalogExercise(
+            templateExercises("A"),
+            requestedExercise,
+          );
+          setExercises(prepared.exercises);
+          setCatalogNotice(prepared.notice);
+          if (prepared.added) setSaveState("idle");
+          return;
+        }
 
         const templateMatch = body.workout.name.match(
           /(?:Sesión|Día) ([A-D])/i,
@@ -179,8 +229,7 @@ export function WorkoutSessionBuilder() {
           setTemplateId(templateMatch[1].toUpperCase() as SessionTemplateId);
         }
         setSessionId(body.workout.id);
-        setExercises(
-          body.workout.exercises.map((exercise) => ({
+        const loadedExercises = body.workout.exercises.map((exercise) => ({
             id: exercise.id,
             name: exercise.name,
             lastPerformance: "Última sesión guardada",
@@ -195,9 +244,14 @@ export function WorkoutSessionBuilder() {
               rpe: set.rpe === null ? "" : String(set.rpe),
               completed: set.completed,
             })),
-          })),
+          }));
+        const prepared = addCatalogExercise(
+          loadedExercises,
+          requestedExercise,
         );
-        setSaveState("saved");
+        setExercises(prepared.exercises);
+        setCatalogNotice(prepared.notice);
+        setSaveState(prepared.added ? "idle" : "saved");
       })
       .catch((error: unknown) => {
         if (error instanceof DOMException && error.name === "AbortError") return;
@@ -205,7 +259,7 @@ export function WorkoutSessionBuilder() {
       .finally(() => setLoadingWorkout(false));
 
     return () => controller.abort();
-  }, []);
+  }, [requestedExercise]);
 
   useEffect(() => {
     let active = true;
@@ -484,7 +538,21 @@ export function WorkoutSessionBuilder() {
   }
 
   return (
-    <div className="workout-layout">
+    <>
+      {catalogNotice && (
+        <div className="catalog-session-notice" role="status">
+          <span aria-hidden="true">✓</span>
+          <p>{catalogNotice}</p>
+          <button
+            aria-label="Cerrar confirmación"
+            type="button"
+            onClick={() => setCatalogNotice("")}
+          >
+            ×
+          </button>
+        </div>
+      )}
+      <div className="workout-layout">
       <div className="workout-stack">
         {exercises.map((exercise, exerciseIndex) => (
           <section className="exercise-editor surface-card" key={exercise.id}>
@@ -903,6 +971,7 @@ export function WorkoutSessionBuilder() {
           una molestia aguda.
         </p>
       </aside>
-    </div>
+      </div>
+    </>
   );
 }

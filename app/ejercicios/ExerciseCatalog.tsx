@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 import { exercises } from "../data/exercises";
 
 const filters = ["Todos", "Pecho", "Espalda", "Hombros", "Piernas"];
@@ -10,6 +11,10 @@ function normalized(value: string) {
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase();
+}
+
+function sessionHref(exerciseName: string) {
+  return `/entrenar?exercise=${encodeURIComponent(exerciseName)}`;
 }
 
 export function ExerciseCatalog() {
@@ -77,6 +82,12 @@ export function ExerciseCatalog() {
                 </div>
                 <h2>{exercise.name}</h2>
                 <p>{exercise.pattern}</p>
+                <Link
+                  className="catalog-use-primary"
+                  href={sessionHref(exercise.name)}
+                >
+                  Usar este ejercicio <span aria-hidden="true">→</span>
+                </Link>
                 <button
                   className="alternative-toggle"
                   type="button"
@@ -93,7 +104,9 @@ export function ExerciseCatalog() {
                       <div key={alternative}>
                         <span>0{index + 1}</span>
                         <strong>{alternative}</strong>
-                        <button type="button">Usar</button>
+                        <Link href={sessionHref(alternative)}>
+                          Usar en sesión
+                        </Link>
                       </div>
                     ))}
                     <small>

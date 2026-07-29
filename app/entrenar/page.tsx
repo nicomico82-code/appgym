@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { AppShell } from "../components/AppShell";
+import { canonicalExerciseName } from "../data/exercises";
 import { WorkoutSessionBuilder } from "./WorkoutSessionBuilder";
 
 export const metadata: Metadata = {
@@ -7,7 +8,20 @@ export const metadata: Metadata = {
   description: "Registra cada serie de tu entrenamiento con rapidez.",
 };
 
-export default function TrainPage() {
+type SearchParams = Promise<{
+  exercise?: string;
+}>;
+
+export default async function TrainPage({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const params = await searchParams;
+  const requestedExercise = params.exercise
+    ? canonicalExerciseName(params.exercise)
+    : null;
+
   return (
     <AppShell current="entrenar">
       <header className="section-header">
@@ -20,7 +34,7 @@ export default function TrainPage() {
           </p>
         </div>
       </header>
-      <WorkoutSessionBuilder />
+      <WorkoutSessionBuilder requestedExercise={requestedExercise} />
     </AppShell>
   );
 }

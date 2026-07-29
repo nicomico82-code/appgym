@@ -68,6 +68,15 @@ test("defines the main MVP product routes", async () => {
     /window\.location\.assign/,
   );
   assert.match(exercises, /Encuentra tu siguiente movimiento\./);
+  assert.match(
+    await readFile(
+      new URL("app/ejercicios/ExerciseCatalog.tsx", root),
+      "utf8",
+    ),
+    /Usar este ejercicio/,
+  );
+  assert.match(workoutBuilder, /Agregado desde el catálogo/);
+  assert.match(workoutBuilder, /ya está disponible en esta sesión/);
   assert.match(profile, /Un perfil que entrena contigo\./);
   assert.match(profileForm, /Guardar cambios/);
   assert.match(history, /Tu historial de entrenamiento/);

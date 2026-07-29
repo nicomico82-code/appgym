@@ -276,10 +276,14 @@ En **Ejercicios** puedes:
 - buscar por nombre, músculo, equipo o sinónimo;
 - filtrar por grupo muscular;
 - consultar el patrón de movimiento y equipo;
-- desplegar tres alternativas similares.
+- desplegar tres alternativas similares;
+- pulsar **Usar este ejercicio** en el movimiento principal;
+- pulsar **Usar en sesión** en cualquiera de sus alternativas.
 
-Para añadir un ejercicio a una sesión, utiliza **Agregar ejercicio** dentro de
-Entrenar. Para sustituir uno durante una sesión, utiliza **Equipo ocupado**.
+Al pulsar una de esas acciones, se abre **Entrenar** y el ejercicio se agrega
+con tres series. Si ya existe en la sesión, no se duplica y aparece una
+confirmación. También puedes añadir movimientos desde **Agregar ejercicio**
+dentro de Entrenar o sustituir uno con **Equipo ocupado**.
 
 ---
 

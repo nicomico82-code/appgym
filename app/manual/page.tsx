@@ -166,6 +166,14 @@ export default function ManualPage() {
               Members, Google Maps y WhatsApp. Si la respuesta no está
               confirmada, te deriva al gimnasio.
             </p>
+            <h3>Usar un ejercicio desde el catálogo</h3>
+            <p>
+              En <strong>Ejercicios</strong>, pulsa
+              <strong> Usar este ejercicio</strong> en el movimiento principal
+              o <strong>Usar en sesión</strong> en una alternativa. La
+              aplicación abre Entrenar y lo agrega con tres series. Si ya
+              estaba en la sesión, evita duplicarlo y muestra una confirmación.
+            </p>
           </article>
 
           <article className="manual-section surface-card" id="guardado-manual">

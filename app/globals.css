@@ -3028,6 +3028,29 @@ a {
   font-size: 11px;
 }
 
+.catalog-use-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 38px;
+  margin-top: 18px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: white;
+  font-size: 10px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.catalog-use-primary:hover {
+  background: var(--accent);
+}
+
+.catalog-use-primary span {
+  font-size: 14px;
+}
+
 .alternative-toggle {
   display: flex;
   width: 100%;
@@ -3089,13 +3112,15 @@ a {
   font-size: 10px;
 }
 
-.alternative-list > div button {
+.alternative-list > div button,
+.alternative-list > div a {
   border: 0;
   background: transparent;
   color: var(--accent-dark);
   cursor: pointer;
   font-size: 9px;
   font-weight: 800;
+  text-decoration: none;
 }
 
 .alternative-list > small {
@@ -3142,6 +3167,49 @@ a {
   font-size: 10px;
   font-weight: 750;
   text-decoration: underline;
+}
+
+.catalog-session-notice {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 30px;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 11px 13px;
+  border: 1px solid #bad6c5;
+  border-radius: 14px;
+  background: #e8f5e9;
+  color: #245f42;
+}
+
+.catalog-session-notice > span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 50%;
+  background: #245f42;
+  color: white;
+  font-weight: 850;
+}
+
+.catalog-session-notice p {
+  margin: 0;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1.45;
+}
+
+.catalog-session-notice button {
+  display: grid;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: #245f42;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 @media (max-width: 760px) {

@@ -1746,6 +1746,36 @@ a {
   letter-spacing: -0.045em;
 }
 
+.session-template-picker {
+  display: grid;
+  gap: 7px;
+  margin-top: 18px;
+}
+
+.session-template-picker > span {
+  color: var(--ink-soft);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.session-template-picker select {
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #f2f0e9;
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.new-session-button {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .session-completion {
   margin-top: 28px;
 }

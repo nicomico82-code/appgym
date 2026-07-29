@@ -26,38 +26,36 @@ type ExerciseDraft = {
   showNotes: boolean;
 };
 
-const initialExercises: ExerciseDraft[] = [
+type SessionTemplateId = "A" | "B" | "C" | "D";
+
+const sessionTemplates: Array<{
+  id: SessionTemplateId;
+  focus: string;
+  exercises: string[];
+}> = [
   {
-    id: "press-banca",
-    name: "Press banca con barra",
-    lastPerformance: "Última vez: 30 kg × 10 · RPE 5",
-    target: "Objetivo: 32,5 kg × 8–10",
-    notes: "",
-    showAlternatives: false,
-    showNotes: false,
-    sets: [1, 2, 3].map((index) => ({
-      id: `press-${index}`,
-      weightKg: "32.5",
-      reps: index === 1 ? "9" : index === 2 ? "8" : "",
-      rpe: index === 1 ? "7" : index === 2 ? "8" : "",
-      completed: index < 3,
-    })),
+    id: "A",
+    focus: "Pecho",
+    exercises: ["Press banca con barra", "Press militar con barra"],
   },
   {
-    id: "press-militar",
-    name: "Press militar con barra",
-    lastPerformance: "Última vez: 15 kg × 10 · RPE 4",
-    target: "Objetivo: 17,5 kg × 8–10",
-    notes: "",
-    showAlternatives: false,
-    showNotes: false,
-    sets: [1, 2, 3].map((index) => ({
-      id: `militar-${index}`,
-      weightKg: "17.5",
-      reps: "",
-      rpe: "",
-      completed: false,
-    })),
+    id: "B",
+    focus: "Espalda",
+    exercises: ["Remo con barra", "Jalón al pecho"],
+  },
+  {
+    id: "C",
+    focus: "Piernas",
+    exercises: ["Sentadilla con barra", "Peso muerto rumano"],
+  },
+  {
+    id: "D",
+    focus: "Full body",
+    exercises: [
+      "Sentadilla con barra",
+      "Press banca con barra",
+      "Remo con barra",
+    ],
   },
 ];
 
@@ -71,8 +69,29 @@ function newSet(exerciseId: string, position: number): WorkoutSet {
   };
 }
 
+function templateExercises(templateId: SessionTemplateId): ExerciseDraft[] {
+  const template =
+    sessionTemplates.find((candidate) => candidate.id === templateId) ??
+    sessionTemplates[0];
+
+  return template.exercises.map((name, exerciseIndex) => {
+    const id = `template-${template.id}-${exerciseIndex}`;
+    return {
+      id,
+      name,
+      lastPerformance: "Sin registros previos",
+      target: "Registra una carga conservadora",
+      notes: "",
+      showAlternatives: false,
+      showNotes: false,
+      sets: [1, 2, 3].map((position) => newSet(id, position)),
+    };
+  });
+}
+
 export function WorkoutSessionBuilder() {
-  const [exercises, setExercises] = useState(initialExercises);
+  const [templateId, setTemplateId] = useState<SessionTemplateId>("A");
+  const [exercises, setExercises] = useState(() => templateExercises("A"));
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [loadingWorkout, setLoadingWorkout] = useState(true);
   const [showAddExercise, setShowAddExercise] = useState(false);
@@ -81,6 +100,9 @@ export function WorkoutSessionBuilder() {
     "idle" | "saving" | "saved" | "error"
   >("idle");
   const [saveError, setSaveError] = useState("");
+  const currentTemplate =
+    sessionTemplates.find((template) => template.id === templateId) ??
+    sessionTemplates[0];
 
   const totals = useMemo(() => {
     const allSets = exercises.flatMap((exercise) => exercise.sets);
@@ -110,6 +132,7 @@ export function WorkoutSessionBuilder() {
         return (await response.json()) as {
           workout: {
             id: string;
+            name: string;
             exercises: Array<{
               id: string;
               name: string;
@@ -128,6 +151,12 @@ export function WorkoutSessionBuilder() {
       .then((body) => {
         if (!body?.workout) return;
 
+        const templateMatch = body.workout.name.match(
+          /(?:Sesión|Día) ([A-D])/i,
+        );
+        if (templateMatch) {
+          setTemplateId(templateMatch[1].toUpperCase() as SessionTemplateId);
+        }
         setSessionId(body.workout.id);
         setExercises(
           body.workout.exercises.map((exercise) => ({
@@ -156,6 +185,31 @@ export function WorkoutSessionBuilder() {
 
     return () => controller.abort();
   }, []);
+
+  function resetToTemplate(nextTemplateId: SessionTemplateId) {
+    const hasEnteredData = exercises.some(
+      (exercise) =>
+        exercise.notes ||
+        exercise.sets.some(
+          (set) => set.weightKg || set.reps || set.rpe || set.completed,
+        ),
+    );
+
+    if (
+      (sessionId || hasEnteredData) &&
+      !window.confirm(
+        "¿Comenzar una sesión nueva? Los cambios que no hayas guardado dejarán de verse en esta pantalla.",
+      )
+    ) {
+      return;
+    }
+
+    setTemplateId(nextTemplateId);
+    setSessionId(null);
+    setExercises(templateExercises(nextTemplateId));
+    setSaveError("");
+    setSaveState("idle");
+  }
 
   function updateSet(
     exerciseId: string,
@@ -266,7 +320,7 @@ export function WorkoutSessionBuilder() {
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
           sessionId,
-          name: "Día A · Empuje",
+          name: `Sesión ${currentTemplate.id} · ${currentTemplate.focus}`,
           sessionDate: new Date().toISOString(),
           exercises: exercises.map((exercise, exerciseIndex) => ({
             name: exercise.name,
@@ -582,7 +636,24 @@ export function WorkoutSessionBuilder() {
 
       <aside className="session-summary surface-card">
         <p className="eyebrow">SESIÓN EN CURSO</p>
-        <h2>Día A · Empuje</h2>
+        <h2>
+          Sesión {currentTemplate.id} · {currentTemplate.focus}
+        </h2>
+        <label className="session-template-picker">
+          <span>Plantilla de entrenamiento</span>
+          <select
+            value={templateId}
+            onChange={(event) =>
+              resetToTemplate(event.target.value as SessionTemplateId)
+            }
+          >
+            {sessionTemplates.map((template) => (
+              <option value={template.id} key={template.id}>
+                {template.id} · {template.focus}
+              </option>
+            ))}
+          </select>
+        </label>
         <div className="session-completion">
           <strong>
             {totals.completed}/{totals.total}
@@ -621,6 +692,14 @@ export function WorkoutSessionBuilder() {
             : saveState === "saving"
               ? "Guardando…"
               : "Guardar sesión"}
+        </button>
+        <button
+          className="button button-quiet new-session-button"
+          type="button"
+          disabled={loadingWorkout || saveState === "saving"}
+          onClick={() => resetToTemplate(templateId)}
+        >
+          Nueva sesión
         </button>
         <p className={`save-message ${saveState}`}>
           {saveState === "saved" && "Sesión guardada correctamente."}

@@ -46,6 +46,10 @@ test("defines the main MVP product routes", async () => {
   assert.match(workoutBuilder, /sessionId/);
   assert.match(workoutBuilder, /¿Qué significa RPE\?/);
   assert.match(workoutBuilder, /Puedes dejarlo vacío/);
+  assert.match(workoutBuilder, /SessionTemplateId/);
+  assert.match(workoutBuilder, /A · \{template\.focus\}|template\.focus/);
+  assert.match(workoutBuilder, /Nueva sesión/);
+  assert.match(workoutBuilder, /resetToTemplate/);
   assert.match(progress, /Tu progreso, con evidencia\./);
   assert.match(progress, /julianday\(ws\.performed_on\)/);
   assert.match(progress, /Series completadas por ejercicio/);

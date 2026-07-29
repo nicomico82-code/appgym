@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   exerciseAlternativesFor,
   exerciseInstructionUrl,
@@ -73,6 +73,8 @@ function newSet(exerciseId: string, position: number): WorkoutSet {
 
 export function WorkoutSessionBuilder() {
   const [exercises, setExercises] = useState(initialExercises);
+  const [sessionId, setSessionId] = useState<string | null>(null);
+  const [loadingWorkout, setLoadingWorkout] = useState(true);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState("");
   const [saveState, setSaveState] = useState<
@@ -95,6 +97,65 @@ export function WorkoutSessionBuilder() {
       ),
     [exercises],
   );
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    void fetch("/api/workouts?latest=1", {
+      cache: "no-store",
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        return (await response.json()) as {
+          workout: {
+            id: string;
+            exercises: Array<{
+              id: string;
+              name: string;
+              notes: string;
+              sets: Array<{
+                setNumber: number;
+                weightKg: number;
+                reps: number;
+                rpe: number | null;
+                completed: boolean;
+              }>;
+            }>;
+          } | null;
+        };
+      })
+      .then((body) => {
+        if (!body?.workout) return;
+
+        setSessionId(body.workout.id);
+        setExercises(
+          body.workout.exercises.map((exercise) => ({
+            id: exercise.id,
+            name: exercise.name,
+            lastPerformance: "Última sesión guardada",
+            target: "Continúa desde tus valores guardados",
+            notes: exercise.notes,
+            showAlternatives: false,
+            showNotes: false,
+            sets: exercise.sets.map((set) => ({
+              id: `${exercise.id}-${set.setNumber}`,
+              weightKg: String(set.weightKg),
+              reps: String(set.reps),
+              rpe: set.rpe === null ? "" : String(set.rpe),
+              completed: set.completed,
+            })),
+          })),
+        );
+        setSaveState("saved");
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+      })
+      .finally(() => setLoadingWorkout(false));
+
+    return () => controller.abort();
+  }, []);
 
   function updateSet(
     exerciseId: string,
@@ -204,6 +265,7 @@ export function WorkoutSessionBuilder() {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
+          sessionId,
           name: "Día A · Empuje",
           sessionDate: new Date().toISOString(),
           exercises: exercises.map((exercise, exerciseIndex) => ({
@@ -223,10 +285,12 @@ export function WorkoutSessionBuilder() {
 
       const body = (await response.json().catch(() => null)) as {
         error?: string;
+        id?: string;
       } | null;
       if (!response.ok) {
         throw new Error(body?.error || "No se pudo guardar la sesión.");
       }
+      if (body?.id) setSessionId(body.id);
       setSaveState("saved");
     } catch (error) {
       setSaveError(
@@ -540,10 +604,14 @@ export function WorkoutSessionBuilder() {
         <button
           className="button button-primary finish-button"
           type="button"
-          disabled={saveState === "saving"}
+          disabled={loadingWorkout || saveState === "saving"}
           onClick={saveWorkout}
         >
-          {saveState === "saving" ? "Guardando…" : "Guardar sesión"}
+          {loadingWorkout
+            ? "Cargando sesión…"
+            : saveState === "saving"
+              ? "Guardando…"
+              : "Guardar sesión"}
         </button>
         <p className={`save-message ${saveState}`}>
           {saveState === "saved" && "Sesión guardada correctamente."}

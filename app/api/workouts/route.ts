@@ -18,9 +18,25 @@ type IncomingExercise = {
 };
 
 type IncomingWorkout = {
+  sessionId?: string;
   name?: string;
   sessionDate?: string;
   exercises?: IncomingExercise[];
+};
+
+type DetailedSetRow = {
+  sessionId: string;
+  sessionName: string;
+  performedOn: string;
+  exerciseId: string;
+  exerciseName: string;
+  exercisePosition: number;
+  notes: string;
+  setNumber: number;
+  loadGrams: number;
+  reps: number;
+  rpeX10: number | null;
+  completed: number;
 };
 
 function validate(payload: IncomingWorkout) {
@@ -79,6 +95,92 @@ export async function GET(request: Request) {
     }
     const db = getD1();
     const ownerKey = identity.ownerKey;
+    const latestRequested = new URL(request.url).searchParams.has("latest");
+
+    if (latestRequested) {
+      const detailRows = await db
+        .prepare(
+          `SELECT
+             ws.id AS sessionId,
+             ws.name AS sessionName,
+             ws.performed_on AS performedOn,
+             se.id AS exerciseId,
+             se.exercise_name_snapshot AS exerciseName,
+             se.order_index AS exercisePosition,
+             se.notes,
+             wset.set_number AS setNumber,
+             wset.load_grams AS loadGrams,
+             wset.reps,
+             wset.rpe_x10 AS rpeX10,
+             wset.completed
+           FROM workout_sessions ws
+           JOIN users u ON u.id = ws.user_id
+           JOIN session_exercises se ON se.session_id = ws.id
+           JOIN workout_sets wset ON wset.session_exercise_id = se.id
+           WHERE u.owner_key = ?
+             AND ws.id = (
+               SELECT latest.id
+               FROM workout_sessions latest
+               JOIN users latest_user ON latest_user.id = latest.user_id
+               WHERE latest_user.owner_key = ?
+               ORDER BY latest.performed_on DESC, latest.created_at DESC
+               LIMIT 1
+             )
+           ORDER BY se.order_index, wset.set_number`,
+        )
+        .bind(ownerKey, ownerKey)
+        .all<DetailedSetRow>();
+
+      if (detailRows.results.length === 0) {
+        return Response.json({ workout: null });
+      }
+
+      const first = detailRows.results[0];
+      const grouped = new Map<
+        string,
+        {
+          id: string;
+          name: string;
+          position: number;
+          notes: string;
+          sets: Array<{
+            setNumber: number;
+            weightKg: number;
+            reps: number;
+            rpe: number | null;
+            completed: boolean;
+          }>;
+        }
+      >();
+
+      for (const row of detailRows.results) {
+        const exercise = grouped.get(row.exerciseId) ?? {
+          id: row.exerciseId,
+          name: row.exerciseName,
+          position: row.exercisePosition,
+          notes: row.notes,
+          sets: [],
+        };
+        exercise.sets.push({
+          setNumber: row.setNumber,
+          weightKg: row.loadGrams / 1000,
+          reps: row.reps,
+          rpe: row.rpeX10 === null ? null : row.rpeX10 / 10,
+          completed: Boolean(row.completed),
+        });
+        grouped.set(row.exerciseId, exercise);
+      }
+
+      return Response.json({
+        workout: {
+          id: first.sessionId,
+          name: first.sessionName,
+          sessionDate: first.performedOn,
+          exercises: Array.from(grouped.values()),
+        },
+      });
+    }
+
     const rows = await db
       .prepare(
         `SELECT ws.id, ws.name, ws.performed_on AS performedOn, ws.status,
@@ -146,24 +248,50 @@ export async function POST(request: Request) {
       );
     }
 
-    const sessionId = crypto.randomUUID();
-    const statements = [
-      db
-        .prepare(
-          `INSERT INTO workout_sessions
-           (id, user_id, name, performed_on, timezone, status, source)
-           VALUES (?, ?, ?, ?, ?, ?, ?)`,
-        )
-        .bind(
-          sessionId,
-          user.id,
-          payload.name!.trim(),
-          payload.sessionDate!,
-          "America/Santiago",
-          "completed",
-          "manual",
-        ),
-    ];
+    const requestedSessionId = payload.sessionId?.trim();
+    const existingSession = requestedSessionId
+      ? await db
+          .prepare(
+            `SELECT ws.id
+             FROM workout_sessions ws
+             JOIN users u ON u.id = ws.user_id
+             WHERE ws.id = ? AND u.owner_key = ?
+             LIMIT 1`,
+          )
+          .bind(requestedSessionId, ownerKey)
+          .first<{ id: string }>()
+      : null;
+    const sessionId = existingSession?.id ?? crypto.randomUUID();
+    const statements = existingSession
+      ? [
+          db
+            .prepare(
+              `UPDATE workout_sessions
+               SET name = ?, performed_on = ?, updated_at = CURRENT_TIMESTAMP
+               WHERE id = ?`,
+            )
+            .bind(payload.name!.trim(), payload.sessionDate!, sessionId),
+          db
+            .prepare("DELETE FROM session_exercises WHERE session_id = ?")
+            .bind(sessionId),
+        ]
+      : [
+          db
+            .prepare(
+              `INSERT INTO workout_sessions
+               (id, user_id, name, performed_on, timezone, status, source)
+               VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            )
+            .bind(
+              sessionId,
+              user.id,
+              payload.name!.trim(),
+              payload.sessionDate!,
+              "America/Santiago",
+              "completed",
+              "manual",
+            ),
+        ];
 
     for (const [exerciseIndex, exercise] of payload.exercises!.entries()) {
       const sessionExerciseId = crypto.randomUUID();
@@ -208,7 +336,10 @@ export async function POST(request: Request) {
     }
 
     await db.batch(statements);
-    return Response.json({ id: sessionId }, { status: 201 });
+    return Response.json(
+      { id: sessionId, updated: Boolean(existingSession) },
+      { status: existingSession ? 200 : 201 },
+    );
   } catch (error) {
     return Response.json(
       {

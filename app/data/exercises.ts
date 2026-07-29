@@ -98,3 +98,12 @@ export const exercises: Exercise[] = [
     alternatives: ["Press francés con barra", "Fondos", "Press francés mancuerna"],
   },
 ];
+
+export const exerciseOptions = Array.from(
+  new Set(
+    exercises.flatMap((exercise) => [
+      exercise.name,
+      ...exercise.alternatives,
+    ]),
+  ),
+).sort((left, right) => left.localeCompare(right, "es"));

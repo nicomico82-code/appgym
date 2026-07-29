@@ -1,5 +1,6 @@
 import { getD1 } from "../../../db";
 import { accessIdentityFromRequest } from "../../access-session";
+import { exerciseOptions } from "../../data/exercises";
 
 type IncomingSet = {
   setNumber?: number;
@@ -32,6 +33,9 @@ function validate(payload: IncomingWorkout) {
 
   for (const exercise of payload.exercises) {
     if (!exercise.name?.trim()) return "Cada ejercicio necesita un nombre.";
+    if (!exerciseOptions.includes(exercise.name.trim())) {
+      return "Selecciona únicamente ejercicios disponibles en el catálogo.";
+    }
     if (!exercise.sets?.length || exercise.sets.length > 30) {
       return "Cada ejercicio debe contener entre 1 y 30 series.";
     }

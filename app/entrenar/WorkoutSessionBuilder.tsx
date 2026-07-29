@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { exerciseOptions } from "../data/exercises";
 
 type WorkoutSet = {
   id: string;
@@ -21,7 +22,7 @@ type ExerciseDraft = {
 const initialExercises: ExerciseDraft[] = [
   {
     id: "press-banca",
-    name: "Press banca",
+    name: "Press banca con barra",
     lastPerformance: "Última vez: 30 kg × 10 · RPE 5",
     target: "Objetivo: 32,5 kg × 8–10",
     sets: [1, 2, 3].map((index) => ({
@@ -34,7 +35,7 @@ const initialExercises: ExerciseDraft[] = [
   },
   {
     id: "press-militar",
-    name: "Press militar",
+    name: "Press militar con barra",
     lastPerformance: "Última vez: 15 kg × 10 · RPE 4",
     target: "Objetivo: 17,5 kg × 8–10",
     sets: [1, 2, 3].map((index) => ({
@@ -72,6 +73,14 @@ export function WorkoutSessionBuilder() {
       total: allSets.length,
     };
   }, [exercises]);
+
+  const availableExerciseOptions = useMemo(
+    () =>
+      exerciseOptions.filter(
+        (name) => !exercises.some((exercise) => exercise.name === name),
+      ),
+    [exercises],
+  );
 
   function updateSet(
     exerciseId: string,
@@ -114,7 +123,9 @@ export function WorkoutSessionBuilder() {
     const name = newExerciseName.trim();
     if (name.length < 2 || name.length > 80) return;
 
-    const id = `custom-${crypto.randomUUID()}`;
+    if (!exerciseOptions.includes(name)) return;
+
+    const id = `catalog-${crypto.randomUUID()}`;
     setExercises((current) => [
       ...current,
       {
@@ -271,11 +282,9 @@ export function WorkoutSessionBuilder() {
               <h2>¿Qué movimiento vas a realizar?</h2>
             </div>
             <label className="field">
-              <span>Nombre del ejercicio</span>
-              <input
+              <span>Ejercicio del catálogo</span>
+              <select
                 autoFocus
-                maxLength={80}
-                placeholder="Ej.: sentadilla goblet"
                 value={newExerciseName}
                 onChange={(event) => setNewExerciseName(event.target.value)}
                 onKeyDown={(event) => {
@@ -288,7 +297,14 @@ export function WorkoutSessionBuilder() {
                     setNewExerciseName("");
                   }
                 }}
-              />
+              >
+                <option value="">Selecciona un ejercicio</option>
+                {availableExerciseOptions.map((exerciseName) => (
+                  <option value={exerciseName} key={exerciseName}>
+                    {exerciseName}
+                  </option>
+                ))}
+              </select>
             </label>
             <div className="add-exercise-actions">
               <button
@@ -303,7 +319,7 @@ export function WorkoutSessionBuilder() {
               </button>
               <button
                 className="button button-primary"
-                disabled={newExerciseName.trim().length < 2}
+                disabled={!exerciseOptions.includes(newExerciseName)}
                 type="button"
                 onClick={addExercise}
               >

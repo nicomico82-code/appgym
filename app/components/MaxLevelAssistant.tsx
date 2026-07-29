@@ -197,7 +197,17 @@ function answerQuestion(question: string): AssistantReply {
 
   if (day) return scheduleReply(day);
 
-  if (includesAny(value, ["hola", "buenas", "buen dia", "ayuda"])) {
+  if (
+    value.includes(" domingo ") ||
+    (value.includes(" hoy ") && todayScheduleDay() === null)
+  ) {
+    return {
+      text: "No hay clases guiadas informadas para el domingo. Para confirmar una apertura especial, consulta directamente con Max Level.",
+      links: [{ href: WHATSAPP_URL, label: "Confirmar por WhatsApp" }],
+    };
+  }
+
+  if (includesAny(value, ["hola", "buenas", "buen dia"])) {
     return {
       text: "¡Hola! Puedo ayudarte con horarios, reservas, ubicación, reglas, ejercicios, alternativas, series y RPE. ¿Qué necesitas saber?",
     };
@@ -264,7 +274,7 @@ function answerQuestion(question: string): AssistantReply {
     return { text: "Debes usar calzado deportivo dentro de las instalaciones. No está permitido entrenar descalzo." };
   }
 
-  if (includesAny(value, ["guardar", "mancuerna", "disco", "pesas", "descargar maquina"])) {
+  if (includesAny(value, ["mancuerna", "disco", "pesas", "descargar maquina"])) {
     return {
       text: "Al terminar, devuelve mancuernas y discos a su lugar, no dejes caer las pesas y deja las máquinas descargadas para la siguiente persona.",
     };
@@ -273,6 +283,13 @@ function answerQuestion(question: string): AssistantReply {
   if (includesAny(value, ["falla", "roto", "dañado", "inseguro", "accidente"])) {
     return {
       text: "Detén el uso del equipo y reporta inmediatamente la falla o situación insegura al personal de Max Level.",
+      links: [{ href: WHATSAPP_URL, label: "Contactar a Max Level" }],
+    };
+  }
+
+  if (includesAny(value, ["dolor", "lesion", "mareo", "dolor de pecho", "medico"])) {
+    return {
+      text: "Detén el ejercicio si aparece dolor agudo, mareo, dolor de pecho o pérdida de control. Habla con el personal y consulta a un profesional de salud cuando corresponda.",
       links: [{ href: WHATSAPP_URL, label: "Contactar a Max Level" }],
     };
   }
@@ -307,10 +324,33 @@ function answerQuestion(question: string): AssistantReply {
     };
   }
 
-  if (includesAny(value, ["dolor", "lesion", "mareo", "pecho", "medico"])) {
+  if (includesAny(value, ["guardar sesion", "guardar entrenamiento"])) {
     return {
-      text: "Detén el ejercicio si aparece dolor agudo, mareo, dolor de pecho o pérdida de control. Habla con el personal y consulta a un profesional de salud cuando corresponda.",
-      links: [{ href: WHATSAPP_URL, label: "Contactar a Max Level" }],
+      text: "En Entrenar, revisa los datos, marca como listas las series completadas y pulsa “Guardar sesión”. Espera el mensaje de confirmación antes de salir.",
+    };
+  }
+
+  if (includesAny(value, ["historial", "sesiones guardadas"])) {
+    return {
+      text: "Historial muestra tus sesiones guardadas en modo de solo lectura. Puedes revisarlas o eliminar una sesión completa después de confirmar la advertencia.",
+    };
+  }
+
+  if (includesAny(value, ["progreso", "recomendacion", "recomendaciones"])) {
+    return {
+      text: "Progreso usa tus series completadas y guardadas. Puedes revisar 4, 8 o 12 semanas y elegir un ejercicio. Se necesitan tres sesiones comparables antes de ajustar automáticamente una carga.",
+    };
+  }
+
+  if (includesAny(value, ["perfil", "estatura", "peso corporal"])) {
+    return {
+      text: "En Perfil puedes guardar nombre, experiencia, objetivo, peso y estatura. La estatura se escribe en centímetros: 175 equivale a 1,75 m.",
+    };
+  }
+
+  if (includesAny(value, ["cronometro", "tiempo transcurrido", "temporizador"])) {
+    return {
+      text: "El cronómetro se inicia, pausa o reinicia desde Entrenar. Se sincroniza con tu perfil y la duración queda guardada con la sesión.",
     };
   }
 

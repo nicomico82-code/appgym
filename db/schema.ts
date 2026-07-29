@@ -29,6 +29,7 @@ export const athleteProfiles = sqliteTable(
       .references(() => users.id, { onDelete: "cascade" }),
     experienceLevel: text("experience_level").notNull().default("beginner"),
     primaryGoal: text("primary_goal").notNull().default("hypertrophy"),
+    sex: text("sex").notNull().default("not_specified"),
     birthDate: text("birth_date"),
     heightMm: integer("height_mm"),
     onboardingStatus: text("onboarding_status").notNull().default("started"),

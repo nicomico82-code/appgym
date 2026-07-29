@@ -1,12 +1,23 @@
 import Link from "next/link";
+import {
+  experienceLabel,
+  getCurrentProfile,
+  profileInitials,
+} from "../lib/current-profile";
 
-type NavKey = "inicio" | "entrenar" | "progreso" | "ejercicios";
+type NavKey =
+  | "inicio"
+  | "entrenar"
+  | "progreso"
+  | "ejercicios"
+  | "perfil";
 
 const navigation: Array<{ key: NavKey; href: string; label: string; icon: string }> = [
   { key: "inicio", href: "/", label: "Inicio", icon: "IN" },
   { key: "entrenar", href: "/entrenar", label: "Entrenar", icon: "EN" },
   { key: "progreso", href: "/progreso", label: "Progreso", icon: "PR" },
   { key: "ejercicios", href: "/ejercicios", label: "Ejercicios", icon: "EX" },
+  { key: "perfil", href: "/perfil", label: "Perfil", icon: "PE" },
 ];
 
 function Navigation({ current, mobile = false }: { current: NavKey; mobile?: boolean }) {
@@ -29,13 +40,15 @@ function Navigation({ current, mobile = false }: { current: NavKey; mobile?: boo
   );
 }
 
-export function AppShell({
+export async function AppShell({
   current,
   children,
 }: {
   current: NavKey;
   children: React.ReactNode;
 }) {
+  const profile = await getCurrentProfile();
+
   return (
     <div className="app-shell">
       <aside className="sidebar">
@@ -47,6 +60,14 @@ export function AppShell({
           </span>
         </Link>
         <Navigation current={current} />
+        <Link className="sidebar-profile" href="/perfil">
+          <span className="avatar">{profileInitials(profile.displayName)}</span>
+          <span>
+            <strong>{profile.displayName}</strong>
+            <small>{experienceLabel(profile.experienceLevel)}</small>
+          </span>
+          <b aria-hidden="true">›</b>
+        </Link>
         <div className="sidebar-card">
           <span>MODO PILOTO</span>
           <p>

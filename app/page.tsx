@@ -1,6 +1,11 @@
 import Link from "next/link";
 import { AppShell } from "./components/AppShell";
 import { MetricCard } from "./components/MetricCard";
+import {
+  experienceLabel,
+  getCurrentProfile,
+  profileInitials,
+} from "./lib/current-profile";
 import { estimateOneRepMax } from "./lib/training";
 
 const weeklyBars = [38, 52, 46, 64, 58, 78, 86];
@@ -29,26 +34,42 @@ const nextExercises = [
   },
 ];
 
-export default function Home() {
+export const dynamic = "force-dynamic";
+
+export default async function Home() {
+  const profile = await getCurrentProfile();
   const estimatedOneRepMax = estimateOneRepMax(30, 10);
+  const currentDate = new Intl.DateTimeFormat("es-CL", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    timeZone: "America/Santiago",
+  })
+    .format(new Date())
+    .toLocaleUpperCase("es-CL");
+  const firstName = profile.displayName.trim().split(/\s+/)[0] || "Socio";
 
   return (
     <AppShell current="inicio">
       <div className="page-heading">
         <div>
-          <p className="eyebrow">MIÉRCOLES, 29 DE JULIO</p>
-          <h1>Buen día, Pedro.</h1>
+          <p className="eyebrow">{currentDate}</p>
+          <h1>Buen día, {firstName}.</h1>
           <p className="page-subtitle">
             Tu próxima sesión está lista. Hoy toca avanzar con control.
           </p>
         </div>
-        <div className="profile-chip" aria-label="Perfil de Pedro">
-          <span className="avatar">PR</span>
+        <Link
+          className="profile-chip"
+          href="/perfil"
+          aria-label={`Editar perfil de ${profile.displayName}`}
+        >
+          <span className="avatar">{profileInitials(profile.displayName)}</span>
           <span>
-            <strong>Pedro R.</strong>
-            <small>Plan principiante</small>
+            <strong>{profile.displayName}</strong>
+            <small>Plan {experienceLabel(profile.experienceLevel).toLowerCase()}</small>
           </span>
-        </div>
+        </Link>
       </div>
 
       <section className="hero-session">

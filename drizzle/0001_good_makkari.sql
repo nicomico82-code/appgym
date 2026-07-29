@@ -1,0 +1,1 @@
+ALTER TABLE `athlete_profiles` ADD `sex` text DEFAULT 'not_specified' NOT NULL;

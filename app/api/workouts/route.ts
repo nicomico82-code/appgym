@@ -1,4 +1,5 @@
 import { getD1 } from "../../../db";
+import { chatGPTUserFromHeaders } from "../../chatgpt-auth";
 
 type IncomingSet = {
   setNumber?: number;
@@ -21,11 +22,14 @@ type IncomingWorkout = {
 };
 
 function ownerFrom(request: Request) {
-  const email = request.headers
-    .get("oai-authenticated-user-email")
-    ?.trim()
-    .toLowerCase();
-  return email || "pilot-user@entrena.local";
+  const authenticated = chatGPTUserFromHeaders(request.headers);
+  return {
+    key:
+      authenticated?.email.trim().toLowerCase() ??
+      "pilot-user@entrena.local",
+    email: authenticated?.email ?? "pilot-user@entrena.local",
+    displayName: authenticated?.fullName ?? "Pedro R.",
+  };
 }
 
 function validate(payload: IncomingWorkout) {
@@ -73,7 +77,7 @@ function validate(payload: IncomingWorkout) {
 export async function GET(request: Request) {
   try {
     const db = getD1();
-    const ownerKey = ownerFrom(request);
+    const ownerKey = ownerFrom(request).key;
     const rows = await db
       .prepare(
         `SELECT ws.id, ws.name, ws.performed_on AS performedOn, ws.status,
@@ -114,7 +118,8 @@ export async function POST(request: Request) {
     }
 
     const db = getD1();
-    const ownerKey = ownerFrom(request);
+    const owner = ownerFrom(request);
+    const ownerKey = owner.key;
     const provisionalUserId = crypto.randomUUID();
     await db
       .prepare(
@@ -122,7 +127,7 @@ export async function POST(request: Request) {
          (id, owner_key, email, display_name)
          VALUES (?, ?, ?, ?)`,
       )
-      .bind(provisionalUserId, ownerKey, ownerKey, "Pedro")
+      .bind(provisionalUserId, ownerKey, owner.email, owner.displayName)
       .run();
 
     const user = await db

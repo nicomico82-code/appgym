@@ -272,13 +272,6 @@ Entrenar. Para sustituir uno durante una sesión, utiliza **Equipo ocupado**.
 Perfil, sesiones, series, notas, historial y cronómetro se guardan en
 Cloudflare D1.
 
-### ¿La aplicación usa inteligencia artificial?
-
-No. La versión actual no utiliza ChatGPT, modelos de lenguaje ni otra
-inteligencia artificial, y no envía tus entrenamientos a esos servicios. Las
-recomendaciones se calculan con reglas fijas y transparentes basadas en las
-sesiones, cargas, repeticiones y RPE guardados.
-
 - El mismo enlace personal apunta al mismo perfil desde todos los dispositivos.
 - La información debe guardarse antes de aparecer en otro dispositivo.
 - Si una pantalla ya estaba abierta, recárgala o vuelve a la sección para ver el

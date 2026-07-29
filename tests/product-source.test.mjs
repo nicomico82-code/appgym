@@ -72,7 +72,7 @@ test("defines the main MVP product routes", async () => {
   assert.match(history, /Tu historial de entrenamiento/);
   assert.match(history, /DeleteSessionButton/);
   assert.match(manual, /Manual de usuario/);
-  assert.match(manual, /no usa inteligencia artificial/);
+  assert.match(manual, /Cómo se calculan las recomendaciones/);
   assert.match(shell, /MODO PRUEBA/);
   assert.match(shell, /href="\/manual"/);
 });

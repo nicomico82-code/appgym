@@ -213,14 +213,6 @@ export default function ManualPage() {
           <article className="manual-section surface-card" id="datos-manual">
             <p className="eyebrow">07 · DATOS Y SINCRONIZACIÓN</p>
             <h2>Tu información vive en la base de datos</h2>
-            <div className="manual-callout">
-              <strong>Esta versión no usa inteligencia artificial.</strong>
-              <span>
-                No envía tus datos a ChatGPT. Las recomendaciones se calculan
-                con reglas fijas y transparentes basadas en sesiones, carga,
-                repeticiones y RPE.
-              </span>
-            </div>
             <ul>
               <li>El mismo enlace personal abre el mismo perfil en teléfono y computador.</li>
               <li>Perfil, sesiones, series, notas, historial y cronómetro se guardan en Cloudflare D1.</li>

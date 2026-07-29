@@ -108,6 +108,36 @@ export const exerciseOptions = Array.from(
   ),
 ).sort((left, right) => left.localeCompare(right, "es"));
 
+function normalizedExerciseName(value: string) {
+  return value
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .trim()
+    .toLowerCase();
+}
+
+export function canonicalExerciseName(name: string) {
+  const normalizedName = normalizedExerciseName(name);
+
+  for (const exercise of exercises) {
+    if (
+      normalizedExerciseName(exercise.name) === normalizedName ||
+      exercise.aliases.some(
+        (alias) => normalizedExerciseName(alias) === normalizedName,
+      )
+    ) {
+      return exercise.name;
+    }
+
+    const alternative = exercise.alternatives.find(
+      (candidate) => normalizedExerciseName(candidate) === normalizedName,
+    );
+    if (alternative) return alternative;
+  }
+
+  return null;
+}
+
 export function exerciseAlternativesFor(name: string) {
   const family = exercises.find(
     (exercise) =>

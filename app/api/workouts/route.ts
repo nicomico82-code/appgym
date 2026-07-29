@@ -1,6 +1,6 @@
 import { getD1 } from "../../../db";
 import { accessIdentityFromRequest } from "../../access-session";
-import { exerciseOptions } from "../../data/exercises";
+import { canonicalExerciseName } from "../../data/exercises";
 
 type IncomingSet = {
   setNumber?: number;
@@ -34,7 +34,7 @@ function validate(payload: IncomingWorkout) {
 
   for (const exercise of payload.exercises) {
     if (!exercise.name?.trim()) return "Cada ejercicio necesita un nombre.";
-    if (!exerciseOptions.includes(exercise.name.trim())) {
+    if (!canonicalExerciseName(exercise.name.trim())) {
       return "Selecciona únicamente ejercicios disponibles en el catálogo.";
     }
     if ((exercise.notes?.length ?? 0) > 500) {
@@ -177,7 +177,7 @@ export async function POST(request: Request) {
           .bind(
             sessionExerciseId,
             sessionId,
-            exercise.name!.trim(),
+            canonicalExerciseName(exercise.name!.trim())!,
             exercise.position ?? exerciseIndex + 1,
             "per_set",
             exercise.notes?.trim() ?? "",

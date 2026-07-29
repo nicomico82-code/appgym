@@ -78,6 +78,7 @@ export function WorkoutSessionBuilder() {
   const [saveState, setSaveState] = useState<
     "idle" | "saving" | "saved" | "error"
   >("idle");
+  const [saveError, setSaveError] = useState("");
 
   const totals = useMemo(() => {
     const allSets = exercises.flatMap((exercise) => exercise.sets);
@@ -197,6 +198,7 @@ export function WorkoutSessionBuilder() {
 
   async function saveWorkout() {
     setSaveState("saving");
+    setSaveError("");
     try {
       const response = await fetch("/api/workouts", {
         method: "POST",
@@ -219,9 +221,19 @@ export function WorkoutSessionBuilder() {
         }),
       });
 
-      if (!response.ok) throw new Error("No se pudo guardar");
+      const body = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
+      if (!response.ok) {
+        throw new Error(body?.error || "No se pudo guardar la sesión.");
+      }
       setSaveState("saved");
-    } catch {
+    } catch (error) {
+      setSaveError(
+        error instanceof Error
+          ? error.message
+          : "No se pudo guardar la sesión.",
+      );
       setSaveState("error");
     }
   }
@@ -536,7 +548,7 @@ export function WorkoutSessionBuilder() {
         <p className={`save-message ${saveState}`}>
           {saveState === "saved" && "Sesión guardada correctamente."}
           {saveState === "error" &&
-            "La vista previa está sin base de datos. Tu sesión sigue visible aquí."}
+            `${saveError} Tu sesión sigue visible aquí para que puedas intentarlo nuevamente.`}
         </p>
         <p className="safety-copy">
           El esfuerzo no debe sentirse como dolor. Detén el ejercicio si aparece

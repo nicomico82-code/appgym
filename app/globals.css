@@ -897,7 +897,7 @@ a {
     bottom: 12px;
     left: 14px;
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(6, 1fr);
     padding: 7px;
     border: 1px solid #333a38;
     border-radius: 18px;
@@ -911,7 +911,7 @@ a {
     justify-content: center;
     min-height: 49px;
     padding: 0 5px;
-    font-size: 10px;
+    font-size: 9px;
   }
 
   .mobile-nav .nav-icon {

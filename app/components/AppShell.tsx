@@ -12,7 +12,8 @@ type NavKey =
   | "historial"
   | "progreso"
   | "ejercicios"
-  | "perfil";
+  | "perfil"
+  | "manual";
 
 const navigation: Array<{ key: NavKey; href: string; label: string; icon: string }> = [
   { key: "inicio", href: "/", label: "Inicio", icon: "IN" },
@@ -21,6 +22,7 @@ const navigation: Array<{ key: NavKey; href: string; label: string; icon: string
   { key: "progreso", href: "/progreso", label: "Progreso", icon: "PR" },
   { key: "ejercicios", href: "/ejercicios", label: "Ejercicios", icon: "EX" },
   { key: "perfil", href: "/perfil", label: "Perfil", icon: "PE" },
+  { key: "manual", href: "/manual", label: "Ayuda", icon: "AY" },
 ];
 
 function Navigation({ current, mobile = false }: { current: NavKey; mobile?: boolean }) {
@@ -82,12 +84,12 @@ export async function AppShell({
           Salir de este perfil
         </a>
         <div className="sidebar-card">
-          <span>MODO PILOTO</span>
+          <span>MODO PRUEBA</span>
           <p>
             Cada recomendación explica qué datos utilizó. Tú mantienes el
             control.
           </p>
-          <Link href="/progreso">Cómo funciona →</Link>
+          <Link href="/manual">Cómo funciona →</Link>
         </div>
       </aside>
       <main className="app-main">{children}</main>

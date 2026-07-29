@@ -864,6 +864,198 @@ a {
   display: none;
 }
 
+/* User manual */
+.manual-header {
+  align-items: center;
+}
+
+.manual-header .button {
+  flex-shrink: 0;
+}
+
+.manual-quick {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 22px;
+  margin-bottom: 18px;
+  padding: clamp(24px, 4vw, 42px);
+  background:
+    radial-gradient(circle at 100% 0, rgba(207, 255, 92, 0.28), transparent 25rem),
+    var(--surface);
+}
+
+.manual-number {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--ink);
+  color: white;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.manual-quick h2 {
+  max-width: 820px;
+  margin: 0;
+  font-size: clamp(25px, 4vw, 42px);
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+
+.manual-quick ol {
+  display: grid;
+  gap: 8px;
+  margin: 22px 0 0;
+  padding-left: 20px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.manual-layout {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.32fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 18px;
+}
+
+.manual-index {
+  position: sticky;
+  top: 24px;
+  padding: 22px;
+}
+
+.manual-index nav {
+  display: grid;
+}
+
+.manual-index nav a {
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.manual-index nav a:hover {
+  color: var(--accent-dark);
+}
+
+.manual-index nav span {
+  color: #8b9390;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 9px;
+}
+
+.manual-index > p:last-child {
+  margin: 18px 0 0;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.manual-content {
+  display: grid;
+  gap: 18px;
+}
+
+.manual-section {
+  scroll-margin-top: 24px;
+  padding: clamp(25px, 4vw, 42px);
+}
+
+.manual-section h2 {
+  margin: 0 0 20px;
+  font-size: clamp(25px, 3.4vw, 38px);
+  letter-spacing: -0.05em;
+  line-height: 1.05;
+}
+
+.manual-section h3 {
+  margin: 25px 0 8px;
+  font-size: 16px;
+  letter-spacing: -0.025em;
+}
+
+.manual-section > p:not(.eyebrow),
+.manual-section li {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.manual-section > p:not(.eyebrow) {
+  max-width: 820px;
+  margin: 0 0 14px;
+}
+
+.manual-section ul {
+  display: grid;
+  gap: 8px;
+  margin: 14px 0 0;
+  padding-left: 20px;
+}
+
+.manual-definitions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px;
+  margin: 14px 0 20px;
+}
+
+.manual-definitions div {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #f2f0e9;
+}
+
+.manual-definitions dt {
+  margin-bottom: 4px;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.manual-definitions dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.manual-callout {
+  display: grid;
+  gap: 4px;
+  margin: 20px 0;
+  padding: 16px 18px;
+  border-left: 4px solid #245f42;
+  border-radius: 10px;
+  background: #e8f5e9;
+}
+
+.manual-callout.warning {
+  border-left-color: var(--accent);
+  background: #fff0ed;
+}
+
+.manual-callout strong {
+  font-size: 12px;
+}
+
+.manual-callout span {
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
 /* Shared secondary pages */
 .section-header {
   display: flex;
@@ -928,7 +1120,7 @@ a {
     bottom: 12px;
     left: 14px;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     padding: 7px;
     border: 1px solid #333a38;
     border-radius: 18px;
@@ -2692,8 +2884,13 @@ a {
 @media (max-width: 760px) {
   .workout-layout,
   .progress-hero,
-  .catalog-grid {
+  .catalog-grid,
+  .manual-layout {
     grid-template-columns: 1fr;
+  }
+
+  .manual-index {
+    position: static;
   }
 
   .session-summary {
@@ -2718,6 +2915,23 @@ a {
 }
 
 @media (max-width: 520px) {
+  .manual-header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .manual-header .button {
+    align-self: flex-start;
+  }
+
+  .manual-quick {
+    grid-template-columns: 1fr;
+  }
+
+  .manual-definitions {
+    grid-template-columns: 1fr;
+  }
+
   .exercise-editor {
     padding: 20px 15px;
   }

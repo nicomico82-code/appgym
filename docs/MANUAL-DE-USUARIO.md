@@ -1,479 +1,356 @@
 # Manual de usuario de Max Level
 
-## La guía sencilla para comenzar, registrar tus entrenamientos y entender tu progreso
+## Guía completa para el modo de prueba
 
 **Aplicación:** Max Level — para alcanzar tu máximo nivel
-**Dirección:** cada participante recibe un enlace personal
-**Estado actual:** piloto privado
 
----
+**Acceso:** enlace personal entregado por el administrador
 
-## 1. ¿Qué es Entrena?
+**Estado:** modo de prueba privado
 
-Entrena es una aplicación para llevar un registro ordenado de tus sesiones de
-gimnasio. Permite anotar cuánto peso utilizaste, cuántas repeticiones hiciste y
-qué tan difícil se sintió cada serie.
+Este manual está escrito para personas que nunca han utilizado una aplicación
+de entrenamiento. También está disponible dentro de Max Level, en **Ayuda** o
+en el enlace **Cómo funciona →**.
 
-No necesitas saber de informática para usarla. Solo necesitas:
-
-1. un teléfono, tablet o computador con acceso a Internet;
-2. el enlace personal que te entregó el administrador;
-3. conocer el peso y las repeticiones de los ejercicios que realizas.
-
-La aplicación tiene cinco secciones:
-
-| Sección | Para qué sirve |
-| --- | --- |
-| **Inicio** | Ver un resumen general y acceder rápidamente al entrenamiento. |
-| **Entrenar** | Registrar el peso, las repeticiones y el esfuerzo de cada serie. |
-| **Progreso** | Consultar tendencias y entender cómo se generan las sugerencias. |
-| **Ejercicios** | Buscar ejercicios y revisar alternativas similares. |
-| **Perfil** | Guardar tus datos, experiencia, objetivo y medidas. |
-
-> **Importante:** Entrena ayuda a registrar y organizar información. No sustituye
-> la evaluación de un médico, kinesiólogo, fisioterapeuta o entrenador
+> Max Level organiza entrenamientos y presenta referencias conservadoras. No
+> sustituye la evaluación de un médico, kinesiólogo, fisioterapeuta o entrenador
 > cualificado.
 
 ---
 
-## 2. Antes de comenzar
+## 1. Inicio rápido
 
-### ¿Quién puede entrar?
+1. Abre el enlace personal completo que te entregó el administrador.
+2. Entra en **Perfil** y revisa tus datos.
+3. Abre **Entrenar**.
+4. Elige una plantilla A, B, C o D.
+5. Escribe el peso y las repeticiones de cada serie.
+6. Agrega el RPE si sabes estimarlo.
+7. Marca como **Lista** cada serie realmente completada.
+8. Pulsa **Guardar sesión** y espera la confirmación.
 
-Esta versión utiliza un enlace diferente para cada participante. No necesitas
-crear una cuenta, escribir un correo ni recordar una contraseña.
+---
 
-Tu enlace es una llave privada: quien lo tenga puede abrir tu perfil. No lo
-publiques ni lo reenvíes. Si lo compartiste accidentalmente, pide al
-administrador que lo desactive y genere uno nuevo.
+## 2. Acceso personal y navegación
 
-### Palabras básicas que verás
+### Entrar a la aplicación
 
-| Palabra | Significado sencillo |
+No necesitas correo ni contraseña. Cada participante recibe un enlace único.
+Ese enlace funciona como una llave privada:
+
+- ábrelo completo;
+- no lo publiques ni lo reenvíes;
+- si fue compartido por error, pide al administrador que lo desactive;
+- utiliza el mismo enlace en el teléfono y el computador para abrir el mismo
+  perfil.
+
+El navegador recuerda el acceso durante 90 días. Si pulsas **Salir de este
+perfil** o borras los datos del navegador, deberás abrir nuevamente el enlace.
+
+### Secciones
+
+| Sección | Función |
 | --- | --- |
-| **Ejercicio** | Un movimiento, por ejemplo, press banca. |
-| **Serie** | Un grupo de repeticiones realizadas sin una pausa larga. |
-| **Repetición o rep** | Una ejecución completa del movimiento. |
-| **Carga** | El peso utilizado, expresado en kilogramos. |
-| **RPE** | Una puntuación del 1 al 10 que indica cuánto esfuerzo sentiste. |
-| **Volumen** | La cantidad total de trabajo acumulado. |
-| **1RM estimado** | Una estimación del mayor peso que podrías mover una vez. No es una orden para intentarlo. |
+| **Inicio** | Resumen real de sesiones, volumen, marcas y próximas referencias. |
+| **Entrenar** | Registro de la sesión actual. |
+| **Historial** | Consulta de sesiones guardadas en modo de solo lectura. |
+| **Progreso** | Gráficos, 1RM estimado y recomendaciones explicadas. |
+| **Ejercicios** | Catálogo, búsqueda y alternativas. |
+| **Perfil** | Datos personales, experiencia, objetivo y medidas. |
+| **Ayuda** | Manual de usuario dentro de la aplicación. |
+
+En computador, el menú está a la izquierda. En teléfono, aparece en la parte
+inferior.
 
 ---
 
-## 3. Cómo abrir la aplicación
+## 3. Configurar el perfil
 
-1. Abre Chrome, Safari, Edge u otro navegador.
-2. Busca el enlace personal que te envió el administrador.
-3. Pulsa el enlace completo.
-4. La primera vez verás brevemente **Preparando tu espacio**.
-5. Después aparecerá la pantalla **Inicio** de Entrena.
+Abre **Perfil**, completa los campos y pulsa **Guardar cambios**.
 
-### Si la aplicación indica que no tienes permiso
+- **Nombre para mostrar:** nombre visible en la aplicación.
+- **Acceso personal:** identifica el enlace y no se modifica desde el perfil.
+- **Fecha de nacimiento y sexo:** el sexo es opcional.
+- **Experiencia:** principiante, intermedio o avanzado.
+- **Objetivo:** ganancia muscular, fuerza, pérdida de grasa,
+  acondicionamiento u otro.
+- **Peso corporal:** se escribe en kilogramos y admite decimales.
+- **Estatura:** se escribe en centímetros. Por ejemplo, `175` se guarda como
+  175 cm, equivalente a 1,75 m.
 
-Comprueba que abriste el enlace completo y no una copia cortada. Solicita un
-enlace nuevo si el administrador desactivó el anterior.
-
-Después del primer acceso, el navegador recuerda el perfil durante 90 días.
-Puedes volver a utilizar el mismo enlace si cambias de teléfono o limpias los
-datos del navegador.
-
----
-
-## 4. Cómo moverte por la aplicación
-
-### Desde un computador
-
-El menú se encuentra en el lado izquierdo. Pulsa el nombre de la sección que
-quieras abrir: **Inicio**, **Entrenar**, **Progreso**, **Ejercicios** o
-**Perfil**.
-
-### Desde un teléfono
-
-El menú aparece en la parte inferior de la pantalla. Pulsa una opción para
-cambiar de sección. Si no ves un elemento completo, desliza la página hacia
-arriba o hacia abajo con el dedo.
-
-### Cómo volver al inicio
-
-Pulsa **Inicio** o el logotipo de **Entrena**.
+El porcentaje del perfil solamente indica cuántos campos completaste. No es una
+evaluación física.
 
 ---
 
-## 5. Configurar tu perfil por primera vez
+## 4. Entender la pantalla Inicio
 
-Conviene completar el perfil antes de guardar el primer entrenamiento.
+Inicio utiliza solamente datos guardados en tu perfil. Si todavía no tienes
+sesiones, muestra una invitación para registrar la primera.
 
-1. Abre la sección **Perfil**.
-2. Completa los campos que correspondan.
-3. Revisa los datos.
-4. Pulsa **Guardar cambios**.
-5. Espera el mensaje: **Perfil actualizado**.
+Cuando exista historial podrá mostrar:
 
-### Qué debes escribir en cada campo
+- cantidad de sesiones;
+- volumen de las últimas cuatro semanas;
+- cambio respecto del período anterior;
+- mejor 1RM estimado;
+- volumen de las últimas siete semanas;
+- resumen de la sesión más reciente;
+- referencias de carga por ejercicio.
 
-#### Datos personales
-
-- **Nombre para mostrar:** el nombre que deseas ver dentro de la aplicación.
-  Es obligatorio y admite hasta 60 caracteres.
-- **Acceso personal:** muestra el número de participante asociado al enlace. No
-  se puede cambiar desde Entrena.
-- **Fecha de nacimiento:** selecciona día, mes y año.
-- **Sexo:** es opcional. Puedes elegir **Prefiero no indicar**.
-
-#### Experiencia
-
-Elige una sola opción:
-
-- **Principiante:** llevas menos de un año entrenando o estás retomando.
-- **Intermedio:** llevas entre uno y tres años entrenando con constancia.
-- **Avanzado:** llevas más de tres años con entrenamiento estructurado.
-
-No elijas el nivel por el peso que levantas. El tiempo, la técnica y la
-constancia son referencias más útiles.
-
-#### Objetivo principal
-
-Selecciona el resultado que más te interesa:
-
-- ganancia muscular;
-- aumento de fuerza;
-- pérdida de grasa;
-- acondicionamiento general;
-- otro objetivo.
-
-#### Medidas actuales
-
-- **Peso corporal:** escribe tu peso en kilogramos. Puedes utilizar un decimal,
-  por ejemplo `72,5` o `72.5`, según el teclado del dispositivo.
-- **Estatura:** escribe tu altura en centímetros, por ejemplo `175`.
-
-Cuando cambias el peso y guardas, la aplicación conserva el nuevo registro para
-formar un historial. La estatura sustituye el valor anterior.
-
-### Porcentaje de perfil completado
-
-En el lado izquierdo de la pantalla Perfil aparece un porcentaje. Este aumenta
-cuando completas más datos. No es una nota ni una evaluación física: solamente
-indica cuánta información del formulario has proporcionado.
+No se muestran cifras de demostración como si fueran resultados personales.
 
 ---
 
-## 6. Entender la pantalla Inicio
+## 5. Registrar una sesión
 
-La pantalla **Inicio** es un resumen. Encontrarás:
+### Elegir una plantilla
 
-- un saludo con tu nombre;
-- acceso a la próxima sesión;
-- métricas generales;
-- cargas sugeridas;
-- un gráfico de tendencia;
-- enlaces rápidos a Entrenar y Progreso.
+En **Entrenar** puedes elegir:
 
-Para empezar a registrar una sesión, pulsa **Iniciar entrenamiento**.
+- **A · Pecho**
+- **B · Espalda**
+- **C · Piernas**
+- **D · Full body**
 
-> **Estado del piloto:** las cifras y gráficas del panel principal todavía
-> incluyen información demostrativa. No debes interpretarlas como un historial
-> clínico ni como una medición exacta de tu rendimiento personal.
+Cambiar la plantilla inicia una sesión nueva. Si existen datos sin guardar, la
+aplicación pide confirmación antes de reemplazarlos.
+
+### Cronómetro
+
+El cronómetro permite **Iniciar**, **Pausar** y **Reiniciar**. El tiempo:
+
+- se asocia a tu perfil;
+- puede verse desde otro dispositivo con el mismo enlace;
+- se pausa automáticamente al guardar;
+- queda registrado como duración de la sesión.
+
+El tiempo estimado cambia según la cantidad de ejercicios y series.
+
+### Completar una serie
+
+| Campo | Qué registrar |
+| --- | --- |
+| **kg** | Peso realmente utilizado. |
+| **reps** | Repeticiones realmente completadas. |
+| **RPE** | Esfuerzo percibido del 1 al 10; es opcional. |
+| **Lista** | Marca de serie completada. |
+
+Si un ejercicio no utiliza peso externo, puedes escribir `0`.
+
+### Escala RPE
+
+| RPE | Interpretación |
+| --- | --- |
+| 5–6 | Cómodo o moderado; quedaban varias repeticiones. |
+| 7–8 | Exigente, pero todavía controlado. |
+| 9 | Muy difícil; probablemente quedaba una repetición. |
+| 10 | Esfuerzo máximo; no quedaban repeticiones. |
+
+Puedes dejar RPE vacío. El entrenamiento se guarda, pero la aplicación no
+recomendará un aumento automático sin ese dato.
+
+### Agregar y eliminar series
+
+- **+ Agregar serie** crea una fila nueva.
+- El botón **×** elimina una serie.
+- Si la serie contiene datos, aparece una confirmación.
+- Cada ejercicio debe conservar al menos una serie.
 
 ---
 
-## 7. Registrar un entrenamiento paso a paso
+## 6. Herramientas de cada ejercicio
 
-Abre **Entrenar**. La sesión actual contiene ejercicios y, dentro de cada
-ejercicio, varias filas llamadas series.
+### Equipo ocupado
 
-### Paso 1: identificar la serie
+Abre alternativas del catálogo. Al elegir un reemplazo, las cargas y
+repeticiones de ese ejercicio se reinician por seguridad.
 
-Cada fila muestra su número: 1, 2, 3, etc.
+### Agregar nota
 
-### Paso 2: escribir el peso
+Permite guardar hasta 500 caracteres sobre técnica, molestias, posición del
+equipo u otra observación.
 
-En la columna **kg**, escribe el peso utilizado.
+### Ver instrucciones
 
-Ejemplos:
+Abre en otra pestaña una búsqueda de videos sobre la técnica correcta del
+ejercicio.
 
-- escribe `20` si utilizaste 20 kg;
-- escribe `32.5` si utilizaste 32,5 kg.
+### Eliminar ejercicio
 
-Si un ejercicio se realiza sin peso externo, puedes escribir `0`.
+Quita el ejercicio y sus series después de una advertencia. La sesión siempre
+debe conservar al menos un ejercicio.
 
-### Paso 3: escribir las repeticiones
+### Agregar ejercicio
 
-En la columna **reps**, escribe cuántas repeticiones completaste realmente. No
-escribas las que tenías planeadas si hiciste una cantidad diferente.
+El selector muestra únicamente movimientos existentes en el catálogo. Esto
+evita nombres inventados o duplicados. El ejercicio nuevo comienza con tres
+series.
 
-### Paso 4: indicar el RPE
+---
 
-El RPE es opcional, pero mejora la calidad del registro.
+## 7. Guardar y corregir
 
-| RPE | Cómo se sintió | Repeticiones que probablemente quedaban |
-| --- | --- | --- |
-| 5 | Cómodo | Aproximadamente 5 o más |
-| 6 | Moderado | Aproximadamente 4 |
-| 7 | Exigente pero controlado | Aproximadamente 3 |
-| 8 | Difícil, con buena técnica | Aproximadamente 2 |
-| 9 | Muy difícil | Aproximadamente 1 |
-| 10 | Esfuerzo máximo | Ninguna |
-
-Si no estás seguro, utiliza una aproximación honesta. No es necesario llegar a
-RPE 10 para progresar.
-
-### Paso 5: marcar la serie como lista
-
-Pulsa el cuadro de la columna **Lista**. Aparecerá una marca. El resumen de la
-sesión aumentará, por ejemplo de `2/6` a `3/6`.
-
-Si la marcaste por error, púlsala nuevamente para dejarla pendiente.
-
-### Paso 6: agregar otra serie
-
-Pulsa **+ Agregar serie** debajo del ejercicio. Aparecerá una fila nueva y vacía.
-
-### Paso 7: agregar otro ejercicio
-
-1. Pulsa **Agregar ejercicio**.
-2. Escribe el nombre del movimiento.
-3. Pulsa **Agregar a la sesión**.
-4. Aparecerá con tres series vacías que puedes completar normalmente.
-
-El ejercicio se guarda dentro de esa sesión.
-
-### Paso 8: guardar la sesión
-
-1. Comprueba pesos, repeticiones y RPE.
-2. Marca las series que realmente completaste.
+1. Revisa peso, repeticiones y RPE.
+2. Marca las series realmente completadas.
 3. Pulsa **Guardar sesión**.
-4. No cierres inmediatamente la página.
-5. Espera el mensaje **Sesión guardada correctamente**.
+4. Espera **Sesión guardada correctamente**.
 
-Si aparece un mensaje de error, los datos seguirán visibles en la pantalla
-mientras no recargues o cierres la página. Revisa tu conexión e intenta guardar
-nuevamente.
+La primera pulsación crea la sesión. Si continúas en la misma pantalla, haces
+cambios y vuelves a guardar, se actualiza esa misma sesión. Por eso puedes
+corregirla mientras permanece abierta.
 
-### Botones que todavía están en desarrollo
-
-En el piloto actual, los siguientes controles se muestran como parte del diseño,
-pero todavía no realizan una acción completa:
-
-- **Equipo ocupado**;
-- **Agregar nota**.
-
-No necesitas utilizarlos para guardar las series existentes.
+Para comenzar otro entrenamiento, elige una plantilla nueva y confirma el
+cambio.
 
 ---
 
-## 8. Consultar el progreso
+## 8. Historial
 
-Abre **Progreso** para ver:
+**Historial** muestra hasta las 50 sesiones guardadas más recientes con:
 
-- una propuesta de carga;
-- la explicación de por qué aparece esa propuesta;
-- carga anterior, RPE promedio y 1RM estimado;
+- fecha y hora;
+- duración;
+- ejercicios y notas;
+- peso, repeticiones y RPE;
+- estado finalizado o pendiente de cada serie.
+
+Las sesiones históricas son de solo lectura. La única modificación disponible
+es **Eliminar sesión**, que muestra una advertencia. La eliminación es
+definitiva y también afecta los cálculos de Inicio y Progreso.
+
+---
+
+## 9. Progreso y recomendaciones
+
+Progreso utiliza solamente series marcadas como completadas y sesiones
+guardadas. Puedes elegir períodos de 4, 8 o 12 semanas y cambiar el ejercicio
+analizado.
+
+Las recomendaciones se calculan por ejercicio:
+
+1. Se necesitan tres sesiones distintas y comparables.
+2. Si una sesión llega a RPE 9 o más, aconseja revisar recuperación y técnica.
+3. Si cumples el objetivo tres veces con RPE promedio de 6 o menos, propone
+   subir 2,5 kg.
+4. Si no completas las repeticiones, mantiene la carga.
+5. Si completas las repeticiones con mayor esfuerzo, mantiene la carga para
+   consolidar.
+6. Sin RPE, guarda el entrenamiento, pero no aumenta automáticamente.
+
+La aplicación muestra una frase directa, por ejemplo:
+
+> Para tu próxima sesión te recomendamos press banca con 32,5 kg.
+
+También explica el motivo y presenta:
+
+- última carga;
+- RPE promedio;
 - evolución de carga;
-- esfuerzo percibido;
-- series por grupo muscular.
+- 1RM estimado.
 
-### Cómo leer una recomendación
-
-Una recomendación como:
-
-**32,5 kg · 3 series · 8–10 repeticiones · RPE 7–8**
-
-significa:
-
-1. utilizar 32,5 kg como referencia;
-2. hacer tres series;
-3. intentar entre 8 y 10 repeticiones por serie;
-4. terminar cada serie sintiendo que todavía podrías hacer aproximadamente dos
-   o tres repeticiones con buena técnica.
-
-La sección **Por qué** explica los datos usados para sugerir el ajuste.
-
-La pantalla se calcula con las series completadas y guardadas de tu perfil.
-Puedes cambiar entre 4, 8 y 12 semanas, y seleccionar cualquiera de los
-ejercicios registrados durante ese período. Si todavía no hay sesiones, verás
-una invitación para registrar el primer entrenamiento.
-
-### Sobre el 1RM estimado
-
-Es un cálculo orientativo. No significa que debas intentar levantar ese peso.
-Las pruebas máximas implican riesgos y deben realizarse solo cuando sean
-adecuadas y, preferiblemente, con supervisión.
+El 1RM es orientativo. No es una instrucción para intentar ese peso máximo.
 
 ---
 
-## 9. Buscar ejercicios y alternativas
+## 10. Catálogo de ejercicios
 
-Abre **Ejercicios**.
+En **Ejercicios** puedes:
 
-### Buscar por nombre
+- buscar por nombre, músculo, equipo o sinónimo;
+- filtrar por grupo muscular;
+- consultar el patrón de movimiento y equipo;
+- desplegar tres alternativas similares.
 
-1. Pulsa el campo **Busca press, remo, sentadilla…**
-2. Escribe una palabra.
-3. Los resultados se filtran automáticamente.
-
-La búsqueda reconoce algunos nombres alternativos comunes.
-
-### Filtrar por zona corporal
-
-Pulsa **Todos**, **Pecho**, **Espalda**, **Hombros** o **Piernas**.
-
-Puedes combinar un filtro con una búsqueda. Por ejemplo, elegir **Espalda** y
-escribir `remo`.
-
-### Ver alternativas
-
-Pulsa **Ver 3 alternativas** en la tarjeta de un ejercicio. Se mostrarán
-movimientos con un patrón parecido. Pulsa **Ocultar alternativas** para cerrar
-la lista.
-
-Si no aparece ningún resultado, pulsa **Limpiar búsqueda**.
-
-> **Estado del piloto:** el botón **Usar** que acompaña cada alternativa todavía
-> no reemplaza automáticamente un ejercicio en la sesión.
+Para añadir un ejercicio a una sesión, utiliza **Agregar ejercicio** dentro de
+Entrenar. Para sustituir uno durante una sesión, utiliza **Equipo ocupado**.
 
 ---
 
-## 10. Corregir información
+## 11. Datos y sincronización
 
-### Corregir el perfil
+Perfil, sesiones, series, notas, historial y cronómetro se guardan en
+Cloudflare D1.
 
-Abre **Perfil**, modifica el dato y pulsa **Guardar cambios**.
+### ¿La aplicación usa inteligencia artificial?
 
-### Corregir una serie antes de guardar
+No. La versión actual no utiliza ChatGPT, modelos de lenguaje ni otra
+inteligencia artificial, y no envía tus entrenamientos a esos servicios. Las
+recomendaciones se calculan con reglas fijas y transparentes basadas en las
+sesiones, cargas, repeticiones y RPE guardados.
 
-Pulsa el campo correspondiente, elimina el valor y escribe el correcto.
+- El mismo enlace personal apunta al mismo perfil desde todos los dispositivos.
+- La información debe guardarse antes de aparecer en otro dispositivo.
+- Si una pantalla ya estaba abierta, recárgala o vuelve a la sección para ver el
+  último cambio guardado.
+- Publicar una versión nueva de la aplicación no borra los registros.
+- El código se conserva en GitHub, pero los entrenamientos no se guardan en el
+  repositorio.
 
-### Corregir una sesión después de guardarla
-
-La edición de una sesión histórica todavía no está disponible en la interfaz.
-Evita guardar hasta revisar las filas. Si guardaste información equivocada,
-notifícalo al administrador del piloto.
+No escribas contraseñas, tarjetas ni información clínica detallada en las
+notas.
 
 ---
 
-## 11. Seguridad durante el entrenamiento
+## 12. Problemas frecuentes
+
+### No puedo entrar
+
+Comprueba Internet y que el enlace esté completo. Si fue desactivado, solicita
+uno nuevo al administrador.
+
+### Guardé, pero no aparece en otro dispositivo
+
+Confirma que:
+
+1. usaste el mismo enlace;
+2. viste el mensaje de guardado;
+3. recargaste la sección en el otro dispositivo.
+
+### Un ejercicio no aparece en Progreso
+
+Comprueba que la sesión esté guardada, que las series estén marcadas como
+listas y que la fecha esté dentro del período seleccionado.
+
+### No puedo guardar una sesión
+
+Revisa que peso y repeticiones sean números válidos. Si escribiste RPE, debe
+estar entre 1 y 10. Mantén la pantalla abierta y vuelve a intentarlo.
+
+### Marqué o añadí algo por error
+
+- Pulsa nuevamente la marca **Lista** para dejar la serie pendiente.
+- Usa **×** para eliminar una serie.
+- Usa **Eliminar ejercicio** para quitar un movimiento.
+- Mientras la sesión siga abierta, corrige y pulsa nuevamente **Guardar
+  sesión**.
+
+---
+
+## 13. Seguridad durante el entrenamiento
 
 Detén el ejercicio si aparece:
 
 - dolor agudo o repentino;
 - mareo, desmayo o dificultad inusual para respirar;
-- pérdida repentina de fuerza o control;
 - dolor de pecho;
-- una molestia que empeora en cada repetición.
+- pérdida repentina de fuerza o control;
+- una molestia que empeora con cada repetición.
 
-El cansancio muscular y el dolor no son lo mismo. Si tienes una lesión, una
-enfermedad, estás embarazada o tienes dudas sobre qué actividad es segura,
-consulta a un profesional sanitario antes de seguir una recomendación.
-
----
-
-## 12. Privacidad y datos
-
-- Cada participante se identifica mediante un enlace personal y secreto.
-- La aplicación guarda una cookie privada en el dispositivo durante 90 días.
-- El perfil y las sesiones se guardan en una base Cloudflare D1.
-- El código fuente se conserva en GitHub, pero tus registros no se guardan en el
-  repositorio público.
-- Cerrar la página o publicar una versión nueva de la aplicación no borra la
-  base de datos.
-
-No registres contraseñas, números de tarjetas, información clínica detallada ni
-otros datos sensibles en campos de la aplicación.
+El cansancio muscular y el dolor no son lo mismo. Consulta a un profesional si
+tienes una lesión, enfermedad, embarazo o dudas sobre una actividad.
 
 ---
 
-## 13. Problemas frecuentes
+## Lista final antes de salir
 
-### “No puedo entrar”
-
-1. Confirma que tienes conexión a Internet.
-2. Comprueba que abriste tu enlace completo.
-3. Recarga una sola vez la página.
-4. Si continúa, solicita al administrador que confirme que el enlace sigue
-   activo.
-
-### “Guardé el perfil, pero no veo el nombre nuevo”
-
-Espera el mensaje de confirmación y vuelve a **Inicio**. Si aún aparece el nombre
-anterior, recarga la página.
-
-### “No puedo guardar el perfil”
-
-Revisa que:
-
-- el nombre no esté vacío;
-- el peso esté entre 20 y 500 kg;
-- la estatura esté entre 80 y 260 cm;
-- hayas elegido una opción válida en cada lista.
-
-### “No puedo guardar el entrenamiento”
-
-1. Revisa la conexión.
-2. Comprueba que peso y repeticiones sean números válidos.
-3. Si escribiste RPE, usa un valor entre 1 y 10.
-4. Pulsa nuevamente **Guardar sesión**.
-
-No cierres ni recargues la pantalla antes de copiar o recordar los datos si el
-error continúa.
-
-### “Un botón no hace nada”
-
-Consulta las notas de **Estado del piloto** de este manual. Algunas funciones
-visuales todavía están en desarrollo.
-
-### “Un entrenamiento no aparece en Progreso”
-
-Comprueba que guardaste la sesión y que las series estaban marcadas como
-completadas. También revisa si seleccionaste un período de 4, 8 o 12 semanas que
-incluya la fecha de la sesión.
-
-Las métricas resumidas de **Inicio** todavía son demostrativas; la pantalla
-**Progreso** sí utiliza el historial real del perfil.
-
----
-
-## 14. Rutina recomendada de uso
-
-### Antes de entrenar
-
-1. Entra en la aplicación.
-2. Comprueba que aparezca tu nombre.
-3. Revisa la sesión y las cargas de referencia.
-
-### Durante el entrenamiento
-
-1. Registra cada serie al terminarla.
-2. Escribe lo que hiciste realmente.
-3. Añade el RPE.
-4. Marca la serie como lista.
-
-### Al finalizar
-
-1. Revisa todas las filas.
-2. Pulsa **Guardar sesión**.
-3. Espera la confirmación.
-4. Cierra la aplicación solo después de guardar.
-
----
-
-## 15. Lista de comprobación rápida
-
-Antes de salir de Entrena, confirma:
-
-- [ ] Entré con la cuenta correcta.
-- [ ] Registré el peso de cada serie.
+- [ ] Registré el peso real.
 - [ ] Registré las repeticiones reales.
-- [ ] Añadí el RPE cuando pude estimarlo.
-- [ ] Marqué como listas solo las series completadas.
-- [ ] Revisé los datos.
+- [ ] Añadí RPE si pude estimarlo.
+- [ ] Marqué solo las series completadas.
+- [ ] Revisé ejercicios y notas.
 - [ ] Pulsé **Guardar sesión**.
 - [ ] Vi el mensaje de confirmación.
 
----
-
-## 16. Resumen en una frase
-
-**Entra, registra cada serie tal como ocurrió, marca lo completado y guarda antes
+**Entra, registra lo que realmente hiciste, marca lo completado y guarda antes
 de cerrar.**

@@ -3,11 +3,13 @@
 ## Manual para usuarios
 
 El archivo [MANUAL-DE-USUARIO.md](./MANUAL-DE-USUARIO.md) explica la aplicación
-desde cero: acceso, navegación, perfil, registro de sesiones, RPE, progreso,
-ejercicios, privacidad y solución de problemas.
+desde cero: acceso por enlace, navegación, perfil, plantillas A–D, cronómetro,
+series, RPE, catálogo, notas, instrucciones, guardado, historial, progreso,
+recomendaciones, sincronización, privacidad y solución de problemas.
 
 Está escrito para que una persona sin experiencia previa con aplicaciones pueda
-seguirlo paso a paso.
+seguirlo paso a paso. La misma guía está disponible dentro de la aplicación en
+la sección **Ayuda**.
 
 ## Documentación de origen
 

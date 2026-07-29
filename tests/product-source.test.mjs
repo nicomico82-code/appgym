@@ -20,7 +20,7 @@ test("defines the finished product dashboard without starter artifacts", async (
 });
 
 test("defines the main MVP product routes", async () => {
-  const [train, workoutBuilder, progress, exercises, profile, profileForm, history] =
+  const [train, workoutBuilder, progress, exercises, profile, profileForm, history, manual, shell] =
     await Promise.all([
     readFile(new URL("app/entrenar/page.tsx", root), "utf8"),
     readFile(new URL("app/entrenar/WorkoutSessionBuilder.tsx", root), "utf8"),
@@ -29,6 +29,8 @@ test("defines the main MVP product routes", async () => {
     readFile(new URL("app/perfil/page.tsx", root), "utf8"),
     readFile(new URL("app/perfil/ProfileForm.tsx", root), "utf8"),
     readFile(new URL("app/historial/page.tsx", root), "utf8"),
+    readFile(new URL("app/manual/page.tsx", root), "utf8"),
+    readFile(new URL("app/components/AppShell.tsx", root), "utf8"),
   ]);
 
   assert.match(train, /Registra\. Ajusta\. Continúa\./);
@@ -69,6 +71,10 @@ test("defines the main MVP product routes", async () => {
   assert.match(profileForm, /Guardar cambios/);
   assert.match(history, /Tu historial de entrenamiento/);
   assert.match(history, /DeleteSessionButton/);
+  assert.match(manual, /Manual de usuario/);
+  assert.match(manual, /no usa inteligencia artificial/);
+  assert.match(shell, /MODO PRUEBA/);
+  assert.match(shell, /href="\/manual"/);
 });
 
 test("keeps persistence, private links and PWA infrastructure", async () => {

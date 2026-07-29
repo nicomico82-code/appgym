@@ -6,18 +6,26 @@ recibir recomendaciones explicables.
 Este repositorio corresponde a `nicomico82-code/appgym`. La especificación del
 GPT que dio origen al producto se conserva completa en `docs/legacy-gpt/`.
 
+## Manual de usuario
+
+La guía completa para comenzar desde cero está en
+[docs/MANUAL-DE-USUARIO.md](docs/MANUAL-DE-USUARIO.md). Incluye inicio de
+sesión, navegación, configuración del perfil, registro de series, escala RPE,
+lectura del progreso, privacidad y solución de problemas.
+
 ## Producto actual
 
 - Dashboard con próxima sesión y métricas.
 - Registro de peso, repeticiones y RPE por serie.
 - Historial visual de carga y volumen.
 - Catálogo con sinónimos y alternativas.
+- Perfil editable asociado a la cuenta autenticada.
 - Motor determinista inicial de progresión.
 - Persistencia relacional con D1 y migraciones Drizzle.
 - Recomendaciones preparadas para conservar evidencia y versión de reglas.
 
-El contenido del dashboard corresponde a un perfil de demostración llamado
-Pedro. Esta primera versión se publica como piloto privado.
+Parte de las métricas del dashboard y Progreso todavía utiliza datos
+demostrativos. Esta primera versión se publica como piloto privado.
 
 ## Desarrollo
 
@@ -49,6 +57,5 @@ determinista y la versión del conjunto de reglas.
 
 ## Siguiente etapa
 
-El siguiente corte debe incorporar onboarding, perfil real, catálogo completo
-importado desde los CSV, estado vacío para usuarios nuevos y aislamiento por
-gimnasio.
+El siguiente corte debe conectar todas las métricas al historial real, completar
+las acciones del catálogo y permitir editar sesiones guardadas.

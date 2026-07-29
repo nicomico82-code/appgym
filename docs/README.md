@@ -1,4 +1,15 @@
-# Documentación de origen
+# Documentación
+
+## Manual para usuarios
+
+El archivo [MANUAL-DE-USUARIO.md](./MANUAL-DE-USUARIO.md) explica la aplicación
+desde cero: acceso, navegación, perfil, registro de sesiones, RPE, progreso,
+ejercicios, privacidad y solución de problemas.
+
+Está escrito para que una persona sin experiencia previa con aplicaciones pueda
+seguirlo paso a paso.
+
+## Documentación de origen
 
 `legacy-gpt/` conserva los diez archivos originales utilizados para definir el
 Entrenador Virtual IA:

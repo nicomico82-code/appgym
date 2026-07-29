@@ -386,6 +386,37 @@ a {
   color: #171715;
 }
 
+.home-empty {
+  display: grid;
+  justify-items: start;
+  min-height: 360px;
+  align-content: center;
+  padding: clamp(34px, 7vw, 76px);
+  background:
+    radial-gradient(circle at 90% 10%, rgba(195, 255, 62, 0.28), transparent 24rem),
+    var(--surface);
+}
+
+.home-empty h2 {
+  max-width: 720px;
+  margin: 24px 0 12px;
+  font-size: clamp(2.2rem, 6vw, 4.6rem);
+  letter-spacing: -0.07em;
+  line-height: 0.95;
+}
+
+.home-empty > p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.home-empty .hero-actions {
+  margin-top: 28px;
+}
+
 .hero-session::after {
   position: absolute;
   right: -80px;

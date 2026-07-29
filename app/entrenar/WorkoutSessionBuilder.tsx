@@ -333,6 +333,42 @@ export function WorkoutSessionBuilder() {
             },
       ),
     );
+    setSaveState("idle");
+  }
+
+  function removeSet(exerciseId: string, setId: string, setNumber: number) {
+    const exercise = exercises.find((item) => item.id === exerciseId);
+    if (!exercise || exercise.sets.length <= 1) return;
+
+    const set = exercise.sets.find((item) => item.id === setId);
+    const hasData = Boolean(
+      set &&
+        (set.weightKg.trim() ||
+          set.reps.trim() ||
+          set.rpe.trim() ||
+          set.completed),
+    );
+
+    if (
+      hasData &&
+      !window.confirm(
+        `¿Eliminar la serie ${setNumber}? Se perderán los datos ingresados en ella.`,
+      )
+    ) {
+      return;
+    }
+
+    setExercises((current) =>
+      current.map((item) =>
+        item.id !== exerciseId || item.sets.length <= 1
+          ? item
+          : {
+              ...item,
+              sets: item.sets.filter((workoutSet) => workoutSet.id !== setId),
+            },
+      ),
+    );
+    setSaveState("idle");
   }
 
   function replaceExercise(exerciseId: string, replacementName: string) {
@@ -477,6 +513,7 @@ export function WorkoutSessionBuilder() {
                   </details>
                 </span>
                 <span>Lista</span>
+                <span className="remove-set-heading">Quitar</span>
               </div>
               {exercise.sets.map((set, setIndex) => (
                 <div
@@ -537,6 +574,22 @@ export function WorkoutSessionBuilder() {
                     }
                   >
                     {set.completed ? "✓" : ""}
+                  </button>
+                  <button
+                    aria-label={`Eliminar serie ${setIndex + 1}`}
+                    className="remove-set"
+                    disabled={exercise.sets.length <= 1}
+                    title={
+                      exercise.sets.length <= 1
+                        ? "El ejercicio debe conservar al menos una serie"
+                        : `Eliminar serie ${setIndex + 1}`
+                    }
+                    type="button"
+                    onClick={() =>
+                      removeSet(exercise.id, set.id, setIndex + 1)
+                    }
+                  >
+                    ×
                   </button>
                 </div>
               ))}

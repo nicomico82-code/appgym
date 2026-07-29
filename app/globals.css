@@ -1557,7 +1557,7 @@ a {
 
 .set-row {
   display: grid;
-  grid-template-columns: 52px repeat(3, minmax(60px, 110px)) 50px;
+  grid-template-columns: 52px repeat(3, minmax(60px, 110px)) 50px 38px;
   align-items: center;
   justify-content: space-between;
   gap: 9px;
@@ -1674,6 +1674,36 @@ a {
 .set-row.completed .complete-set {
   border-color: #245f42;
   background: #245f42;
+}
+
+.remove-set-heading {
+  text-align: center;
+}
+
+.remove-set {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  justify-self: center;
+  border: 1px solid #dfb8b2;
+  border-radius: 50%;
+  background: transparent;
+  color: #a3342c;
+  cursor: pointer;
+  font-size: 19px;
+  line-height: 1;
+}
+
+.remove-set:hover:not(:disabled),
+.remove-set:focus-visible {
+  border-color: #a3342c;
+  background: #fff0ed;
+}
+
+.remove-set:disabled {
+  cursor: not-allowed;
+  opacity: 0.3;
 }
 
 .exercise-editor-footer {
@@ -2702,7 +2732,7 @@ a {
   }
 
   .set-row {
-    grid-template-columns: 36px repeat(3, minmax(46px, 1fr)) 38px;
+    grid-template-columns: 30px repeat(3, minmax(42px, 1fr)) 36px 32px;
     gap: 5px;
   }
 

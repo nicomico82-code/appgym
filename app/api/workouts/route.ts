@@ -21,6 +21,7 @@ type IncomingWorkout = {
   sessionId?: string;
   name?: string;
   sessionDate?: string;
+  durationSeconds?: number | null;
   exercises?: IncomingExercise[];
 };
 
@@ -28,6 +29,7 @@ type DetailedSetRow = {
   sessionId: string;
   sessionName: string;
   performedOn: string;
+  durationSeconds: number | null;
   exerciseId: string;
   exerciseName: string;
   exercisePosition: number;
@@ -46,6 +48,15 @@ function validate(payload: IncomingWorkout) {
   }
   if (!payload.exercises?.length || payload.exercises.length > 40) {
     return "La sesión debe contener entre 1 y 40 ejercicios.";
+  }
+  if (
+    payload.durationSeconds !== null &&
+    payload.durationSeconds !== undefined &&
+    (!Number.isInteger(payload.durationSeconds) ||
+      payload.durationSeconds < 0 ||
+      payload.durationSeconds > 172800)
+  ) {
+    return "La duración registrada no es válida.";
   }
 
   for (const exercise of payload.exercises) {
@@ -104,6 +115,7 @@ export async function GET(request: Request) {
              ws.id AS sessionId,
              ws.name AS sessionName,
              ws.performed_on AS performedOn,
+             ws.duration_seconds AS durationSeconds,
              se.id AS exerciseId,
              se.exercise_name_snapshot AS exerciseName,
              se.order_index AS exercisePosition,
@@ -176,6 +188,7 @@ export async function GET(request: Request) {
           id: first.sessionId,
           name: first.sessionName,
           sessionDate: first.performedOn,
+          durationSeconds: first.durationSeconds,
           exercises: Array.from(grouped.values()),
         },
       });
@@ -207,6 +220,48 @@ export async function GET(request: Request) {
             ? error.message
             : "No se pudo consultar el historial.",
       },
+      { status: 500 },
+    );
+  }
+}
+
+export async function DELETE(request: Request) {
+  try {
+    const identity = await accessIdentityFromRequest(request);
+    if (!identity) {
+      return Response.json({ error: "Acceso requerido." }, { status: 401 });
+    }
+
+    const sessionId = new URL(request.url).searchParams.get("id")?.trim();
+    if (!sessionId) {
+      return Response.json(
+        { error: "Falta identificar la sesión." },
+        { status: 400 },
+      );
+    }
+
+    const result = await getD1()
+      .prepare(
+        `DELETE FROM workout_sessions
+         WHERE id = ?
+           AND user_id IN (
+             SELECT id FROM users WHERE owner_key = ?
+           )`,
+      )
+      .bind(sessionId, identity.ownerKey)
+      .run();
+
+    if ((result.meta.changes ?? 0) === 0) {
+      return Response.json(
+        { error: "La sesión no existe o ya fue eliminada." },
+        { status: 404 },
+      );
+    }
+
+    return Response.json({ deleted: true });
+  } catch {
+    return Response.json(
+      { error: "No se pudo eliminar la sesión." },
       { status: 500 },
     );
   }
@@ -267,10 +322,16 @@ export async function POST(request: Request) {
           db
             .prepare(
               `UPDATE workout_sessions
-               SET name = ?, performed_on = ?, updated_at = CURRENT_TIMESTAMP
+               SET name = ?, performed_on = ?, duration_seconds = ?,
+                   updated_at = CURRENT_TIMESTAMP
                WHERE id = ?`,
             )
-            .bind(payload.name!.trim(), payload.sessionDate!, sessionId),
+            .bind(
+              payload.name!.trim(),
+              payload.sessionDate!,
+              payload.durationSeconds ?? null,
+              sessionId,
+            ),
           db
             .prepare("DELETE FROM session_exercises WHERE session_id = ?")
             .bind(sessionId),
@@ -279,8 +340,8 @@ export async function POST(request: Request) {
           db
             .prepare(
               `INSERT INTO workout_sessions
-               (id, user_id, name, performed_on, timezone, status, source)
-               VALUES (?, ?, ?, ?, ?, ?, ?)`,
+               (id, user_id, name, performed_on, timezone, status, source, duration_seconds)
+               VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
             )
             .bind(
               sessionId,
@@ -290,6 +351,7 @@ export async function POST(request: Request) {
               "America/Santiago",
               "completed",
               "manual",
+              payload.durationSeconds ?? null,
             ),
         ];
 

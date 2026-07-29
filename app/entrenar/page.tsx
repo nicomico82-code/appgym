@@ -19,10 +19,6 @@ export default function TrainPage() {
             es opcional y puedes cambiar cualquier valor.
           </p>
         </div>
-        <div className="session-clock">
-          <small>TIEMPO ESTIMADO</small>
-          <strong>42 min</strong>
-        </div>
       </header>
       <WorkoutSessionBuilder />
     </AppShell>

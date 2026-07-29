@@ -9,6 +9,7 @@ import {
 type NavKey =
   | "inicio"
   | "entrenar"
+  | "historial"
   | "progreso"
   | "ejercicios"
   | "perfil";
@@ -16,6 +17,7 @@ type NavKey =
 const navigation: Array<{ key: NavKey; href: string; label: string; icon: string }> = [
   { key: "inicio", href: "/", label: "Inicio", icon: "IN" },
   { key: "entrenar", href: "/entrenar", label: "Entrenar", icon: "EN" },
+  { key: "historial", href: "/historial", label: "Historial", icon: "HI" },
   { key: "progreso", href: "/progreso", label: "Progreso", icon: "PR" },
   { key: "ejercicios", href: "/ejercicios", label: "Ejercicios", icon: "EX" },
   { key: "perfil", href: "/perfil", label: "Perfil", icon: "PE" },

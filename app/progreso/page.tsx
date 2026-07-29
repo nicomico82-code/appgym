@@ -189,6 +189,12 @@ export default async function ProgressPage({
     recover: "PRIORIZAR RECUPERACIÓN",
     insufficient: "REUNIENDO EVIDENCIA",
   }[recommendation.action];
+  const recommendationMessage = {
+    increase: `Para tu próxima sesión te recomendamos ${selectedExercise} con ${formatKg(suggestedWeight)} kg. Completaste el objetivo con esfuerzo controlado; vamos a progresar.`,
+    hold: `Para tu próxima sesión te recomendamos mantener ${selectedExercise} en ${formatKg(suggestedWeight)} kg y consolidar las repeticiones.`,
+    recover: `Antes de aumentar ${selectedExercise}, usa ${formatKg(suggestedWeight)} kg como referencia y prioriza recuperación y técnica.`,
+    insufficient: `Aún no cambiaremos la carga de ${selectedExercise}. Necesitamos tres sesiones comparables para darte una recomendación confiable.`,
+  }[recommendation.action];
 
   const volumeByExercise = new Map<string, number>();
   for (const row of rows) {
@@ -242,6 +248,7 @@ export default async function ProgressPage({
           <p className="prescription">
             Referencia para la próxima sesión · rango objetivo 8–10 reps
           </p>
+          <p className="recommendation-message">{recommendationMessage}</p>
         </div>
         <div className="reason-card">
           <p className="eyebrow">POR QUÉ</p>

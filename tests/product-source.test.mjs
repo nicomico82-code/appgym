@@ -20,7 +20,7 @@ test("defines the finished product dashboard without starter artifacts", async (
 });
 
 test("defines the main MVP product routes", async () => {
-  const [train, workoutBuilder, progress, exercises, profile, profileForm] =
+  const [train, workoutBuilder, progress, exercises, profile, profileForm, history] =
     await Promise.all([
     readFile(new URL("app/entrenar/page.tsx", root), "utf8"),
     readFile(new URL("app/entrenar/WorkoutSessionBuilder.tsx", root), "utf8"),
@@ -28,6 +28,7 @@ test("defines the main MVP product routes", async () => {
     readFile(new URL("app/ejercicios/page.tsx", root), "utf8"),
     readFile(new URL("app/perfil/page.tsx", root), "utf8"),
     readFile(new URL("app/perfil/ProfileForm.tsx", root), "utf8"),
+    readFile(new URL("app/historial/page.tsx", root), "utf8"),
   ]);
 
   assert.match(train, /Registra\. Ajusta\. Continúa\./);
@@ -50,6 +51,8 @@ test("defines the main MVP product routes", async () => {
   assert.match(workoutBuilder, /A · \{template\.focus\}|template\.focus/);
   assert.match(workoutBuilder, /Nueva sesión/);
   assert.match(workoutBuilder, /resetToTemplate/);
+  assert.match(workoutBuilder, /workout-timer/);
+  assert.match(workoutBuilder, /Tiempo transcurrido/);
   assert.match(progress, /Tu progreso, con evidencia\./);
   assert.match(progress, /julianday\(ws\.performed_on\)/);
   assert.match(progress, /Series completadas por ejercicio/);
@@ -64,6 +67,8 @@ test("defines the main MVP product routes", async () => {
   assert.match(exercises, /Encuentra tu siguiente movimiento\./);
   assert.match(profile, /Un perfil que entrena contigo\./);
   assert.match(profileForm, /Guardar cambios/);
+  assert.match(history, /Tu historial de entrenamiento/);
+  assert.match(history, /DeleteSessionButton/);
 });
 
 test("keeps persistence, private links and PWA infrastructure", async () => {
@@ -78,6 +83,7 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
     migration,
     profileMigration,
     accessMigration,
+    timerApi,
   ] = await Promise.all([
     readFile(new URL(".openai/hosting.json", root), "utf8"),
     readFile(new URL("app/manifest.ts", root), "utf8"),
@@ -89,6 +95,7 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
     access(new URL("drizzle/0000_hard_sally_floyd.sql", root)),
     access(new URL("drizzle/0001_good_makkari.sql", root)),
     readFile(new URL("drizzle/0002_mean_thunderbolts.sql", root), "utf8"),
+    readFile(new URL("app/api/workout-timer/route.ts", root), "utf8"),
   ]);
 
   assert.match(hosting, /"d1": "DB"/);
@@ -97,11 +104,14 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
   assert.match(schema, /export const recommendations/);
   assert.match(schema, /sex: text\("sex"\)/);
   assert.match(schema, /export const accessLinks/);
+  assert.match(schema, /export const workoutTimers/);
   assert.match(api, /Math\.round\(set\.weightKg! \* 1000\)/);
   assert.match(api, /accessIdentityFromRequest/);
   assert.match(api, /canonicalExerciseName/);
   assert.match(api, /latestRequested/);
   assert.match(api, /existingSession/);
+  assert.match(api, /export async function DELETE/);
+  assert.match(timerApi, /elapsedSeconds/);
   assert.match(api, /exercise\.notes\?\.trim/);
   assert.match(profileApi, /export async function PUT/);
   assert.match(accessSession, /SHA-256/);

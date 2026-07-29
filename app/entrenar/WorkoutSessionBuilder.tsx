@@ -26,6 +26,11 @@ type ExerciseDraft = {
   showNotes: boolean;
 };
 
+type TimerApiState = {
+  running: boolean;
+  elapsedSeconds: number;
+};
+
 type SessionTemplateId = "A" | "B" | "C" | "D";
 
 const sessionTemplates: Array<{
@@ -89,6 +94,15 @@ function templateExercises(templateId: SessionTemplateId): ExerciseDraft[] {
   });
 }
 
+function formatElapsed(totalSeconds: number) {
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return [hours, minutes, seconds]
+    .map((value) => String(value).padStart(2, "0"))
+    .join(":");
+}
+
 export function WorkoutSessionBuilder() {
   const [templateId, setTemplateId] = useState<SessionTemplateId>("A");
   const [exercises, setExercises] = useState(() => templateExercises("A"));
@@ -100,6 +114,9 @@ export function WorkoutSessionBuilder() {
     "idle" | "saving" | "saved" | "error"
   >("idle");
   const [saveError, setSaveError] = useState("");
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerElapsedSeconds, setTimerElapsedSeconds] = useState(0);
+  const [timerBusy, setTimerBusy] = useState(false);
   const currentTemplate =
     sessionTemplates.find((template) => template.id === templateId) ??
     sessionTemplates[0];
@@ -111,6 +128,10 @@ export function WorkoutSessionBuilder() {
       total: allSets.length,
     };
   }, [exercises]);
+  const estimatedMinutes = Math.max(
+    10,
+    Math.ceil((totals.total * 2.25 + exercises.length * 2) / 5) * 5,
+  );
 
   const availableExerciseOptions = useMemo(
     () =>
@@ -186,6 +207,71 @@ export function WorkoutSessionBuilder() {
     return () => controller.abort();
   }, []);
 
+  useEffect(() => {
+    let active = true;
+
+    async function refreshTimer() {
+      try {
+        const response = await fetch("/api/workout-timer", {
+          cache: "no-store",
+        });
+        if (!response.ok || !active) return;
+        const body = (await response.json()) as TimerApiState;
+        if (!active) return;
+        setTimerRunning(body.running);
+        setTimerElapsedSeconds(body.elapsedSeconds);
+      } catch {
+        // El siguiente sondeo vuelve a intentar la sincronización.
+      }
+    }
+
+    void refreshTimer();
+    const pollingId = window.setInterval(refreshTimer, 5000);
+    const handleVisibility = () => {
+      if (document.visibilityState === "visible") void refreshTimer();
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
+    return () => {
+      active = false;
+      window.clearInterval(pollingId);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!timerRunning) return;
+    const tickingId = window.setInterval(
+      () => setTimerElapsedSeconds((current) => current + 1),
+      1000,
+    );
+    return () => window.clearInterval(tickingId);
+  }, [timerRunning]);
+
+  async function updateTimer(
+    action: "start" | "pause" | "reset",
+  ): Promise<TimerApiState> {
+    setTimerBusy(true);
+    try {
+      const response = await fetch("/api/workout-timer", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ action }),
+      });
+      const body = (await response.json()) as TimerApiState & {
+        error?: string;
+      };
+      if (!response.ok) {
+        throw new Error(body.error || "No se pudo actualizar el cronómetro.");
+      }
+      setTimerRunning(body.running);
+      setTimerElapsedSeconds(body.elapsedSeconds);
+      return body;
+    } finally {
+      setTimerBusy(false);
+    }
+  }
+
   function resetToTemplate(nextTemplateId: SessionTemplateId) {
     const hasEnteredData = exercises.some(
       (exercise) =>
@@ -209,6 +295,7 @@ export function WorkoutSessionBuilder() {
     setExercises(templateExercises(nextTemplateId));
     setSaveError("");
     setSaveState("idle");
+    void updateTimer("reset");
   }
 
   function updateSet(
@@ -315,6 +402,9 @@ export function WorkoutSessionBuilder() {
     setSaveState("saving");
     setSaveError("");
     try {
+      const timerState = timerRunning
+        ? await updateTimer("pause")
+        : { running: false, elapsedSeconds: timerElapsedSeconds };
       const response = await fetch("/api/workouts", {
         method: "POST",
         headers: { "content-type": "application/json" },
@@ -322,6 +412,7 @@ export function WorkoutSessionBuilder() {
           sessionId,
           name: `Sesión ${currentTemplate.id} · ${currentTemplate.focus}`,
           sessionDate: new Date().toISOString(),
+          durationSeconds: timerState.elapsedSeconds,
           exercises: exercises.map((exercise, exerciseIndex) => ({
             name: exercise.name,
             position: exerciseIndex + 1,
@@ -654,6 +745,49 @@ export function WorkoutSessionBuilder() {
             ))}
           </select>
         </label>
+        <section className="workout-timer" aria-label="Cronómetro de la sesión">
+          <div className="timer-heading">
+            <span>Tiempo transcurrido</span>
+            <small>Estimado: {estimatedMinutes} min</small>
+          </div>
+          <strong>{formatElapsed(timerElapsedSeconds)}</strong>
+          <div className="timer-actions">
+            <button
+              type="button"
+              disabled={timerBusy || timerRunning}
+              onClick={() => void updateTimer("start")}
+            >
+              Iniciar
+            </button>
+            <button
+              type="button"
+              disabled={timerBusy || !timerRunning}
+              onClick={() => void updateTimer("pause")}
+            >
+              Pausar
+            </button>
+            <button
+              type="button"
+              disabled={timerBusy || timerElapsedSeconds === 0}
+              onClick={() => {
+                if (
+                  window.confirm(
+                    "¿Reiniciar el cronómetro de esta sesión desde cero?",
+                  )
+                ) {
+                  void updateTimer("reset");
+                }
+              }}
+            >
+              Reiniciar
+            </button>
+          </div>
+          <small className="timer-sync-status">
+            {timerRunning
+              ? "En curso · sincronizado entre dispositivos"
+              : "Pausado · sincronizado entre dispositivos"}
+          </small>
+        </section>
         <div className="session-completion">
           <strong>
             {totals.completed}/{totals.total}
@@ -706,6 +840,11 @@ export function WorkoutSessionBuilder() {
           {saveState === "error" &&
             `${saveError} Tu sesión sigue visible aquí para que puedas intentarlo nuevamente.`}
         </p>
+        {saveState === "saved" && (
+          <a className="saved-progress-link" href="/progreso">
+            Ver recomendación →
+          </a>
+        )}
         <p className="safety-copy">
           El esfuerzo no debe sentirse como dolor. Detén el ejercicio si aparece
           una molestia aguda.

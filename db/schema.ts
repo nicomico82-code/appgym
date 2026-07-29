@@ -24,6 +24,14 @@ export const accessLinks = sqliteTable(
   ],
 );
 
+export const workoutTimers = sqliteTable("workout_timers", {
+  ownerKey: text("owner_key").primaryKey(),
+  startedAt: text("started_at"),
+  accumulatedSeconds: integer("accumulated_seconds").notNull().default(0),
+  running: integer("running", { mode: "boolean" }).notNull().default(false),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const users = sqliteTable(
   "users",
   {
@@ -157,6 +165,7 @@ export const workoutSessions = sqliteTable(
     status: text("status").notNull().default("completed"),
     source: text("source").notNull().default("manual"),
     notes: text("notes").notNull().default(""),
+    durationSeconds: integer("duration_seconds"),
     clientIdempotencyKey: text("client_idempotency_key"),
     createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
     updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),

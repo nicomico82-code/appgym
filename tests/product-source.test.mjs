@@ -83,6 +83,8 @@ test("defines the main MVP product routes", async () => {
   assert.match(workoutBuilder, /catalog-session-notice.*warning/s);
   assert.match(workoutBuilder, /parseLocalizedDecimal/);
   assert.match(workoutBuilder, /placeholder="Ej\.: 12,5"/);
+  assert.match(workoutBuilder, /api\/workout-draft/);
+  assert.match(workoutBuilder, /Borrador guardado automáticamente/);
   assert.match(profile, /Un perfil que entrena contigo\./);
   assert.match(profileForm, /Guardar cambios/);
   assert.match(history, /Tu historial de entrenamiento/);
@@ -111,6 +113,8 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
     profileMigration,
     accessMigration,
     timerApi,
+    draftApi,
+    draftMigration,
   ] = await Promise.all([
     readFile(new URL(".openai/hosting.json", root), "utf8"),
     readFile(new URL("app/manifest.ts", root), "utf8"),
@@ -123,6 +127,8 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
     access(new URL("drizzle/0001_good_makkari.sql", root)),
     readFile(new URL("drizzle/0002_mean_thunderbolts.sql", root), "utf8"),
     readFile(new URL("app/api/workout-timer/route.ts", root), "utf8"),
+    readFile(new URL("app/api/workout-draft/route.ts", root), "utf8"),
+    readFile(new URL("drizzle/0004_elite_maginty.sql", root), "utf8"),
   ]);
 
   assert.match(hosting, /"d1": "DB"/);
@@ -132,6 +138,7 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
   assert.match(schema, /sex: text\("sex"\)/);
   assert.match(schema, /export const accessLinks/);
   assert.match(schema, /export const workoutTimers/);
+  assert.match(schema, /export const workoutDrafts/);
   assert.match(api, /Math\.round\(set\.weightKg! \* 1000\)/);
   assert.match(api, /accessIdentityFromRequest/);
   assert.match(api, /canonicalExerciseName/);
@@ -139,6 +146,9 @@ test("keeps persistence, private links and PWA infrastructure", async () => {
   assert.match(api, /existingSession/);
   assert.match(api, /export async function DELETE/);
   assert.match(timerApi, /elapsedSeconds/);
+  assert.match(draftApi, /exercises_json/);
+  assert.match(draftApi, /export async function DELETE/);
+  assert.match(draftMigration, /CREATE TABLE `workout_drafts`/);
   assert.match(api, /exercise\.notes\?\.trim/);
   assert.match(profileApi, /export async function PUT/);
   assert.match(accessSession, /SHA-256/);

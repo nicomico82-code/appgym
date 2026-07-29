@@ -46,7 +46,7 @@ export default function ManualPage() {
             <li>Elige una sesión A, B, C o D y activa el cronómetro si quieres.</li>
             <li>Escribe peso, repeticiones y, opcionalmente, RPE.</li>
             <li>Marca como lista cada serie realmente completada.</li>
-            <li>Pulsa <strong>Guardar sesión</strong> antes de salir.</li>
+            <li>Espera el guardado automático del borrador y pulsa <strong>Guardar sesión</strong> para enviarla al historial.</li>
           </ol>
         </div>
       </section>
@@ -188,6 +188,13 @@ export default function ManualPage() {
           <article className="manual-section surface-card" id="guardado-manual">
             <p className="eyebrow">05 · GUARDADO E HISTORIAL</p>
             <h2>Guarda, revisa y protege tus registros</h2>
+            <p>
+              Mientras entrenas, la aplicación guarda automáticamente un
+              borrador con pesos, repeticiones, RPE, series marcadas, notas y
+              ejercicios. Espera el mensaje <strong>Borrador guardado
+              automáticamente</strong> antes de recargar o cambiar de
+              dispositivo.
+            </p>
             <p>
               Pulsa <strong>Guardar sesión</strong> y espera la confirmación. La
               primera vez se crea el registro; si sigues en esa misma pantalla

@@ -27,7 +27,8 @@ en el enlace **Cómo funciona →**.
 5. Escribe el peso y las repeticiones de cada serie.
 6. Agrega el RPE si sabes estimarlo.
 7. Marca como **Lista** cada serie realmente completada.
-8. Pulsa **Guardar sesión** y espera la confirmación.
+8. Espera el guardado automático del borrador y pulsa **Guardar sesión** para
+   enviarla al historial.
 
 ---
 
@@ -218,6 +219,11 @@ primera versión.
 ---
 
 ## 7. Guardar y corregir
+
+Mientras completas el entrenamiento, la aplicación guarda automáticamente un
+borrador en el servidor con pesos, repeticiones, RPE, series terminadas, notas y
+ejercicios. Cuando aparezca **Borrador guardado automáticamente**, puedes
+recargar o abrir el mismo enlace en otro dispositivo sin perder lo ingresado.
 
 1. Revisa peso, repeticiones y RPE.
 2. Marca las series realmente completadas.

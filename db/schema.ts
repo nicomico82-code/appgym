@@ -32,6 +32,14 @@ export const workoutTimers = sqliteTable("workout_timers", {
   updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
 });
 
+export const workoutDrafts = sqliteTable("workout_drafts", {
+  ownerKey: text("owner_key").primaryKey(),
+  templateId: text("template_id").notNull().default("A"),
+  sessionId: text("session_id"),
+  exercisesJson: text("exercises_json").notNull(),
+  updatedAt: text("updated_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+});
+
 export const users = sqliteTable(
   "users",
   {

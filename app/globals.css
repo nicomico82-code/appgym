@@ -2567,6 +2567,22 @@ a {
   color: #9d3521;
 }
 
+.draft-message {
+  min-height: 18px;
+  margin: 9px 0 0;
+  color: #68716e;
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.draft-message.saved {
+  color: #236345;
+}
+
+.draft-message.error {
+  color: #9d3521;
+}
+
 .safety-copy {
   margin: 13px 0 0;
   padding-top: 13px;

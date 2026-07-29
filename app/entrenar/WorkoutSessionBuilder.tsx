@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   exerciseAlternativesFor,
   exerciseInstructionUrl,
@@ -213,6 +213,7 @@ export function WorkoutSessionBuilder({
   const [templateId, setTemplateId] = useState<SessionTemplateId>("A");
   const [exercises, setExercises] = useState(() => templateExercises("A"));
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const sessionIdRef = useRef<string | null>(null);
   const [loadingWorkout, setLoadingWorkout] = useState(true);
   const [showAddExercise, setShowAddExercise] = useState(false);
   const [newExerciseName, setNewExerciseName] = useState("");
@@ -223,6 +224,9 @@ export function WorkoutSessionBuilder({
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerElapsedSeconds, setTimerElapsedSeconds] = useState(0);
   const [timerBusy, setTimerBusy] = useState(false);
+  const [draftState, setDraftState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >("idle");
   const [catalogNotice, setCatalogNotice] = useState<CatalogNotice | null>(
     null,
   );
@@ -253,15 +257,48 @@ export function WorkoutSessionBuilder({
   );
 
   useEffect(() => {
+    sessionIdRef.current = sessionId;
+  }, [sessionId]);
+
+  useEffect(() => {
     const controller = new AbortController();
 
-    void fetch("/api/workouts?latest=1", {
-      cache: "no-store",
-      signal: controller.signal,
-    })
-      .then(async (response) => {
-        if (!response.ok) return null;
-        return (await response.json()) as {
+    async function loadWorkout() {
+      try {
+        const draftResponse = await fetch("/api/workout-draft", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (draftResponse.ok) {
+          const draftBody = (await draftResponse.json()) as {
+            draft: {
+              templateId: SessionTemplateId;
+              sessionId: string | null;
+              exercises: ExerciseDraft[];
+            } | null;
+          };
+          if (draftBody.draft) {
+            const prepared = addCatalogExercise(
+              draftBody.draft.exercises,
+              requestedExercise,
+              draftBody.draft.templateId,
+            );
+            setTemplateId(draftBody.draft.templateId);
+            setSessionId(draftBody.draft.sessionId);
+            setExercises(prepared.exercises);
+            setCatalogNotice(prepared.notice);
+            setSaveState("idle");
+            setDraftState("saved");
+            return;
+          }
+        }
+
+        const response = await fetch("/api/workouts?latest=1", {
+          cache: "no-store",
+          signal: controller.signal,
+        });
+        if (!response.ok) return;
+        const body = (await response.json()) as {
           workout: {
             id: string;
             name: string;
@@ -279,9 +316,8 @@ export function WorkoutSessionBuilder({
             }>;
           } | null;
         };
-      })
-      .then((body) => {
-        if (!body?.workout) {
+
+        if (!body.workout) {
           const prepared = addCatalogExercise(
             templateExercises("A"),
             requestedExercise,
@@ -326,14 +362,57 @@ export function WorkoutSessionBuilder({
         setExercises(prepared.exercises);
         setCatalogNotice(prepared.notice);
         setSaveState(prepared.added ? "idle" : "saved");
-      })
-      .catch((error: unknown) => {
+      } catch (error: unknown) {
         if (error instanceof DOMException && error.name === "AbortError") return;
-      })
-      .finally(() => setLoadingWorkout(false));
+      } finally {
+        if (!controller.signal.aborted) setLoadingWorkout(false);
+      }
+    }
+
+    void loadWorkout();
 
     return () => controller.abort();
   }, [requestedExercise]);
+
+  useEffect(() => {
+    if (
+      loadingWorkout ||
+      saveState === "saving" ||
+      saveState === "saved"
+    ) {
+      return;
+    }
+
+    const controller = new AbortController();
+    const timeoutId = window.setTimeout(() => {
+      setDraftState("saving");
+      void fetch("/api/workout-draft", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          templateId,
+          sessionId: sessionIdRef.current,
+          exercises,
+        }),
+        signal: controller.signal,
+      })
+        .then((response) => {
+          if (!response.ok) throw new Error("Draft save failed");
+          setDraftState("saved");
+        })
+        .catch((error: unknown) => {
+          if (error instanceof DOMException && error.name === "AbortError") {
+            return;
+          }
+          setDraftState("error");
+        });
+    }, 600);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [exercises, loadingWorkout, saveState, templateId]);
 
   useEffect(() => {
     let active = true;
@@ -615,6 +694,8 @@ export function WorkoutSessionBuilder({
         throw new Error(body?.error || "No se pudo guardar la sesión.");
       }
       if (body?.id) setSessionId(body.id);
+      await fetch("/api/workout-draft", { method: "DELETE" });
+      setDraftState("idle");
       setSaveState("saved");
     } catch (error) {
       setSaveError(
@@ -1056,6 +1137,13 @@ export function WorkoutSessionBuilder({
         >
           Nueva sesión
         </button>
+        <p className={`draft-message ${draftState}`} aria-live="polite">
+          {draftState === "saving" && "Guardando borrador…"}
+          {draftState === "saved" &&
+            "Borrador guardado automáticamente. Puedes recargar sin perder los datos."}
+          {draftState === "error" &&
+            "No se pudo guardar el borrador. Revisa tu conexión antes de recargar."}
+        </p>
         <p className={`save-message ${saveState}`}>
           {saveState === "saved" && "Sesión guardada correctamente."}
           {saveState === "error" &&

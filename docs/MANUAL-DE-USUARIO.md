@@ -113,6 +113,17 @@ En **Entrenar** puedes elegir:
 - **C · Piernas**
 - **D · Full body**
 
+Las plantillas separan los ejercicios para mantener el objetivo de la sesión:
+
+- A admite pecho, hombros y tríceps.
+- B admite espalda y bíceps.
+- C admite piernas.
+- D es una sesión mixta y admite ejercicios de todo el cuerpo.
+
+Si intentas agregar un movimiento que pertenece a otra sección, la aplicación
+no lo añade y muestra un aviso con la plantilla correcta. También puedes elegir
+D · Full body si quieres combinar grupos musculares.
+
 Cambiar la plantilla inicia una sesión nueva. Si existen datos sin guardar, la
 aplicación pide confirmación antes de reemplazarlos.
 
@@ -131,7 +142,7 @@ El tiempo estimado cambia según la cantidad de ejercicios y series.
 
 | Campo | Qué registrar |
 | --- | --- |
-| **kg** | Peso realmente utilizado. |
+| **kg** | Peso realmente utilizado. Admite coma o punto decimal; por ejemplo, `12,5`. |
 | **reps** | Repeticiones realmente completadas. |
 | **RPE** | Esfuerzo percibido del 1 al 10; es opcional. |
 | **Lista** | Marca de serie completada. |
@@ -185,7 +196,8 @@ debe conservar al menos un ejercicio.
 
 El selector muestra únicamente movimientos existentes en el catálogo. Esto
 evita nombres inventados o duplicados. El ejercicio nuevo comienza con tres
-series.
+series. Además, el selector muestra solo los ejercicios compatibles con la
+plantilla activa.
 
 ### Asistente Max Level
 

@@ -77,6 +77,12 @@ test("defines the main MVP product routes", async () => {
   );
   assert.match(workoutBuilder, /Agregado desde el catálogo/);
   assert.match(workoutBuilder, /ya está disponible en esta sesión/);
+  assert.match(workoutBuilder, /isExerciseAllowedForTemplate/);
+  assert.match(workoutBuilder, /No puedes agregar/);
+  assert.match(workoutBuilder, /D · Full body/);
+  assert.match(workoutBuilder, /catalog-session-notice.*warning/s);
+  assert.match(workoutBuilder, /parseLocalizedDecimal/);
+  assert.match(workoutBuilder, /placeholder="Ej\.: 12,5"/);
   assert.match(profile, /Un perfil que entrena contigo\./);
   assert.match(profileForm, /Guardar cambios/);
   assert.match(history, /Tu historial de entrenamiento/);

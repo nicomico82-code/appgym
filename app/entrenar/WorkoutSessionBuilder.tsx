@@ -5,6 +5,7 @@ import {
   exerciseAlternativesFor,
   exerciseInstructionUrl,
   exerciseOptions,
+  exerciseTrainingSection,
 } from "../data/exercises";
 
 type WorkoutSet = {
@@ -32,6 +33,10 @@ type TimerApiState = {
 };
 
 type SessionTemplateId = "A" | "B" | "C" | "D";
+type CatalogNotice = {
+  text: string;
+  tone: "success" | "warning";
+};
 
 const sessionTemplates: Array<{
   id: SessionTemplateId;
@@ -63,6 +68,43 @@ const sessionTemplates: Array<{
     ],
   },
 ];
+
+const sectionDescriptions: Record<
+  SessionTemplateId,
+  { name: string; exerciseType: string }
+> = {
+  A: { name: "A · Pecho", exerciseType: "pecho, hombros y tríceps" },
+  B: { name: "B · Espalda", exerciseType: "espalda y bíceps" },
+  C: { name: "C · Piernas", exerciseType: "piernas" },
+  D: { name: "D · Full body", exerciseType: "todo el cuerpo" },
+};
+
+function isExerciseAllowedForTemplate(
+  exerciseName: string,
+  templateId: SessionTemplateId,
+) {
+  return (
+    templateId === "D" || exerciseTrainingSection(exerciseName) === templateId
+  );
+}
+
+function incompatibleExerciseNotice(
+  exerciseName: string,
+  templateId: SessionTemplateId,
+): CatalogNotice {
+  const exerciseSection = exerciseTrainingSection(exerciseName);
+  const destination = exerciseSection
+    ? sectionDescriptions[exerciseSection]
+    : null;
+  const origin = sectionDescriptions[templateId];
+
+  return {
+    tone: "warning",
+    text: destination
+      ? `Tu sesión es ${origin.name}. No puedes agregar ${exerciseName} porque corresponde a ${destination.exerciseType}. Usa ${destination.name} o D · Full body.`
+      : `Tu sesión es ${origin.name}. ${exerciseName} no corresponde a los ejercicios permitidos en esta plantilla.`,
+  };
+}
 
 function newSet(exerciseId: string, position: number): WorkoutSet {
   return {
@@ -97,15 +139,27 @@ function templateExercises(templateId: SessionTemplateId): ExerciseDraft[] {
 function addCatalogExercise(
   current: ExerciseDraft[],
   requestedExercise?: string | null,
+  templateId: SessionTemplateId = "A",
 ) {
   if (!requestedExercise) {
-    return { exercises: current, notice: "", added: false };
+    return { exercises: current, notice: null, added: false };
+  }
+
+  if (!isExerciseAllowedForTemplate(requestedExercise, templateId)) {
+    return {
+      exercises: current,
+      notice: incompatibleExerciseNotice(requestedExercise, templateId),
+      added: false,
+    };
   }
 
   if (current.some((exercise) => exercise.name === requestedExercise)) {
     return {
       exercises: current,
-      notice: `${requestedExercise} ya está disponible en esta sesión.`,
+      notice: {
+        text: `${requestedExercise} ya está disponible en esta sesión.`,
+        tone: "success" as const,
+      },
       added: false,
     };
   }
@@ -125,7 +179,10 @@ function addCatalogExercise(
         sets: [1, 2, 3].map((position) => newSet(id, position)),
       },
     ],
-    notice: `${requestedExercise} fue agregado a esta sesión con tres series.`,
+    notice: {
+      text: `${requestedExercise} fue agregado a esta sesión con tres series.`,
+      tone: "success" as const,
+    },
     added: true,
   };
 }
@@ -137,6 +194,15 @@ function formatElapsed(totalSeconds: number) {
   return [hours, minutes, seconds]
     .map((value) => String(value).padStart(2, "0"))
     .join(":");
+}
+
+function localizedDecimalValue(value: string) {
+  const normalized = value.replace(".", ",");
+  return /^\d{0,4}(?:,\d{0,2})?$/.test(normalized) ? normalized : null;
+}
+
+function parseLocalizedDecimal(value: string) {
+  return Number(value.replace(",", "."));
 }
 
 export function WorkoutSessionBuilder({
@@ -157,7 +223,9 @@ export function WorkoutSessionBuilder({
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerElapsedSeconds, setTimerElapsedSeconds] = useState(0);
   const [timerBusy, setTimerBusy] = useState(false);
-  const [catalogNotice, setCatalogNotice] = useState("");
+  const [catalogNotice, setCatalogNotice] = useState<CatalogNotice | null>(
+    null,
+  );
   const currentTemplate =
     sessionTemplates.find((template) => template.id === templateId) ??
     sessionTemplates[0];
@@ -177,9 +245,11 @@ export function WorkoutSessionBuilder({
   const availableExerciseOptions = useMemo(
     () =>
       exerciseOptions.filter(
-        (name) => !exercises.some((exercise) => exercise.name === name),
+        (name) =>
+          isExerciseAllowedForTemplate(name, templateId) &&
+          !exercises.some((exercise) => exercise.name === name),
       ),
-    [exercises],
+    [exercises, templateId],
   );
 
   useEffect(() => {
@@ -215,6 +285,7 @@ export function WorkoutSessionBuilder({
           const prepared = addCatalogExercise(
             templateExercises("A"),
             requestedExercise,
+            "A",
           );
           setExercises(prepared.exercises);
           setCatalogNotice(prepared.notice);
@@ -225,9 +296,10 @@ export function WorkoutSessionBuilder({
         const templateMatch = body.workout.name.match(
           /(?:Sesión|Día) ([A-D])/i,
         );
-        if (templateMatch) {
-          setTemplateId(templateMatch[1].toUpperCase() as SessionTemplateId);
-        }
+        const loadedTemplateId = templateMatch
+          ? (templateMatch[1].toUpperCase() as SessionTemplateId)
+          : "A";
+        setTemplateId(loadedTemplateId);
         setSessionId(body.workout.id);
         const loadedExercises = body.workout.exercises.map((exercise) => ({
             id: exercise.id,
@@ -239,15 +311,17 @@ export function WorkoutSessionBuilder({
             showNotes: false,
             sets: exercise.sets.map((set) => ({
               id: `${exercise.id}-${set.setNumber}`,
-              weightKg: String(set.weightKg),
+              weightKg: String(set.weightKg).replace(".", ","),
               reps: String(set.reps),
-              rpe: set.rpe === null ? "" : String(set.rpe),
+              rpe:
+                set.rpe === null ? "" : String(set.rpe).replace(".", ","),
               completed: set.completed,
             })),
           }));
         const prepared = addCatalogExercise(
           loadedExercises,
           requestedExercise,
+          loadedTemplateId,
         );
         setExercises(prepared.exercises);
         setCatalogNotice(prepared.notice);
@@ -347,6 +421,7 @@ export function WorkoutSessionBuilder({
     setTemplateId(nextTemplateId);
     setSessionId(null);
     setExercises(templateExercises(nextTemplateId));
+    setCatalogNotice(null);
     setSaveError("");
     setSaveState("idle");
     void updateTimer("reset");
@@ -427,6 +502,12 @@ export function WorkoutSessionBuilder({
 
   function replaceExercise(exerciseId: string, replacementName: string) {
     if (!exerciseOptions.includes(replacementName)) return;
+    if (!isExerciseAllowedForTemplate(replacementName, templateId)) {
+      setCatalogNotice(
+        incompatibleExerciseNotice(replacementName, templateId),
+      );
+      return;
+    }
 
     setExercises((current) =>
       current.map((exercise) =>
@@ -468,6 +549,10 @@ export function WorkoutSessionBuilder({
     if (name.length < 2 || name.length > 80) return;
 
     if (!exerciseOptions.includes(name)) return;
+    if (!isExerciseAllowedForTemplate(name, templateId)) {
+      setCatalogNotice(incompatibleExerciseNotice(name, templateId));
+      return;
+    }
 
     const id = `catalog-${crypto.randomUUID()}`;
     setExercises((current) => [
@@ -485,6 +570,10 @@ export function WorkoutSessionBuilder({
     ]);
     setNewExerciseName("");
     setShowAddExercise(false);
+    setCatalogNotice({
+      text: `${name} fue agregado a esta sesión con tres series.`,
+      tone: "success",
+    });
     setSaveState("idle");
   }
 
@@ -509,9 +598,9 @@ export function WorkoutSessionBuilder({
             notes: exercise.notes,
             sets: exercise.sets.map((set, setIndex) => ({
               setNumber: setIndex + 1,
-              weightKg: Number(set.weightKg),
+              weightKg: parseLocalizedDecimal(set.weightKg),
               reps: Number(set.reps),
-              rpe: set.rpe ? Number(set.rpe) : null,
+              rpe: set.rpe ? parseLocalizedDecimal(set.rpe) : null,
               completed: set.completed,
             })),
           })),
@@ -540,13 +629,18 @@ export function WorkoutSessionBuilder({
   return (
     <>
       {catalogNotice && (
-        <div className="catalog-session-notice" role="status">
-          <span aria-hidden="true">✓</span>
-          <p>{catalogNotice}</p>
+        <div
+          className={`catalog-session-notice ${catalogNotice.tone}`}
+          role={catalogNotice.tone === "warning" ? "alert" : "status"}
+        >
+          <span aria-hidden="true">
+            {catalogNotice.tone === "warning" ? "!" : "✓"}
+          </span>
+          <p>{catalogNotice.text}</p>
           <button
-            aria-label="Cerrar confirmación"
+            aria-label="Cerrar mensaje"
             type="button"
-            onClick={() => setCatalogNotice("")}
+            onClick={() => setCatalogNotice(null)}
           >
             ×
           </button>
@@ -593,13 +687,17 @@ export function WorkoutSessionBuilder({
                   <input
                     aria-label={`Peso serie ${setIndex + 1}`}
                     inputMode="decimal"
-                    min="0"
-                    step="0.5"
-                    type="number"
+                    maxLength={7}
+                    pattern="[0-9]*[,.]?[0-9]*"
+                    placeholder="Ej.: 12,5"
+                    type="text"
                     value={set.weightKg}
-                    onChange={(event) =>
-                      updateSet(exercise.id, set.id, "weightKg", event.target.value)
-                    }
+                    onChange={(event) => {
+                      const value = localizedDecimalValue(event.target.value);
+                      if (value !== null) {
+                        updateSet(exercise.id, set.id, "weightKg", value);
+                      }
+                    }}
                   />
                   <input
                     aria-label={`Repeticiones serie ${setIndex + 1}`}
@@ -614,15 +712,17 @@ export function WorkoutSessionBuilder({
                   <input
                     aria-label={`RPE serie ${setIndex + 1}, opcional`}
                     inputMode="decimal"
-                    max="10"
-                    min="1"
+                    maxLength={4}
+                    pattern="[0-9]*[,.]?[0-9]*"
                     placeholder="—"
-                    step="0.5"
-                    type="number"
+                    type="text"
                     value={set.rpe}
-                    onChange={(event) =>
-                      updateSet(exercise.id, set.id, "rpe", event.target.value)
-                    }
+                    onChange={(event) => {
+                      const value = localizedDecimalValue(event.target.value);
+                      if (value !== null) {
+                        updateSet(exercise.id, set.id, "rpe", value);
+                      }
+                    }}
                   />
                   <button
                     aria-label={

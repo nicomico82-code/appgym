@@ -121,6 +121,13 @@ export default function ManualPage() {
               D · Full body. Cambiar la plantilla inicia una sesión nueva y
               solicita confirmación si tienes datos sin guardar.
             </p>
+            <p>
+              Cada plantilla mantiene su enfoque: A admite pecho, hombros y
+              tríceps; B, espalda y bíceps; C, piernas. D es la opción mixta y
+              permite movimientos de todo el cuerpo. Si intentas agregar un
+              ejercicio de otra sección, la aplicación no lo añade y te indica
+              qué plantilla debes usar.
+            </p>
             <h3>2. Usa el cronómetro</h3>
             <p>
               Pulsa <strong>Iniciar</strong>, <strong>Pausar</strong> o
@@ -130,7 +137,7 @@ export default function ManualPage() {
             </p>
             <h3>3. Completa cada serie</h3>
             <dl className="manual-definitions">
-              <div><dt>kg</dt><dd>Peso realmente utilizado.</dd></div>
+              <div><dt>kg</dt><dd>Peso realmente utilizado. Admite coma o punto decimal; por ejemplo, 12,5.</dd></div>
               <div><dt>reps</dt><dd>Repeticiones realmente completadas.</dd></div>
               <div><dt>RPE</dt><dd>Esfuerzo percibido del 1 al 10. Es opcional.</dd></div>
               <div><dt>Lista</dt><dd>Marca únicamente las series terminadas.</dd></div>
@@ -173,6 +180,8 @@ export default function ManualPage() {
               o <strong>Usar en sesión</strong> en una alternativa. La
               aplicación abre Entrenar y lo agrega con tres series. Si ya
               estaba en la sesión, evita duplicarlo y muestra una confirmación.
+              Si no corresponde a la plantilla activa, muestra una advertencia
+              y propone la sesión correcta o D · Full body.
             </p>
           </article>
 

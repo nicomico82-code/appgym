@@ -3212,6 +3212,20 @@ a {
   font-size: 18px;
 }
 
+.catalog-session-notice.warning {
+  border-color: #efb2a8;
+  background: #fff0ed;
+  color: #8f2f24;
+}
+
+.catalog-session-notice.warning > span {
+  background: #c53d2f;
+}
+
+.catalog-session-notice.warning button {
+  color: #8f2f24;
+}
+
 @media (max-width: 760px) {
   .workout-layout,
   .progress-hero,

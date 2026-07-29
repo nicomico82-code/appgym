@@ -8,6 +8,8 @@ export type Exercise = {
   alternatives: string[];
 };
 
+export type TrainingSectionId = "A" | "B" | "C";
+
 export const exercises: Exercise[] = [
   {
     name: "Press banca con barra",
@@ -136,6 +138,34 @@ export function canonicalExerciseName(name: string) {
   }
 
   return null;
+}
+
+const trainingSectionByMuscle: Record<string, TrainingSectionId> = {
+  pecho: "A",
+  hombros: "A",
+  triceps: "A",
+  espalda: "B",
+  biceps: "B",
+  piernas: "C",
+  isquiotibiales: "C",
+};
+
+export function exerciseTrainingSection(name: string) {
+  const normalizedName = normalizedExerciseName(name);
+  const family = exercises.find(
+    (exercise) =>
+      normalizedExerciseName(exercise.name) === normalizedName ||
+      exercise.aliases.some(
+        (alias) => normalizedExerciseName(alias) === normalizedName,
+      ) ||
+      exercise.alternatives.some(
+        (alternative) =>
+          normalizedExerciseName(alternative) === normalizedName,
+      ),
+  );
+
+  if (!family) return null;
+  return trainingSectionByMuscle[normalizedExerciseName(family.muscle)] ?? null;
 }
 
 export function exerciseAlternativesFor(name: string) {

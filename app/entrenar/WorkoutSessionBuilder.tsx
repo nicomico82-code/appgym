@@ -321,7 +321,16 @@ export function WorkoutSessionBuilder() {
                 <span>Serie</span>
                 <span>kg</span>
                 <span>reps</span>
-                <span>RPE</span>
+                <span className="rpe-heading">
+                  RPE
+                  <details className="rpe-help">
+                    <summary aria-label="¿Qué significa RPE?">i</summary>
+                    <span role="tooltip">
+                      Es qué tan difícil se sintió la serie: 1 es muy fácil y
+                      10 es esfuerzo máximo. Puedes dejarlo vacío.
+                    </span>
+                  </details>
+                </span>
                 <span>Lista</span>
               </div>
               {exercise.sets.map((set, setIndex) => (

@@ -44,6 +44,8 @@ test("defines the main MVP product routes", async () => {
   assert.doesNotMatch(workoutBuilder, /vista previa estÃ¡ sin base de datos/i);
   assert.match(workoutBuilder, /workouts\?latest=1/);
   assert.match(workoutBuilder, /sessionId/);
+  assert.match(workoutBuilder, /¿Qué significa RPE\?/);
+  assert.match(workoutBuilder, /Puedes dejarlo vacío/);
   assert.match(progress, /Tu progreso, con evidencia\./);
   assert.match(progress, /julianday\(ws\.performed_on\)/);
   assert.match(progress, /Series completadas por ejercicio/);

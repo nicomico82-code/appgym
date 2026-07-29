@@ -1571,6 +1571,57 @@ a {
   box-shadow: 0 0 0 3px rgba(255, 104, 70, 0.13);
 }
 
+.rpe-heading {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.rpe-help {
+  position: relative;
+  z-index: 4;
+}
+
+.rpe-help summary {
+  display: grid;
+  width: 16px;
+  height: 16px;
+  place-items: center;
+  border: 1px solid #89918e;
+  border-radius: 50%;
+  color: #59615f;
+  cursor: pointer;
+  font-family: serif;
+  font-size: 10px;
+  font-weight: 800;
+  list-style: none;
+  text-transform: none;
+}
+
+.rpe-help summary::-webkit-details-marker {
+  display: none;
+}
+
+.rpe-help > span {
+  position: absolute;
+  right: -44px;
+  bottom: calc(100% + 9px);
+  width: min(250px, 70vw);
+  padding: 12px;
+  border-radius: 10px;
+  background: var(--ink);
+  box-shadow: 0 10px 30px rgba(20, 25, 23, 0.18);
+  color: white;
+  font-size: 10px;
+  font-weight: 550;
+  letter-spacing: 0;
+  line-height: 1.45;
+  text-align: left;
+  text-transform: none;
+}
+
 .set-row.completed input {
   background: #edf6ed;
 }

@@ -3,8 +3,8 @@
 PWA móvil-first de Max Level Fitness para registrar entrenamientos por serie,
 entender el progreso y alcanzar el máximo nivel.
 
-Este repositorio corresponde a `nicomico82-code/appgym`. La especificación del
-GPT que dio origen al producto se conserva completa en `docs/legacy-gpt/`.
+Este repositorio corresponde a `nicomico82-code/appgym`. La documentación
+funcional y técnica del producto se mantiene dentro de `docs/`.
 
 ## Manual de usuario
 

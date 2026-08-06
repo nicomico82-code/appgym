@@ -1,16 +1,21 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #171c1b;
-  --ink-soft: #505957;
-  --paper: #f3f1ea;
-  --surface: #fbfaf6;
-  --line: #dcd9cf;
-  --accent: #ff6846;
-  --accent-dark: #da4d30;
-  --lime: #d8f36a;
-  --mint: #cbe9d8;
-  --nav: #171c1b;
+  --ink: #101426;
+  --ink-soft: #525d72;
+  --paper: #f3f5fa;
+  --canvas: #f3f5fa;
+  --surface: #ffffff;
+  --line: #d9deea;
+  --accent: #6758f5;
+  --accent-dark: #4d3ed6;
+  --lime: #c9f24b;
+  --mint: #dff1e3;
+  --nav: #0b1020;
+  --muted: #7f899d;
+  --violet-soft: #eceafd;
+  --font-geist-sans: var(--font-sport-sans);
+  --font-geist-mono: var(--font-sport-mono);
 }
 
 * {
@@ -24,13 +29,16 @@ html {
 }
 
 body {
+  --font-geist-sans: var(--font-sport-sans);
+  --font-geist-mono: var(--font-sport-mono);
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(circle at 92% 4%, rgba(216, 243, 106, 0.18), transparent 22rem),
+    radial-gradient(circle at 92% 4%, rgba(103, 88, 245, 0.12), transparent 24rem),
+    radial-gradient(circle at 12% 92%, rgba(201, 242, 75, 0.1), transparent 25rem),
     var(--paper);
   color: var(--ink);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-sport-sans), "Segoe UI", sans-serif;
 }
 
 button,
@@ -1917,6 +1925,253 @@ a {
   .panel {
     padding: 21px 18px;
   }
+}
+
+/* Visual system: energetic sports-tech with high-contrast performance data. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.sidebar a:focus-visible,
+.mobile-nav a:focus-visible {
+  outline-color: var(--lime);
+}
+
+.sidebar {
+  background:
+    radial-gradient(circle at 20% 0, rgba(103, 88, 245, 0.2), transparent 18rem),
+    linear-gradient(180deg, #0b1020, #11172a);
+}
+
+.brand-logo,
+.access-logo {
+  border-color: rgba(201, 242, 75, 0.28);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.26);
+}
+
+.brand small,
+.sidebar-profile small {
+  color: #aeb7c8;
+}
+
+.nav-link {
+  color: #b0b8c9;
+}
+
+.nav-link.active {
+  background: linear-gradient(135deg, rgba(103, 88, 245, 0.32), rgba(103, 88, 245, 0.16));
+  box-shadow: inset 3px 0 0 var(--lime);
+}
+
+.sidebar-card,
+.sidebar-profile {
+  background: rgba(255, 255, 255, 0.045);
+  border-color: rgba(255, 255, 255, 0.11);
+}
+
+.sidebar-card > span,
+.brand-promise {
+  color: #91ae24;
+}
+
+.profile-chip {
+  background: rgba(255, 255, 255, 0.8);
+  border-color: rgba(16, 20, 38, 0.1);
+  box-shadow: 0 10px 32px rgba(34, 42, 73, 0.07);
+  backdrop-filter: blur(12px);
+}
+
+.avatar {
+  background: linear-gradient(135deg, var(--lime), #e5ff8d);
+  color: var(--ink);
+}
+
+.page-heading h1,
+.section-header h1,
+.hero-copy h2,
+.home-empty h2 {
+  font-family: var(--font-sport-sans), "Segoe UI", sans-serif;
+  font-weight: 760;
+}
+
+.eyebrow,
+.hero-kicker,
+.mono,
+.exercise-index,
+.bar-column small,
+.workout-timer > strong,
+.set-row strong,
+.set-row input {
+  font-family: var(--font-sport-mono), Consolas, monospace;
+}
+
+.eyebrow {
+  color: #6b7386;
+}
+
+.hero-session {
+  background:
+    radial-gradient(circle at 90% 10%, rgba(201, 242, 75, 0.2), transparent 25rem),
+    linear-gradient(135deg, #4d3ed6 0%, #6758f5 58%, #786cf8 100%);
+  color: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 24px 64px rgba(77, 62, 214, 0.24);
+}
+
+.hero-session::after {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow:
+    0 0 0 48px rgba(255, 255, 255, 0.05),
+    0 0 0 96px rgba(255, 255, 255, 0.035);
+}
+
+.status-pill {
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(11, 16, 32, 0.12);
+}
+
+.status-pill i {
+  background: var(--lime);
+  box-shadow: 0 0 0 4px rgba(201, 242, 75, 0.13);
+}
+
+.hero-kicker {
+  color: #e7ff9b;
+}
+
+.hero-session .button-primary {
+  background: #0b1020;
+  color: #ffffff;
+  box-shadow: 0 10px 28px rgba(11, 16, 32, 0.25);
+}
+
+.hero-session .button-quiet {
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.progress-orbit {
+  border-color: rgba(255, 255, 255, 0.32);
+  background: conic-gradient(var(--lime) 0 72%, rgba(255, 255, 255, 0.22) 72% 100%);
+}
+
+.progress-orbit::before {
+  background: #5e50e7;
+}
+
+.session-facts div {
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.surface-card,
+.metric-card,
+.panel,
+.session-clock {
+  border-color: rgba(16, 20, 38, 0.09);
+  border-radius: 18px;
+  box-shadow: 0 12px 38px rgba(34, 42, 73, 0.06);
+}
+
+.metric-card span,
+.explanation-note,
+.profile-use-note,
+.exercise-inline-panel,
+.workout-timer {
+  background: #f0f2f7;
+}
+
+.metric-card.positive span,
+.set-row.completed input {
+  background: #e1f3e6;
+  color: #235d3d;
+}
+
+.load-tag.raise,
+.target-badge {
+  background: var(--violet-soft);
+  color: #493abe;
+}
+
+.load-tag.hold {
+  background: #edf0f5;
+  color: #566176;
+}
+
+.bar {
+  background: #252c43;
+}
+
+.bar-column:nth-child(6) .bar,
+.bar-column:nth-child(7) .bar {
+  background: linear-gradient(180deg, #7d70ff, var(--accent-dark));
+}
+
+.insight-strip {
+  background: linear-gradient(135deg, #c9f24b, #ddff74);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px rgba(139, 172, 35, 0.16);
+}
+
+.button-primary,
+.button-dark,
+.catalog-use-primary {
+  background: #101426;
+  color: #ffffff;
+}
+
+.button-primary:hover,
+.button-dark:hover,
+.catalog-use-primary:hover {
+  background: var(--accent-dark);
+  box-shadow: 0 10px 28px rgba(77, 62, 214, 0.2);
+}
+
+.field input,
+.field select,
+.set-row input,
+.exercise-inline-panel textarea,
+.session-template-picker select,
+.workout-timer {
+  background: #f7f8fb;
+  border-color: #d5dbe8;
+}
+
+.field input:focus,
+.field select:focus,
+.set-row input:focus,
+.exercise-inline-panel textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(103, 88, 245, 0.13);
+}
+
+.experience-options label {
+  background: #f7f8fb;
+  border-color: #d5dbe8;
+}
+
+.experience-options label.selected {
+  background: var(--violet-soft);
+  border-color: var(--accent);
+  box-shadow: inset 0 0 0 1px var(--accent);
+}
+
+.assistant-launcher {
+  background: #101426;
+  border-color: rgba(201, 242, 75, 0.32);
+  box-shadow: 0 16px 42px rgba(11, 16, 32, 0.28);
+}
+
+.mobile-nav {
+  background: rgba(11, 16, 32, 0.96);
+  border-color: rgba(201, 242, 75, 0.18);
+  color: #b0b8c9;
 }
 
 @media (prefers-reduced-motion: reduce) {

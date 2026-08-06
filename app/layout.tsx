@@ -1,16 +1,19 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { IBM_Plex_Mono, Sora } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sportSans = Sora({
+  variable: "--font-sport-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const sportMono = IBM_Plex_Mono({
+  variable: "--font-sport-mono",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -59,7 +62,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export const viewport: Viewport = {
-  themeColor: "#f3f1ea",
+  themeColor: "#0b1020",
   colorScheme: "light",
 };
 
@@ -70,7 +73,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body className={`${sportSans.variable} ${sportMono.variable}`}>
         {children}
       </body>
     </html>
